@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+recurring_subscription.access_recurring_subscription,access_recurring_subscription,recurring_subscription.model_recurring_subscription,base.group_user,1,1,1,1
+recurring_subscription.access_recurring_credit,access_recurring_credit,recurring_subscription.model_recurring_credit,base.group_user,1,1,1,1

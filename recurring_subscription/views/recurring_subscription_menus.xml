@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- main menu -->
+    <menuitem id = "menu_recurring_subscription_root" name="Recurring Subscription"  action="action_recurring_subscription"/>
+
+    <!-- submenu-->
+    <menuitem id="menu_recurring_credit" name="Recurring Subscription Credit" parent="menu_recurring_subscription_root" action="action_recurring_credit"/>
+
+</odoo>

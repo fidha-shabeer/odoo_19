@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="recurring_sub_list_view" model="ir.ui.view">
+            <field name="name">rec.sub.list</field>
+            <field name="model">recurring.subscription</field>
+            <field name="arch" type="xml">
+                <list string="Recurring Subscription List">
+                    <field name="order_seq"/>
+                    <field name="establishment_id"/>
+                    <field name="date"/>
+                    <field name="due_dates"/>
+                    <field name="next_billing"/>
+                    <field name="is_leads"/>
+                    <field name="partner_id"/>
+                    <field name="description"/>
+                    <field name="product_id"/>
+                    <field name="recurring_amount"/>
+                    <field name="stages_id"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="recurring_sub_form_view" model="ir.ui.view">
+                    <field name="name">rec.sub.form</field>
+                    <field name="model">recurring.subscription</field>
+                    <field name="arch" type="xml">
+                        <form>
+                            <header>
+                                <field name="stages_id" widget="statusbar" options="{'clickable':1}"/>
+                            </header>
+                            <sheet>
+                                <group>
+                                    <group>
+                                         <field name="order_seq"/>
+                                        <field name="establishment_id"/>
+                                        <field name="partner_id"/>
+                                        <field name="date"/>
+                                        <field name="due_dates"/>
+                                        <field name="next_billing"/>
+                                    </group>
+                                    <group>
+                                        <field name="is_leads"/>
+                                        <field name="description"/>
+                                        <field name="product_id"/>
+                                        <field name="recurring_amount"/>
+                                    </group>
+
+                                </group>
+
+                                <notebook>
+                                    <page string="TERMS AND CONDITION">
+                                        <field name="terms_condition"/>
+                                    </page>
+                                </notebook>
+                            </sheet>
+                        </form>
+                    </field>
+                </record>
+
+
+       <record id="action_recurring_subscription" model="ir.actions.act_window">
+           <field name="name">Subscribe</field>
+           <field name="res_model">recurring.subscription</field>
+
+           <field name="view_mode">list,form</field>
+           <field name="help" type="html">
+               <p class="o_view_noncontent_smiling_face">create your plan</p>
+           </field>
+       </record>
+    </data>
+</odoo>

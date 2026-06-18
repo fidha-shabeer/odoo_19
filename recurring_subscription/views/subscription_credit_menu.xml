@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="recurring_credit_list_view" model="ir.ui.view">
+            <field name="name">rec.credit.list</field>
+            <field name="model">recurring.credit</field>
+            <field name="arch" type="xml">
+                <list string="Recurring Subscription Credit List">
+                    <field name="recurring_sub"/>
+                    <field name="partner"/>
+                    <field name="credit_amount"/>
+                    <field name="states_id"/>
+                    <field name="period"/>
+                </list>
+            </field>
+        </record>
+
+     <record id="recurring_sub_form_view2" model="ir.ui.view">
+                    <field name="name">rec.credit.form</field>
+                    <field name="model">recurring.credit</field>
+                    <field name="arch" type="xml">
+                        <form string="Recurring Subscription Credit">
+                            <header>
+                                <field name="states_id" widget="statusbar" options="{'clickable':1}"/>
+                            </header>
+                            <sheet>
+                                <group>
+                                    <field name="recurring_sub"/>
+                                    <field name="partner"/>
+                                    <field name="credit_amount"/>
+                                    <field name="period"/>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </record>
+
+   <record id="action_recurring_credit" model="ir.actions.act_window">
+       <field name="name">Subscription Credit</field>
+       <field name="res_model">recurring.credit</field>
+
+       <field name="view_mode">list,form</field>
+       <field name="help" type="html">
+           <p class="o_view_noncontent_smiling_face">add new</p>
+       </field>
+   </record>
+</odoo>
