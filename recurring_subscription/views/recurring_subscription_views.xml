@@ -29,6 +29,8 @@
                         <form>
                             <header>
                                 <field name="status" widget="statusbar" options="{'clickable':1}"/>
+                                <button name="button_confirm" type="object" string="Confirm"/>
+                                <button name="button_cancel" type="object" string="Cancel"/>
                             </header>
                             <sheet>
                                  <h1><field name="order_seq" readonly="1" /></h1>
@@ -37,11 +39,12 @@
                                         <field name="partner_id" context="{'show_address': True}"/>
                                         <field name="product_id"/>
                                         <field name="description"/>
-                                        <field name="currency_id"/>
+                                        <field name="companys_id"/>
+                                        <field name="currency_id" invisible="1"/>
                                         <field name="recurring_amount"/>
                                     </group>
                                     <group>
-                                        <field name="establishment_id"/>
+<!--                                        <field name="establishment_id"/>-->
                                         <field name="date"/>
                                         <field name="due_dates"/>
                                         <field name="next_billing"/>

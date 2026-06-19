@@ -4,7 +4,7 @@
         <field name="name">Recurring Sequence</field>
         <field name="code">recsequence</field>
         <field name="prefix">RS</field>
-        <field name="padding">4</field>
+        <field name="padding">10</field>
         <field name="number_increment">1</field>
     </record>
 </odoo>

@@ -8,7 +8,7 @@
                 <list string="Recurring Subscription Credit List">
                     <field name="recurring_sub_id"/>
                     <field name="partner_id"/>
-                    <field name="currency_id"/>
+                    <field name="currency_id" />
                     <field name="credit_amounts"/>
                     <field name="state"/>
                     <field name="date_begin" widget="daterange" string="From"
@@ -30,8 +30,11 @@
                             <sheet>
                                 <group>
                                     <field name="recurring_sub_id"/>
+                                    <field name="establishment_id"/>
+                                    <field name="due_date"/>
                                     <field name="partner_id"/>
-                                    <field name="currency_id"/>
+                                    <field name="companys_id"/>
+                                    <field name="currency_id" invisible="1"/>
                                     <field name="credit_amounts"/>
                                     <field name="date_begin" widget="daterange" string="From"
                                             options="{'related_end_date': 'date_end'}"/>
