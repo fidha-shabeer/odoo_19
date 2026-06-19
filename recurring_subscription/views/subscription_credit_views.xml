@@ -6,11 +6,15 @@
             <field name="model">recurring.credit</field>
             <field name="arch" type="xml">
                 <list string="Recurring Subscription Credit List">
-                    <field name="recurring_sub"/>
-                    <field name="partner"/>
-                    <field name="credit_amount"/>
-                    <field name="states_id"/>
-                    <field name="period"/>
+                    <field name="recurring_sub_id"/>
+                    <field name="partner_id"/>
+                    <field name="currency_id"/>
+                    <field name="credit_amounts"/>
+                    <field name="state"/>
+                    <field name="date_begin" widget="daterange" string="From"
+                           options="{'related_end_date': 'date_end'}"/>
+                    <field name="date_end" widget="daterange" string="To"
+                           options="{'related_start_date': 'date_begin'}"/>
                 </list>
             </field>
         </record>
@@ -21,16 +25,21 @@
                     <field name="arch" type="xml">
                         <form string="Recurring Subscription Credit">
                             <header>
-                                <field name="states_id" widget="statusbar" options="{'clickable':1}"/>
+                                <field name="state" widget="statusbar" options="{'clickable':1}"/>
                             </header>
                             <sheet>
                                 <group>
-                                    <field name="recurring_sub"/>
-                                    <field name="partner"/>
-                                    <field name="credit_amount"/>
-                                    <field name="period"/>
+                                    <field name="recurring_sub_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="currency_id"/>
+                                    <field name="credit_amounts"/>
+                                    <field name="date_begin" widget="daterange" string="From"
+                                            options="{'related_end_date': 'date_end'}"/>
+                                    <field name="date_end" widget="daterange" string="To"
+                                            options="{'related_start_date': 'date_begin'}"/>
                                 </group>
                             </sheet>
+                            <chatter/>
                         </form>
                     </field>
                 </record>

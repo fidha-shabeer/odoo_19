@@ -15,8 +15,9 @@
                     <field name="partner_id"/>
                     <field name="description"/>
                     <field name="product_id"/>
+                    <field name="currency_id"/>
                     <field name="recurring_amount"/>
-                    <field name="stages_id"/>
+                    <field name="status"/>
                 </list>
             </field>
         </record>
@@ -27,33 +28,36 @@
                     <field name="arch" type="xml">
                         <form>
                             <header>
-                                <field name="stages_id" widget="statusbar" options="{'clickable':1}"/>
+                                <field name="status" widget="statusbar" options="{'clickable':1}"/>
                             </header>
                             <sheet>
+                                 <h1><field name="order_seq" readonly="1" /></h1>
                                 <group>
                                     <group>
-                                         <field name="order_seq"/>
+                                        <field name="partner_id" context="{'show_address': True}"/>
+                                        <field name="product_id"/>
+                                        <field name="description"/>
+                                        <field name="currency_id"/>
+                                        <field name="recurring_amount"/>
+                                    </group>
+                                    <group>
                                         <field name="establishment_id"/>
-                                        <field name="partner_id"/>
                                         <field name="date"/>
                                         <field name="due_dates"/>
                                         <field name="next_billing"/>
-                                    </group>
-                                    <group>
                                         <field name="is_leads"/>
-                                        <field name="description"/>
-                                        <field name="product_id"/>
-                                        <field name="recurring_amount"/>
                                     </group>
 
                                 </group>
 
                                 <notebook>
                                     <page string="TERMS AND CONDITION">
-                                        <field name="terms_condition"/>
+                                        <field name="terms_condition" type="html"/>
+                                            <p> Subscriptions are billed on a recurring basis</p>
                                     </page>
                                 </notebook>
                             </sheet>
+                            <chatter/>
                         </form>
                     </field>
                 </record>
