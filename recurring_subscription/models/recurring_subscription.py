@@ -41,7 +41,7 @@ class RecurringSubscription(models.Model):
 
 
     def create(self, vals_list):
-        """Recurring Subscription Sequence creation"""
+        """Recurring Subscription Sequence creation    jjjj"""
         vals_list["order_seq"] = self.env["ir.sequence"].next_by_code('recsequence')
         return super(RecurringSubscription, self).create(vals_list)
 
