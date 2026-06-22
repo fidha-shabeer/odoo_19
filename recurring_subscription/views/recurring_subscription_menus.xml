@@ -6,4 +6,6 @@
     <!-- submenu-->
     <menuitem id="menu_recurring_credit" name="Recurring Subscription Credit" parent="menu_recurring_subscription_root" action="action_recurring_credit"/>
 
+    <menuitem id="menu_billing_schedule" name="Billing Schedule" parent="menu_recurring_subscription_root" action="action_billing_schedule"/>
+
 </odoo>

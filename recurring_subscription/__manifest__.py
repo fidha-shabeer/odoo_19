@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 {
     'name': "Recurring Subscription",
     'version': "19.0.1.0",
@@ -9,6 +9,7 @@
     'category': "Recurring Subscription",
     'license': "LGPL-3",
     'depends': ['base','sale_management','mail'],
+    'post_init_hook': 'post_init_hook',
     'sequence': -10,
     'application': True,
     'installable': True,
@@ -16,8 +17,10 @@
     'data': [
         "security/ir.model.access.csv",
         "data/recurring_subscription_data.xml",
+        "data/product_data.xml",
         "views/recurring_subscription_views.xml",
         "views/subscription_credit_views.xml",
-        "views/recurring_subscription_menus.xml"
-    ]
+        "views/billing_schedule_views.xml",
+        "views/recurring_subscription_menus.xml",
+    ],
 }

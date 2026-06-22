@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-import re
-
 from odoo import fields,models,api,_
 from datetime import timedelta
 from odoo.exceptions import ValidationError
+
 
 class RecurringSubscription(models.Model):
     """Recurring Subscription"""
@@ -12,12 +11,12 @@ class RecurringSubscription(models.Model):
     _rec_name = "order_seq"
     _inherit = ['mail.thread']
 
-    status = fields.Selection(selection=[('draft', 'Draft'), ('confirm', 'Confirm'),
-                                         ('done', 'Done'), ('cancel', 'Cancel')],
+    status = fields.Selection(selection=[('draft', 'Draft'), ('confirm', 'Confirm'),('done', 'Done'), ('cancel', 'Cancel')],
                               string="State",default='draft',tracking=True)
     order_seq=fields.Char(default="New")
-    establishment_id = fields.Char(string="Establishment ID",required=True)
-    date = fields.Date(string="Date" , required=True,tracking=True)
+    id_establishment = fields.Char(string="Establishment ID",required=True)
+    billing_schedule_id = fields.Many2one("billing.schedule",string="Billing Schedule")
+    date=fields.Date(string="Date",required=True,default=fields.Date.context_today)
     due_dates=fields.Date(string="Due Dates",compute="_compute_dates" , store=True)
     next_billing = fields.Date(string="Next Bill Date", compute="_compute_next_billing",
                                store=True)
@@ -28,7 +27,7 @@ class RecurringSubscription(models.Model):
     terms_condition = fields.Html(string="Terms and Condition")
     product_id = fields.Many2one("product.product", string="Product",
                                  tracking=True,required=True)
-    companys_id=fields.Many2one("res.company", string="Company",)
+
     company_id = fields.Many2one('res.company', store=True, copy=False,
                                  string="Company",
                                  default=lambda
@@ -37,12 +36,14 @@ class RecurringSubscription(models.Model):
                                     related='company_id.currency_id')
 
     recurring_amount = fields.Monetary(string="Recurring Amount",tracking=True,
-                                    required=True,currency_field="currency_id",digits=(12,2))
+                                    required=True,currency_field="currency_id")
 
-
+    @api.model_create_multi
     def create(self, vals_list):
-        """Recurring Subscription Sequence creation    jjjj"""
-        vals_list["order_seq"] = self.env["ir.sequence"].next_by_code('recsequence')
+        """Recurring Subscription Sequence creation """
+        for vals in vals_list:
+            if vals.get('order_seq','New') == 'New':
+                vals['order_seq'] = self.env["ir.sequence"].next_by_code('recsequence')
         return super(RecurringSubscription, self).create(vals_list)
 
     @api.depends("date")
@@ -63,17 +64,39 @@ class RecurringSubscription(models.Model):
             else:
                 rec.next_billing = False
 
+    @api.constrains("recurring_amount")
+    def _check_recurring_amount(self):
+        """validation for recurring amount"""
+        for rec in self:
+            if rec.recurring_amount == 0:
+                raise ValidationError("Recurring Amount must be greater than 0")
+
+
     # @api.constrains('establishment_id')
     # def _check_establishment_id(self):
     #     for rec in self:
-    #         if rec.establishment_id and not re.match(r'^(?=.*[A-Za-z]{3})(?=.*\d{3})(?=.*?[#?!@$%^&*-]{2})$', rec.establishment_id):
-    #                 raise ValidationError(_("The id must contain char,int and spcl char"))
+    #         # if rec.establishment_id and not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$",rec.establishment_id):
+    #         if rec.establishment_id and not re.match(
+    #                 r'^(?=.[a-zA-Z]{3,})(?=.\d{3,})'
+    #                 r'(?=.*[@.#$!%?&]{2,})[A-Za-z\d@.#$!%?&]{8,}$',
+    #                 rec.establishment_id):
+    #             print(1234, rec.establishment_id)
+    #             raise ValidationError("Recurring Amount must be greater than 0")
+                # raise ValidationError(_("Invalid Format!! Id must contain char,int and spcl char."))
 
     def button_confirm(self):
-        self.status='confirm'
+        """Confirmation button """
+        self.write({
+            'status': 'confirm'
+        })
+        # self.status='confirm'
 
     def button_cancel(self):
-        self.status='cancel'
+        """Cancel button """
+        self.write({
+            'status': 'cancel'
+        })
+        # self.status='cancel'
 
 
 

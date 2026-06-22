@@ -1,19 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
+        <record id="recurring_sub_view_search" model="ir.ui.view">
+                <field name="name">recurring.sub.view.search</field>
+                <field name="model">recurring.subscription</field>
+                <field name="arch" type="xml">
+                    <search string="subscription search">
+                        <field name="order_seq"/>
+                        <field name="id_establishment"/>
+                        <field name="date"/>
+                        <field name="due_dates"/>
+                        <field name="next_billing"/>
+                        <field name="is_leads"/>
+                        <field name="partner_id"/>
+                        <field name="product_id"/>
+                        <field name="currency_id"/>
+                        <field name="recurring_amount"/>
+                        <field name="status"/>
+                        <separator/>
+                        <filter name="filter_done" string="Done" domain="[('status','=','done')]"/>
+                        <filter name="filter_cancel" string="Cancel" domain="[('status','=','cancel')]"/>
+                        <filter name="filter_confirm" string="Confirm" domain="[('status','=','confirm')]"/>
+
+                        <group name="groupby">
+                            <filter name="group_by_customer" string="Customer"
+                            context="{'group_by': 'partner_id'}"/>
+                            <filter name="group_by_product" string="Product"
+                            context="{'group_by': 'product_id'}"/>
+                            <filter name="group_by_status" string="State"
+                            context="{'group_by': 'status'}"/>
+
+
+                        </group>
+
+                    </search>
+               </field>
+        </record>
+
         <record id="recurring_sub_list_view" model="ir.ui.view">
             <field name="name">rec.sub.list</field>
             <field name="model">recurring.subscription</field>
             <field name="arch" type="xml">
                 <list string="Recurring Subscription List">
                     <field name="order_seq"/>
-                    <field name="establishment_id"/>
+                    <field name="id_establishment"/>
                     <field name="date"/>
                     <field name="due_dates"/>
                     <field name="next_billing"/>
                     <field name="is_leads"/>
                     <field name="partner_id"/>
-                    <field name="description"/>
                     <field name="product_id"/>
                     <field name="currency_id"/>
                     <field name="recurring_amount"/>
@@ -28,9 +64,9 @@
                     <field name="arch" type="xml">
                         <form>
                             <header>
-                                <field name="status" widget="statusbar" options="{'clickable':1}"/>
-                                <button name="button_confirm" type="object" string="Confirm"/>
-                                <button name="button_cancel" type="object" string="Cancel"/>
+                                <field name="status" widget="statusbar" options="{'clickable':1}" statusbar_visible="draft,confirm,done"/>
+                                <button name="button_confirm" type="object" string="Confirm" invisible="status != 'draft'"/>
+                                <button name="button_cancel" type="object" string="Cancel" invisible="status != 'confirm'"/>
                             </header>
                             <sheet>
                                  <h1><field name="order_seq" readonly="1" /></h1>
@@ -38,13 +74,13 @@
                                     <group>
                                         <field name="partner_id" context="{'show_address': True}"/>
                                         <field name="product_id"/>
-                                        <field name="description"/>
-                                        <field name="companys_id"/>
+                                        <field name="company_id"/>
+                                        <field name="billing_schedule_id"/>
                                         <field name="currency_id" invisible="1"/>
                                         <field name="recurring_amount"/>
                                     </group>
                                     <group>
-<!--                                        <field name="establishment_id"/>-->
+                                        <field name="id_establishment"/>
                                         <field name="date"/>
                                         <field name="due_dates"/>
                                         <field name="next_billing"/>
@@ -56,7 +92,10 @@
                                 <notebook>
                                     <page string="TERMS AND CONDITION">
                                         <field name="terms_condition" type="html"/>
-                                            <p> Subscriptions are billed on a recurring basis</p>
+<!--                                            <p> Subscriptions are billed on a recurring basis</p>-->
+                                    </page>
+                                    <page string="DESCRIPTION">
+                                        <field name="description" type="html"/>
                                     </page>
                                 </notebook>
                             </sheet>
