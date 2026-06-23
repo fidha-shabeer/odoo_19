@@ -7,8 +7,7 @@
             <field name="arch" type="xml">
                 <list string="Billing Schedule List">
                     <field name="simulation"/>
-                    <field name="from_date"/>
-                    <field name="to_date"/>
+                    <field name="period"/>
                     <field name="restrict_customers_id"/>
                     <field name="active"/>
                     <field name="total_credits"/>
@@ -22,19 +21,20 @@
                     <field name="arch" type="xml">
                         <form>
                             <sheet>
-<!--                                <div class="oe_button_box" name="button_box">-->
-<!--                                    <button name="action_recurring_subscription" type="object" class="oe_stat_button" icon="fa-book">-->
-<!--                                        -->
-<!--                                    </button>-->
-<!--                                </div>-->
+                                <div class="oe_button_box" name="button_box">
+                                    <button name="action_view_subscription" type="object"
+                                            class="oe_stat_button" icon="fa-book"
+                                            invisible = 'subscription_count == 0 '>
+                                        <field name="subscription_count" widget="statinfo" string="Subscription Count"/>
+                                    </button>
+                                </div>
 
                                 <group>
                                     <group>
                                         <field name="simulation"/>
-                                        <field name="from_date"/>
-                                        <field name="to_date"/>
-                                        <field name="restrict_customers_id"/>
-                                        <field name="subscription_id"/>
+                                        <field name="period"/>
+                                        <field name="restrict_customers_id" widget="many2many_tags"/>
+                                        <field name="subscription_id" widget="many2many_tags"/>
                                         <field name="active"/>
                                         <field name="total_credits"/>
                                     </group>

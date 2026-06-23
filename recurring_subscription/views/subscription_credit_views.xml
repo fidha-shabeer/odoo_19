@@ -11,8 +11,7 @@
                     <field name="currency_id" />
                     <field name="credit_amounts"/>
                     <field name="state"/>
-                    <field name="date_begin" widget="daterange" string="From"/>
-                    <field name="date_end" widget="daterange" string="To"/>
+                    <field name="period"/>
                 </list>
             </field>
         </record>
@@ -35,10 +34,7 @@
                                     <field name="company_id"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="credit_amounts"/>
-                                    <field name="date_begin" widget="daterange" string="From"
-                                            options="{'related_end_date': 'date_end'}"/>
-                                    <field name="date_end" widget="daterange" string="To"
-                                            options="{'related_start_date': 'date_begin'}"/>
+                                    <field name="period"/>
                                 </group>
                             </sheet>
                             <chatter/>

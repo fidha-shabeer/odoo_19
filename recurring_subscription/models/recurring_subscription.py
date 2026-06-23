@@ -15,6 +15,7 @@ class RecurringSubscription(models.Model):
                               string="State",default='draft',tracking=True)
     order_seq=fields.Char(default="New")
     id_establishment = fields.Char(string="Establishment ID",required=True)
+    credits_id = fields.One2many('recurring.credit','recurring_sub_id',string='Subscription Credits')
     billing_schedule_id = fields.Many2one("billing.schedule",string="Billing Schedule")
     date=fields.Date(string="Date",required=True,default=fields.Date.context_today)
     due_dates=fields.Date(string="Due Dates",compute="_compute_dates" , store=True)
@@ -83,6 +84,8 @@ class RecurringSubscription(models.Model):
     #             print(1234, rec.establishment_id)
     #             raise ValidationError("Recurring Amount must be greater than 0")
                 # raise ValidationError(_("Invalid Format!! Id must contain char,int and spcl char."))
+
+    
 
     def button_confirm(self):
         """Confirmation button """

@@ -13,7 +13,6 @@ class RecurringSubscriptionCredit(models.Model):
     recurring_sub_id=fields.Many2one("recurring.subscription",string="Recurring Subscription",required=True)
     id_establishment=fields.Char(string="Establishment Id" , related= "recurring_sub_id.id_establishment")
     due_date = fields.Date(string="Due Date", related= "recurring_sub_id.due_dates")
-    # partner_id = fields.Many2one("res.partner",string="Recurring Subscription Partner",tracking=True, required=True)
     partner_id =  fields.Many2one(string="Patner",related= "recurring_sub_id.partner_id")
     recurring_amounts = fields.Monetary(string="Recurring Amount",related= "recurring_sub_id.recurring_amount")
     credit_amounts = fields.Monetary(string="Credit Amount",required=True,currency_field="currency_id")
@@ -26,8 +25,8 @@ class RecurringSubscriptionCredit(models.Model):
 
     state = fields.Selection(selection=[('pending', 'Pending'), ('confirmed', 'Confirmed'),
                                         ('first approved', 'First Approved'),( 'fully approved','Fully Approved'),('rejected', 'Rejected')],tracking=True)
-    date_begin = fields.Datetime(string="Date Begin")
-    date_end = fields.Datetime(string="Date End")
+    period = fields.Date(string="Period")
+
 
 
     @api.onchange('credit_amounts')
