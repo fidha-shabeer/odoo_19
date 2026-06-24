@@ -21,6 +21,7 @@
         "views/recurring_subscription_views.xml",
         "views/subscription_credit_views.xml",
         "views/billing_schedule_views.xml",
+        "views/partner_account_views.xml",
         "views/recurring_subscription_menus.xml",
     ],
 }

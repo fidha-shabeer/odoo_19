@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from email.policy import default
+
 from odoo import fields, models,api
 from odoo.exceptions import ValidationError
 
@@ -24,7 +26,7 @@ class RecurringSubscriptionCredit(models.Model):
                                   related='company_id.currency_id')
 
     state = fields.Selection(selection=[('pending', 'Pending'), ('confirmed', 'Confirmed'),
-                                        ('first approved', 'First Approved'),( 'fully approved','Fully Approved'),('rejected', 'Rejected')],tracking=True)
+                                        ('first approved', 'First Approved'),( 'fully approved','Fully Approved'),('rejected', 'Rejected')], tracking=True, default= 'pending')
     period = fields.Date(string="Period")
 
 

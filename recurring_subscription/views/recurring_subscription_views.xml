@@ -75,7 +75,6 @@
                                         <field name="partner_id" context="{'show_address': True}"/>
                                         <field name="product_id"/>
                                         <field name="company_id"/>
-                                        <field name="credits_id" domain="[('period', '&lt;', 'due_dates')]"/>
                                         <field name="billing_schedule_id"/>
                                         <field name="currency_id" invisible="1"/>
                                         <field name="recurring_amount"/>
@@ -97,6 +96,9 @@
                                     </page>
                                     <page string="DESCRIPTION">
                                         <field name="description" type="html"/>
+                                    </page>
+                                    <page string="RECURRING CREDITS">
+                                        <field name="reccuring_credit_ids"/>
                                     </page>
                                 </notebook>
                             </sheet>

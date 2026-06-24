@@ -5,10 +5,11 @@
             <field name="name">billing.schedule.list</field>
             <field name="model">billing.schedule</field>
             <field name="arch" type="xml">
-                <list string="Billing Schedule List">
-                    <field name="simulation"/>
+                <list string="Billing Schedule List" >
+                    <field name="is_simulation"/>
+                    <field name="names"/>
                     <field name="period"/>
-                    <field name="restrict_customers_id"/>
+                    <field name="restrict_customers_ids" widget="many2many_tags"/>
                     <field name="active"/>
                     <field name="total_credits"/>
                 </list>
@@ -31,10 +32,12 @@
 
                                 <group>
                                     <group>
-                                        <field name="simulation"/>
+                                        <field name="is_simulation"/>
+                                        <field name="names"/>
                                         <field name="period"/>
-                                        <field name="restrict_customers_id" widget="many2many_tags"/>
-                                        <field name="subscription_id" widget="many2many_tags"/>
+                                        <field name="restrict_customers_ids" widget="many2many_tags"/>
+                                        <field name="subscription_ids" widget="many2many_tags"/>
+<!--                                        <field name="credit_rec_ids"/>-->
                                         <field name="active"/>
                                         <field name="total_credits"/>
                                     </group>

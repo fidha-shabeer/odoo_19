@@ -16,6 +16,7 @@ class RecurringSubscription(models.Model):
     order_seq=fields.Char(default="New")
     id_establishment = fields.Char(string="Establishment ID",required=True)
     credits_id = fields.One2many('recurring.credit','recurring_sub_id',string='Subscription Credits')
+    reccuring_credit_ids = fields.Many2many("recurring.credit",string="Recurring Credits", compute="_compute_reccuring_credits")
     billing_schedule_id = fields.Many2one("billing.schedule",string="Billing Schedule")
     date=fields.Date(string="Date",required=True,default=fields.Date.context_today)
     due_dates=fields.Date(string="Due Dates",compute="_compute_dates" , store=True)
@@ -46,6 +47,12 @@ class RecurringSubscription(models.Model):
             if vals.get('order_seq','New') == 'New':
                 vals['order_seq'] = self.env["ir.sequence"].next_by_code('recsequence')
         return super(RecurringSubscription, self).create(vals_list)
+
+    @api.depends("due_dates","credits_id.period")
+    def _compute_reccuring_credits(self):
+        for rec in self:
+            rec.reccuring_credit_ids = (rec.credits_id.filtered
+                                         (lambda r : r.period and rec.due_dates and r.period <= rec.due_dates))
 
     @api.depends("date")
     def _compute_dates(self):

@@ -7,28 +7,31 @@ class BillingSchedule(models.Model):
     _rec_name = ('period')
     _inherit = ['mail.thread']
 
-    simulation = fields.Boolean(string='Simulation')
-    period = fields.Date(string='Period')
-    restrict_customers_id = fields.Many2many('res.partner',string='Restrict Customers',required=True)
+    is_simulation = fields.Boolean(string='Is Simulation?')
+    names = fields.Char(string="Bill Name")
+    period = fields.Date(string='Period', required=True)
+    restrict_customers_ids = fields.Many2many('res.partner',string='Restrict Customers',required=True)
     active = fields.Boolean(string='Active')
-    subscription_id = fields.Many2many("recurring.subscription", string="Recurring Subscription",required=True)
+    subscription_ids = fields.Many2many("recurring.subscription", string="Recurring Subscription",required=True)
+    # credit_rec_ids = fields.One2many("recurring.credit","recurring_sub_id", string="Credits")
     total_credits = fields.Float(string="Total Credits")
-    # subs_id = fields.One2many('recurring.subscription','billing_schedule_id',string="Subscriptions")
     subscription_count = fields.Integer(string="Subscription Count" , compute='_compute_subscription_count')
 
 
-    @api.depends('subscription_id')
+    @api.depends('subscription_ids')
     def _compute_subscription_count(self):
+        '''compute subscription count'''
         for rec in self:
-            rec.subscription_count = len(rec.subscription_id)
+            rec.subscription_count = len(rec.subscription_ids)
 
     def action_view_subscription(self):
-        print(9,self.subscription_id.id)
-        return{
-            'type': 'ir.actions.act_window',
-            'name': 'Subscriptions',
-            'res_model': 'recurring.subscription',
-            'view_mode': 'list,form',
-            'domain' : [('id','in',self.subscription_id.ids)],
-        }
+        '''button action for recurring subscription smart tab'''
+        for rec in self:
+            if rec.subscription_ids:
+                return{
+                    'type': 'ir.actions.act_window',
+                    'name': 'Subscriptions',
+                    'res_model': 'recurring.subscription',
+                    'view_mode': 'list,form',
+                    'domain' : [('id','in',self.subscription_ids.ids)],}
 
