@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="billing_schedule_list_view" model="ir.ui.view">
+            <field name="name">billing.schedule.list</field>
+            <field name="model">billing.schedule</field>
+            <field name="arch" type="xml">
+                <list string="Billing Schedule List">
+                    <field name="simulation"/>
+                    <field name="period"/>
+                    <field name="restrict_customers_id"/>
+                    <field name="active"/>
+                    <field name="total_credits"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="billing_schedule_form_view" model="ir.ui.view">
+                    <field name="name">billing.schedule.form</field>
+                    <field name="model">billing.schedule</field>
+                    <field name="arch" type="xml">
+                        <form>
+                            <sheet>
+                                <div class="oe_button_box" name="button_box">
+                                    <button name="action_view_subscription" type="object"
+                                            class="oe_stat_button" icon="fa-book"
+                                            invisible = 'subscription_count == 0 '>
+                                        <field name="subscription_count" widget="statinfo" string="Subscription Count"/>
+                                    </button>
+                                </div>
+
+                                <group>
+                                    <group>
+                                        <field name="simulation"/>
+                                        <field name="period"/>
+                                        <field name="restrict_customers_id" widget="many2many_tags"/>
+                                        <field name="subscription_id" widget="many2many_tags"/>
+                                        <field name="active"/>
+                                        <field name="total_credits"/>
+                                    </group>
+
+                                </group>
+
+                            </sheet>
+                            <chatter/>
+                        </form>
+                    </field>
+                </record>
+    <record id="action_billing_schedule" model="ir.actions.act_window">
+       <field name="name">Billing Schedule</field>
+       <field name="res_model">billing.schedule</field>
+
+       <field name="view_mode">list,form</field>
+       <field name="help" type="html">
+           <p class="o_view_noncontent_smiling_face">ADD!!</p>
+       </field>
+   </record>
+    </data>
+</odoo>
