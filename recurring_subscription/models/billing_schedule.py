@@ -8,12 +8,15 @@ class BillingSchedule(models.Model):
     _inherit = ['mail.thread']
 
     is_simulation = fields.Boolean(string='Is Simulation?')
-    names = fields.Char(string="Bill Name")
+    names = fields.Char(string="Bill Name",required=True)
     period = fields.Date(string='Period', required=True)
     restrict_customers_ids = fields.Many2many('res.partner',string='Restrict Customers',required=True)
+
     active = fields.Boolean(string='Active')
     subscription_ids = fields.Many2many("recurring.subscription", string="Recurring Subscription",required=True)
-    # credit_rec_ids = fields.One2many("recurring.credit","recurring_sub_id", string="Credits")
+    subscription_count = fields.Integer(string="Subscription Count")
+    credit_rec_ids = fields.One2many('recurring.credit','recurring_sub_id',
+                                      string='Recurring Credits')
     total_credits = fields.Float(string="Total Credits")
     subscription_count = fields.Integer(string="Subscription Count" , compute='_compute_subscription_count')
 

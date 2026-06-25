@@ -32,12 +32,12 @@
 
                                 <group>
                                     <group>
-                                        <field name="is_simulation"/>
                                         <field name="names"/>
                                         <field name="period"/>
-                                        <field name="restrict_customers_ids" widget="many2many_tags"/>
                                         <field name="subscription_ids" widget="many2many_tags"/>
-<!--                                        <field name="credit_rec_ids"/>-->
+                                        <field name="restrict_customers_ids" widget="many2many_tags"/>
+                                        <field name="credit_rec_ids" widget="many2many_tags"/>
+                                        <field name="is_simulation"/>
                                         <field name="active"/>
                                         <field name="total_credits"/>
                                     </group>

@@ -16,7 +16,7 @@ class RecurringSubscription(models.Model):
     order_seq=fields.Char(default="New")
     id_establishment = fields.Char(string="Establishment ID",required=True)
     credits_id = fields.One2many('recurring.credit','recurring_sub_id',string='Subscription Credits')
-    reccuring_credit_ids = fields.Many2many("recurring.credit",string="Recurring Credits", compute="_compute_reccuring_credits")
+    reccuring_credit_ids = fields.Many2many("recurring.credit",string="Recurring Credits")
     billing_schedule_id = fields.Many2one("billing.schedule",string="Billing Schedule")
     date=fields.Date(string="Date",required=True,default=fields.Date.context_today)
     due_dates=fields.Date(string="Due Dates",compute="_compute_dates" , store=True)
