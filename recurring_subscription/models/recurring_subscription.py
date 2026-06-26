@@ -14,7 +14,7 @@ class RecurringSubscription(models.Model):
     status = fields.Selection(selection=[('draft', 'Draft'), ('confirm', 'Confirm'),('done', 'Done'), ('cancel', 'Cancel')],
                               string="State",default='draft',tracking=True)
     order_seq=fields.Char(default="New")
-    id_establishment = fields.Char(string="Establishment ID",required=True)
+    id_establishment = fields.Char(string="Establishment ID",required=True, tracking=True)
     credits_id = fields.One2many('recurring.credit','recurring_sub_id',string='Subscription Credits')
     reccuring_credit_ids = fields.Many2many("recurring.credit",string="Recurring Credits")
     billing_schedule_id = fields.Many2one("billing.schedule",string="Billing Schedule")
@@ -23,8 +23,10 @@ class RecurringSubscription(models.Model):
     next_billing = fields.Date(string="Next Bill Date", compute="_compute_next_billing",
                                store=True)
     is_leads = fields.Boolean(string="Is Lead?", required=True)
-    partner_id = fields.Many2one("res.partner", string="Customer",
-                                 tracking=True,required=True)
+    # partner_id = fields.Many2one("res.partner", string="Customer",
+    #                              tracking=True,required=True)
+    partner_id = fields.Many2one('res.partner',string="Customer",compute='_compute_partner_id',store=False)
+
     description = fields.Text(string="Description")
     terms_condition = fields.Html(string="Terms and Condition")
     product_id = fields.Many2one("product.product", string="Product",
@@ -80,6 +82,7 @@ class RecurringSubscription(models.Model):
                 raise ValidationError("Recurring Amount must be greater than 0")
 
 
+
     # @api.constrains('establishment_id')
     # def _check_establishment_id(self):
     #     for rec in self:
@@ -108,6 +111,16 @@ class RecurringSubscription(models.Model):
         })
         # self.status='cancel'
 
+
+    @api.depends('id_establishment')
+    def _compute_partner_id(self):
+        for rec in self:
+            if rec.id_establishment:
+                res = self.env['res.partner'].search([('id_establishments','=',rec.id_establishment)])
+                if res:
+                    rec.partner_id = res
+                else:
+                    raise ValidationError('no partner found')
 
 
 

@@ -10,16 +10,17 @@ class BillingSchedule(models.Model):
     is_simulation = fields.Boolean(string='Is Simulation?')
     names = fields.Char(string="Bill Name",required=True)
     period = fields.Date(string='Period', required=True)
-    restrict_customers_ids = fields.Many2many('res.partner',string='Restrict Customers',required=True)
+    restrict_customers_ids = fields.Many2many('res.partner',string='Restrict Customers',required=True,compute= 'compute_restrict_customers_ids')
 
     active = fields.Boolean(string='Active')
     subscription_ids = fields.Many2many("recurring.subscription", string="Recurring Subscription",required=True)
     subscription_count = fields.Integer(string="Subscription Count")
-    credit_rec_ids = fields.One2many('recurring.credit','recurring_sub_id',
+    credit_rec_ids = fields.One2many('recurring.credit','recurring_sub_id',compute='_compute_credits',
                                       string='Recurring Credits')
-    total_credits = fields.Float(string="Total Credits")
+    total_credits = fields.Float(string="Total Credits", compute = '_compute_total_credits')
     subscription_count = fields.Integer(string="Subscription Count" , compute='_compute_subscription_count')
 
+    confirm_filter = fields.Many2many('recurring.subscription', string="Confirm Filter",compute='_compute_confirm_filter')
 
     @api.depends('subscription_ids')
     def _compute_subscription_count(self):
@@ -38,3 +39,23 @@ class BillingSchedule(models.Model):
                     'view_mode': 'list,form',
                     'domain' : [('id','in',self.subscription_ids.ids)],}
 
+    @api.depends('subscription_ids')
+    def compute_restrict_customers_ids(self):
+        for rec in self:
+            rec.restrict_customers_ids = rec.subscription_ids.mapped('partner_id')
+
+
+    @api.depends('subscription_ids')
+    def _compute_credits(self):
+        for rec in self:
+            rec.credit_rec_ids = rec.subscription_ids.mapped('credits_id')
+
+    @api.depends('subscription_ids')
+    def _compute_confirm_filter(self):
+        for rec in self:
+            rec.confirm_filter = rec.subscription_ids.filtered(lambda r: r.status == 'confirm')
+
+    @api.depends('confirm_filter.credits_id.credit_amounts')
+    def _compute_total_credits(self):
+        for rec in self:
+            rec.total_credits = sum(rec.confirm_filter.mapped('credits_id.credit_amounts'))

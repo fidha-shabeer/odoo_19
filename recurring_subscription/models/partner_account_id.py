@@ -14,20 +14,12 @@ class Partner(models.Model):
 
     account_no = fields.Char(string="Account ID")
 
-    @api.constrains('account_no')
-    def _check_accountid(self):
-        for record in self:
-            if record.account_no:
-                pattern1 = '[a-zA-z]{3,}'
-                pattern2 = '(?=.\d{3,})'
-                pattern3 = '(?=.*[@.#$!%?&]{2,})'
-                if not re.findall(pattern1, record.account_no):
-                    raise ValidationError('Account ID not valid')
-                if not re.findall(pattern2, record.id_establishments):
-                    raise ValidationError('Account ID not valid')
-                if not re.findall(pattern3, record.id_establishments):
-                    raise ValidationError('Account ID not valid')
-
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            sequence = self.env['ir.sequence'].next_by_code('accountseq') or 000
+            vals['account_no'] = f'@${sequence}'
+        return super(Partner, self).create(vals_list)
 
 
 

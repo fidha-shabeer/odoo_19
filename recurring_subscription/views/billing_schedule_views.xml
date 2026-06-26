@@ -43,7 +43,20 @@
                                     </group>
 
                                 </group>
+                                <notebook>
+                                    <page string="Credits Details">
+                                        <group>
+                                            <field name="credit_rec_ids"/>
+                                        </group>
+                                    </page>
 
+                                    <page string="Confirmed Filter">
+                                        <group>
+                                            <field name="confirm_filter"/>
+                                        </group>
+                                    </page>
+
+                                </notebook>
                             </sheet>
                             <chatter/>
                         </form>

@@ -4,8 +4,8 @@
     <record id="account_seq" model="ir.sequence">
         <field name="name">Account ID Sequence</field>
         <field name="code">accountseq</field>
-        <field name="prefix">ACC</field>
-        <field name="padding">10</field>
+        <field name="prefix">ACC@@</field>
+        <field name="padding">3</field>
         <field name="number_increment">1</field>
     </record>
     </data>
