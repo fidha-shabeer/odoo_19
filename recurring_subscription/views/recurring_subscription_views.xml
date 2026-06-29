@@ -54,6 +54,7 @@
                     <field name="currency_id"/>
                     <field name="recurring_amount"/>
                     <field name="status"/>
+
                 </list>
             </field>
         </record>
@@ -85,6 +86,7 @@
                                         <field name="due_dates"/>
                                         <field name="next_billing"/>
                                         <field name="is_leads"/>
+<!--                                        <field name="credit_count"/>-->
                                     </group>
 
                                 </group>
@@ -98,7 +100,8 @@
                                         <field name="description" type="html"/>
                                     </page>
                                     <page string="RECURRING CREDITS">
-                                        <field name="reccuring_credit_ids"/>
+<!--                                        <field name="reccuring_credit_ids"/>-->
+                                        <field name="credits_ids"/>
                                     </page>
                                 </notebook>
                             </sheet>

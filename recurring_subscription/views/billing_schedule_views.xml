@@ -10,7 +10,6 @@
                     <field name="names"/>
                     <field name="period"/>
                     <field name="restrict_customers_ids" widget="many2many_tags"/>
-                    <field name="active"/>
                     <field name="total_credits"/>
                 </list>
             </field>
@@ -34,19 +33,21 @@
                                     <group>
                                         <field name="names"/>
                                         <field name="period"/>
-                                        <field name="subscription_ids" widget="many2many_tags"/>
-                                        <field name="restrict_customers_ids" widget="many2many_tags"/>
-                                        <field name="credit_rec_ids" widget="many2many_tags"/>
                                         <field name="is_simulation"/>
                                         <field name="active"/>
-                                        <field name="total_credits"/>
+                                        <field name="confirm_credit"/>
                                     </group>
+                                        <group>
+                                            <field name="subscription_ids" widget="many2many_tags"/>
+                                            <field name="restrict_customers_ids" widget="many2many_tags"/>
+                                             <field name="total_credits"/>
+                                        </group>
 
                                 </group>
                                 <notebook>
                                     <page string="Credits Details">
                                         <group>
-                                            <field name="credit_rec_ids"/>
+                                            <field name="confirm_credit"/>
                                         </group>
                                     </page>
 
@@ -56,6 +57,11 @@
                                         </group>
                                     </page>
 
+                                    <page string="Credits">
+                                        <group>
+                                            <field name="credit_rec_ids"/>
+                                        </group>
+                                    </page>
                                 </notebook>
                             </sheet>
                             <chatter/>

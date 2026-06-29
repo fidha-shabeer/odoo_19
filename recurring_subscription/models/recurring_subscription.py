@@ -15,24 +15,23 @@ class RecurringSubscription(models.Model):
                               string="State",default='draft',tracking=True)
     order_seq=fields.Char(default="New")
     id_establishment = fields.Char(string="Establishment ID",required=True, tracking=True)
-    credits_id = fields.One2many('recurring.credit','recurring_sub_id',string='Subscription Credits')
-    reccuring_credit_ids = fields.Many2many("recurring.credit",string="Recurring Credits")
+    credits_ids= fields.One2many('recurring.credit','recurring_sub_id',string='Subscription Credits',compute ='_compute_recurring_credits')
+    # reccuring_credit_ids = fields.Many2many("recurring.credit",string="Recurring Credits", compute=  '_compute_reccuring_credits')
     billing_schedule_id = fields.Many2one("billing.schedule",string="Billing Schedule")
     date=fields.Date(string="Date",required=True,default=fields.Date.context_today)
     due_dates=fields.Date(string="Due Dates",compute="_compute_dates" , store=True)
     next_billing = fields.Date(string="Next Bill Date", compute="_compute_next_billing",
                                store=True)
     is_leads = fields.Boolean(string="Is Lead?", required=True)
-    # partner_id = fields.Many2one("res.partner", string="Customer",
-    #                              tracking=True,required=True)
-    partner_id = fields.Many2one('res.partner',string="Customer",compute='_compute_partner_id',store=False)
+    partner_id = fields.Many2one("res.partner", string="Customer",
+                                 tracking=True,required=True)
 
     description = fields.Text(string="Description")
     terms_condition = fields.Html(string="Terms and Condition")
     product_id = fields.Many2one("product.product", string="Product",
                                  tracking=True,required=True)
 
-    company_id = fields.Many2one('res.company', store=True, copy=False,
+    company_id = fields.Many2one('res.company', store=True,
                                  string="Company",
                                  default=lambda
                                      self: self.env.user.company_id.id)
@@ -42,6 +41,8 @@ class RecurringSubscription(models.Model):
     recurring_amount = fields.Monetary(string="Recurring Amount",tracking=True,
                                     required=True,currency_field="currency_id")
 
+    # credit_count = fields.Integer(string="Credit Count",compute="_compute_credit_count", store=1)
+
     @api.model_create_multi
     def create(self, vals_list):
         """Recurring Subscription Sequence creation """
@@ -50,11 +51,16 @@ class RecurringSubscription(models.Model):
                 vals['order_seq'] = self.env["ir.sequence"].next_by_code('recsequence')
         return super(RecurringSubscription, self).create(vals_list)
 
-    @api.depends("due_dates","credits_id.period")
-    def _compute_reccuring_credits(self):
+    # @api.depends("due_dates","credits_ids.period")
+    # def _compute_reccuring_credits(self):
+    #     for rec in self:
+    #         rec.reccuring_credit_ids = (rec.credits_ids.filtered
+    #                                      (lambda r : r.period and rec.due_dates and r.period <= rec.due_dates))
+
+    @api.depends("due_dates")
+    def _compute_recurring_credits(self):
         for rec in self:
-            rec.reccuring_credit_ids = (rec.credits_id.filtered
-                                         (lambda r : r.period and rec.due_dates and r.period <= rec.due_dates))
+            rec.credits_ids= self.env['recurring.credit'].search([('period','<',rec.due_dates),('state','=','confirmed')])
 
     @api.depends("date")
     def _compute_dates(self):
@@ -81,22 +87,6 @@ class RecurringSubscription(models.Model):
             if rec.recurring_amount == 0:
                 raise ValidationError("Recurring Amount must be greater than 0")
 
-
-
-    # @api.constrains('establishment_id')
-    # def _check_establishment_id(self):
-    #     for rec in self:
-    #         # if rec.establishment_id and not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$",rec.establishment_id):
-    #         if rec.establishment_id and not re.match(
-    #                 r'^(?=.[a-zA-Z]{3,})(?=.\d{3,})'
-    #                 r'(?=.*[@.#$!%?&]{2,})[A-Za-z\d@.#$!%?&]{8,}$',
-    #                 rec.establishment_id):
-    #             print(1234, rec.establishment_id)
-    #             raise ValidationError("Recurring Amount must be greater than 0")
-                # raise ValidationError(_("Invalid Format!! Id must contain char,int and spcl char."))
-
-    
-
     def button_confirm(self):
         """Confirmation button """
         self.write({
@@ -112,15 +102,21 @@ class RecurringSubscription(models.Model):
         # self.status='cancel'
 
 
-    @api.depends('id_establishment')
-    def _compute_partner_id(self):
+    @api.onchange('id_establishment')
+    def onchange_establishment(self):
         for rec in self:
             if rec.id_establishment:
                 res = self.env['res.partner'].search([('id_establishments','=',rec.id_establishment)])
                 if res:
                     rec.partner_id = res
                 else:
+                    rec.partner_id = False
                     raise ValidationError('no partner found')
+
+    # @api.depends('credits_ids')
+    # def _compute_credit_count(self):
+    #     # for rec in self:
+    #     self.credit_count = len(self.credits_ids)
 
 
 

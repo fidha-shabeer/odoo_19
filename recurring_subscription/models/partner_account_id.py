@@ -2,6 +2,8 @@
 from odoo import fields, models,api
 from odoo.exceptions import ValidationError
 import re
+import random
+import string
 
 
 class Partner(models.Model):
@@ -17,8 +19,11 @@ class Partner(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            sequence = self.env['ir.sequence'].next_by_code('accountseq') or 000
-            vals['account_no'] = f'@${sequence}'
+            random_seq1 = ''.join(random.choices(string.ascii_letters, k=(3)))
+            random_seq2 = ''.join(random.choices(string.digits, k=(3)))
+            random_seq3 = ''.join(random.choices(string.punctuation, k=(2)))
+            vals['account_no'] = random_seq1+random_seq2+random_seq3
+
         return super(Partner, self).create(vals_list)
 
 
