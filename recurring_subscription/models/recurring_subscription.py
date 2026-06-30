@@ -60,7 +60,8 @@ class RecurringSubscription(models.Model):
     @api.depends("due_dates")
     def _compute_recurring_credits(self):
         for rec in self:
-            rec.credits_ids= self.env['recurring.credit'].search([('period','<',rec.due_dates),('state','=','confirmed')])
+            rec.credits_ids= self.env['recurring.credit'].search([
+                ('recurring_sub_id','=',rec.id), ('period','<',rec.due_dates),('state','=','fully approved')])
 
     @api.depends("date")
     def _compute_dates(self):
@@ -112,11 +113,6 @@ class RecurringSubscription(models.Model):
                 else:
                     rec.partner_id = False
                     raise ValidationError('no partner found')
-
-    # @api.depends('credits_ids')
-    # def _compute_credit_count(self):
-    #     # for rec in self:
-    #     self.credit_count = len(self.credits_ids)
 
 
 

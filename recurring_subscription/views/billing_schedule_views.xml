@@ -20,6 +20,9 @@
                     <field name="model">billing.schedule</field>
                     <field name="arch" type="xml">
                         <form>
+                            <header>
+                                <button name="action_billing" string="Bill" class="oe_highlight" type="object"/>
+                            </header>
                             <sheet>
                                 <div class="oe_button_box" name="button_box">
                                     <button name="action_view_subscription" type="object"
@@ -35,7 +38,6 @@
                                         <field name="period"/>
                                         <field name="is_simulation"/>
                                         <field name="active"/>
-                                        <field name="confirm_credit"/>
                                     </group>
                                         <group>
                                             <field name="subscription_ids" widget="many2many_tags"/>
@@ -45,21 +47,9 @@
 
                                 </group>
                                 <notebook>
-                                    <page string="Credits Details">
-                                        <group>
-                                            <field name="confirm_credit"/>
-                                        </group>
-                                    </page>
-
-                                    <page string="Confirmed Filter">
-                                        <group>
-                                            <field name="confirm_filter"/>
-                                        </group>
-                                    </page>
-
                                     <page string="Credits">
                                         <group>
-                                            <field name="credit_rec_ids"/>
+                                            <field name="credit_rec_ids" nolabel="1"/>
                                         </group>
                                     </page>
                                 </notebook>

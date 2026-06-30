@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import fields, models,api
+from odoo import Command
 
 class BillingSchedule(models.Model):
     _name = 'billing.schedule'
@@ -8,20 +9,23 @@ class BillingSchedule(models.Model):
     _inherit = ['mail.thread']
 
     is_simulation = fields.Boolean(string='Is Simulation?')
-    names = fields.Char(string="Bill Name",required=True)
-    period = fields.Date(string='Period', required=True)
-    restrict_customers_ids = fields.Many2many('res.partner',string='Restrict Customers',required=True,compute= 'compute_restrict_customers_ids')
+    names = fields.Char(string="Bill Name")
+    period = fields.Date(string='Period')
+    restrict_customers_ids = fields.Many2many('res.partner',string='Restrict Customers',required=True)
+    # credit_rec_ids = fields.Many2many('recurring.credit', related ='subscription_ids.credit_ids')
+    total_credits = fields.Float()
 
     active = fields.Boolean(string='Active', default=True)
     subscription_ids = fields.Many2many("recurring.subscription", string="Recurring Subscription",required=True)
-    subscription_count = fields.Integer(string="Subscription Count")
-    credit_rec_ids = fields.Many2many('recurring.credit',compute='_compute_credits')
 
-    total_credits = fields.Float(string="Total Credits", compute = '_compute_total_credits')
+
+    credit_rec_ids = fields.Many2many('recurring.credit',string="Recurring Credits")
+
+
+    total_credits = fields.Float(string="Total Credits")
     subscription_count = fields.Integer(string="Subscription Count" , compute='_compute_subscription_count')
 
-    confirm_filter = fields.Many2many('recurring.subscription', string="Confirm Filter",compute='_compute_confirm_filter')
-    confirm_credit = fields.Many2one('recurring.credit', compute='_compute_credits_filter')
+
 
     @api.depends('subscription_ids')
     def _compute_subscription_count(self):
@@ -40,31 +44,24 @@ class BillingSchedule(models.Model):
                     'view_mode': 'list,form',
                     'domain' : [('id','in',self.subscription_ids.ids)],}
 
-    @api.depends('subscription_ids')
-    def compute_restrict_customers_ids(self):
+    @api.onchange('subscription_ids')
+    def _onchange_subscription_ids(self):
+        self.update({'restrict_customers_ids': [(fields.Command.set(self.subscription_ids.mapped('partner_id').ids))],
+                     'credit_rec_ids' : [(fields.Command.set(self.subscription_ids.ids))]
+                     })
+    @api.onchange('credit_rec_ids')
+    def _onchange_credit_rec_ids(self):
         for rec in self:
-            rec.restrict_customers_ids = rec.subscription_ids.mapped('partner_id')
+            if rec.credit_rec_ids:
+                rec.total_credits = sum(rec.credit_rec_ids.mapped('credit_amounts'))
 
-    @api.depends('subscription_ids')
-    def _compute_credits(self):
-        for rec in self:
-            rec.credit_rec_ids = rec.subscription_ids.mapped('credits_ids')
-
-    @api.depends('credit_rec_ids')
-    def _compute_credits_filter(self):
-        for rec in self:
-            rec.confirm_credit = rec.credit_rec_ids.filtered(
-                lambda r: r.state == 'fully approved')
-
-
-    @api.depends('subscription_ids')
-    def _compute_confirm_filter(self):
-        for rec in self:
-            rec.confirm_filter = rec.subscription_ids.filtered(lambda r: r.status == 'confirm')
-
-
-    @api.depends('confirm_filter.credits_ids.credit_amounts')
-    def _compute_total_credits(self):
-        for rec in self:
-            rec.total_credits = sum(rec.confirm_filter.mapped('credits_ids.credit_amounts'))
-
+    def action_billing(self):
+        print(123, self.id)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Billing Invoice',
+            'res_model': 'account.move',
+            'view_mode': 'form',
+            'target': 'new',
+            # 'context': {'active_ids': self.ids},
+        }

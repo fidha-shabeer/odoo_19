@@ -8,7 +8,7 @@
     'website': "www.cybrosys.com",
     'category': "Recurring Subscription",
     'license': "LGPL-3",
-    'depends': ['base','sale_management','mail','contacts'],
+    'depends': ['base','sale_management','mail','contacts','account',],
     'post_init_hook': 'post_init_hook',
     'sequence': -10,
     'application': True,
@@ -21,9 +21,11 @@
         "data/product_data.xml",
         "views/res_partner_views.xml",
         "views/crm_views.xml",
+        "views/invoice_views.xml",
         "views/recurring_subscription_views.xml",
         "views/subscription_credit_views.xml",
         "views/billing_schedule_views.xml",
         "views/partner_account_views.xml",
-        "views/recurring_subscription_menus.xml",],
+        "views/recurring_subscription_menus.xml",
+    ]
 }
