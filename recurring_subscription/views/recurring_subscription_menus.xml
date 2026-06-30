@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- main menu -->
-    <menuitem id = "menu_recurring_subscription_root" name="Recurring Subscription"  action="action_recurring_subscription"/>
+    <menuitem id = "menu_recurring_subscription_root" name="Recurring Subscription"
+              action="action_recurring_subscription"/>
 
     <!-- submenu-->
-    <menuitem id="menu_recurring_credit" name="Recurring Subscription Credit" parent="menu_recurring_subscription_root" action="action_recurring_credit"/>
+    <menuitem id="menu_recurring_credit" name="Recurring Subscription Credit"
+              parent="menu_recurring_subscription_root" action="action_recurring_credit"/>
 
-    <menuitem id="menu_billing_schedule" name="Billing Schedule" parent="menu_recurring_subscription_root" action="action_billing_schedule"/>
+    <menuitem id="menu_billing_schedule" name="Billing Schedule"
+              parent="menu_recurring_subscription_root" action="action_billing_schedule"/>
+
+    <menuitem id="menu_partner_account_id" name="Partner Account ID"
+              parent="menu_recurring_subscription_root" action="action_partner_account"/>
 
 </odoo>

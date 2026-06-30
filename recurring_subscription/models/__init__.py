@@ -2,3 +2,7 @@
 from . import recurring_subscription
 from . import recurring_subscription_credit
 from . import billing_schedule
+from . import partner_account_id
+from . import res_partner
+from . import crm
+from . import invoice

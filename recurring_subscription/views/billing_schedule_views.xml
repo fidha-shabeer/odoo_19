@@ -5,11 +5,11 @@
             <field name="name">billing.schedule.list</field>
             <field name="model">billing.schedule</field>
             <field name="arch" type="xml">
-                <list string="Billing Schedule List">
-                    <field name="simulation"/>
+                <list string="Billing Schedule List" >
+                    <field name="is_simulation"/>
+                    <field name="names"/>
                     <field name="period"/>
-                    <field name="restrict_customers_id"/>
-                    <field name="active"/>
+                    <field name="restrict_customers_ids" widget="many2many_tags"/>
                     <field name="total_credits"/>
                 </list>
             </field>
@@ -20,6 +20,9 @@
                     <field name="model">billing.schedule</field>
                     <field name="arch" type="xml">
                         <form>
+                            <header>
+                                <button name="action_billing" string="Bill" class="oe_highlight" type="object"/>
+                            </header>
                             <sheet>
                                 <div class="oe_button_box" name="button_box">
                                     <button name="action_view_subscription" type="object"
@@ -31,16 +34,25 @@
 
                                 <group>
                                     <group>
-                                        <field name="simulation"/>
+                                        <field name="names"/>
                                         <field name="period"/>
-                                        <field name="restrict_customers_id" widget="many2many_tags"/>
-                                        <field name="subscription_id" widget="many2many_tags"/>
+                                        <field name="is_simulation"/>
                                         <field name="active"/>
-                                        <field name="total_credits"/>
                                     </group>
+                                        <group>
+                                            <field name="subscription_ids" widget="many2many_tags"/>
+                                            <field name="restrict_customers_ids" widget="many2many_tags"/>
+                                             <field name="total_credits"/>
+                                        </group>
 
                                 </group>
-
+                                <notebook>
+                                    <page string="Credits">
+                                        <group>
+                                            <field name="credit_rec_ids" nolabel="1"/>
+                                        </group>
+                                    </page>
+                                </notebook>
                             </sheet>
                             <chatter/>
                         </form>
