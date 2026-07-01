@@ -35,7 +35,7 @@ class RecurringSubscriptionCredit(models.Model):
     def onchange_recurrent_sub_id(self):
         """ Onchange method for Recurring Subscription Credit """
         for rec in self:
-            if rec.recurring_sub_id and (rec.credit_amounts == 0 or rec.credit_amounts >= rec.recurring_sub_id.recurring_amount):
+            if rec.recurring_sub_id and (rec.credit_amounts == 0 or rec.credit_amounts > rec.recurring_sub_id.recurring_amount):
                 rec.recurring_sub_id = False
 
     @api.constrains('credit_amounts')

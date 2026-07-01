@@ -3,4 +3,3 @@ access_recurring_subscription,access.recurring.subscription,recurring_subscripti
 access_recurring_credit,access.recurring.credit,recurring_subscription.model_recurring_credit,base.group_user,1,1,1,1
 access_billing_schedule,access.billing.schedule,recurring_subscription.model_billing_schedule,base.group_user,1,1,1,1
 access_partner_account,access.partner.account,recurring_subscription.model_partner_account,base.group_user,1,1,1,1
-access_billing_invoice,access.billing.invoice,recurring_subscription.model_billing_invoice,base.group_user,1,1,1,1
