@@ -5,4 +5,3 @@ from . import billing_schedule
 from . import partner_account_id
 from . import res_partner
 from . import crm
-from . import invoice
