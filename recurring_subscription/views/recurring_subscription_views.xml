@@ -67,9 +67,12 @@
                             <header>
                                 <field name="status" widget="statusbar" options="{'clickable':1}" statusbar_visible="draft,confirm,done"/>
                                 <button name="button_confirm" type="object" string="Confirm" invisible="status != 'draft'"/>
-                                <button name="button_cancel" type="object" string="Cancel" invisible="status != 'confirm'"/>
+                                <button name="button_cancel" type="object" string="Cancel" visible="status == 'confirm'and status=='done"/>
+                                <button name="button_done" type="object" string="Done" invisible="status != 'confirm'" class="oe_highlight"/>
+
                             </header>
                             <sheet>
+                                <widget name="web_ribbon" title="done" bg_color="text-bg-success" invisible = "status != 'done'"/>
                                  <h1><field name="order_seq" readonly="1" /></h1>
                                 <group>
                                     <group>

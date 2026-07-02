@@ -31,9 +31,9 @@
                                         <field name="subscription_count" widget="statinfo" string="Subscription Count"/>
                                     </button>
 <!--                                     <button name="action_view_invoice" type="object"-->
-<!--                                            class="oe_stat_button" icon="fa fa-book"-->
-<!--                                            invisible = 'subscription_count == 0 '>-->
-<!--                                        <field name="subscription_count" widget="statinfo" string="Subscription Count"/>-->
+<!--                                            class="oe_stat_button" icon="fa-book"-->
+<!--                                            invisible = 'invoice_count == 0 '>-->
+<!--                                        <field name="invoice_count" widget="statinfo" string="Invoice Count"/>-->
 <!--                                    </button>-->
                                 </div>
 
@@ -42,7 +42,6 @@
                                         <field name="names"/>
                                         <field name="period"/>
                                         <field name="is_simulation"/>
-                                        <field name="active"/>
                                     </group>
                                         <group>
                                             <field name="subscription_ids" widget="many2many_tags"/>

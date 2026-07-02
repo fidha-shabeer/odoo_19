@@ -9,14 +9,13 @@ class RecurringSubscription(models.Model):
     _name = "recurring.subscription"
     _description = "Recurring Subscription"
     _rec_name = "order_seq"
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     status = fields.Selection(selection=[('draft', 'Draft'), ('confirm', 'Confirm'),('done', 'Done'), ('cancel', 'Cancel')],
                               string="State",default='draft',tracking=True)
     order_seq=fields.Char(default="New")
     id_establishment = fields.Char(string="Establishment ID",required=True, tracking=True)
     credits_ids= fields.One2many('recurring.credit','recurring_sub_id',string='Subscription Credits',compute ='_compute_recurring_credits')
-    # reccuring_credit_ids = fields.Many2many("recurring.credit",string="Recurring Credits", compute=  '_compute_reccuring_credits')
     billing_schedule_id = fields.Many2one("billing.schedule",string="Billing Schedule")
     date=fields.Date(string="Date",required=True,default=fields.Date.context_today)
     due_dates=fields.Date(string="Due Dates",compute="_compute_dates" , store=True)
@@ -51,12 +50,6 @@ class RecurringSubscription(models.Model):
                 vals['order_seq'] = self.env["ir.sequence"].next_by_code('recsequence')
         return super(RecurringSubscription, self).create(vals_list)
 
-    # @api.depends("due_dates","credits_ids.period")
-    # def _compute_reccuring_credits(self):
-    #     for rec in self:
-    #         rec.reccuring_credit_ids = (rec.credits_ids.filtered
-    #                                      (lambda r : r.period and rec.due_dates and r.period <= rec.due_dates))
-
     @api.depends("due_dates")
     def _compute_recurring_credits(self):
         for rec in self:
@@ -88,6 +81,18 @@ class RecurringSubscription(models.Model):
             if rec.recurring_amount == 0:
                 raise ValidationError("Recurring Amount must be greater than 0")
 
+
+    @api.onchange('id_establishment')
+    def onchange_establishment(self):
+        for rec in self:
+            if rec.id_establishment:
+                res = self.env['res.partner'].search([('id_establishments','=',rec.id_establishment)])
+                if res:
+                    rec.partner_id = res
+                else:
+                    rec.partner_id = False
+                    raise ValidationError('no partner found')
+
     def button_confirm(self):
         """Confirmation button """
         self.write({
@@ -103,16 +108,28 @@ class RecurringSubscription(models.Model):
         # self.status='cancel'
 
 
-    @api.onchange('id_establishment')
-    def onchange_establishment(self):
+
+    def button_done(self):
         for rec in self:
-            if rec.id_establishment:
-                res = self.env['res.partner'].search([('id_establishments','=',rec.id_establishment)])
-                if res:
-                    rec.partner_id = res
-                else:
-                    rec.partner_id = False
-                    raise ValidationError('no partner found')
+            rec.write({
+                'status': 'done'
+            })
+        self.action_send_mail()
+
+
+    def action_send_mail(self):
+        for rec in self:
+            if rec.status == 'done':
+                template = self.env.ref("recurring_subscription.subscription_email_template")
+                email_values = {'email_from': self.env.user.email}
+                template.send_mail(self.id, force_send=True,email_values=email_values)
+
+                self.message_post(body=_("Dear customer, Your Recurring Subscription has been completed."),
+                                  subject='Subscription Completed',
+                                  message_type='email',
+                                  subtype_xmlid='mail.mt_comment',
+                                  )
+
 
 
 

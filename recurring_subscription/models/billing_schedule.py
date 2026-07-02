@@ -2,6 +2,7 @@
 from odoo import fields, models,api
 from odoo import Command
 from odoo.exceptions import ValidationError
+from odoo.orm.decorators import depends
 
 
 class BillingSchedule(models.Model):
@@ -14,7 +15,10 @@ class BillingSchedule(models.Model):
     names = fields.Char(string="Bill Name")
     period = fields.Date(string='Period')
     restrict_customers_ids = fields.Many2many('res.partner',string='Restrict Customers',required=True)
-    # credit_rec_ids = fields.Many2many('recurring.credit', related ='subscription_ids.credit_ids')
+
+    # invoice_ids = fields.One2many('account.move','subscription_id', string='Invoices')
+    invoice_count = fields.Integer(string="Invoice Count", compute='_compute_invoice_count')
+
     total_credits = fields.Float()
 
     active = fields.Boolean(string='Active', default=True)
@@ -27,7 +31,7 @@ class BillingSchedule(models.Model):
     total_credits = fields.Float(string="Total Credits")
     subscription_count = fields.Integer(string="Subscription Count" , compute='_compute_subscription_count')
 
-    invoice_count = fields.Integer(string="Invoice Count" , compute='_compute_invoice_count')
+    invoice_count = fields.Integer(string="Invoice Count" )
 
 
     @api.depends('subscription_ids')
@@ -49,6 +53,8 @@ class BillingSchedule(models.Model):
 
     @api.onchange('subscription_ids')
     def _onchange_subscription_ids(self):
+
+
         self.update({'restrict_customers_ids': [(fields.Command.set(self.subscription_ids.mapped('partner_id').ids))],
                      'credit_rec_ids' : [(fields.Command.set(self.subscription_ids.ids))],
                      })
@@ -64,7 +70,7 @@ class BillingSchedule(models.Model):
                 subscriptions = self.subscription_ids.filtered(lambda r: r.status=='confirm')
 
                 for rec in subscriptions:
-                    credit =  self.credit_rec_ids.filtered(lambda c:c.credit_amounts == rec.recurring_amount)
+                    credit = self.credit_rec_ids.filtered(lambda c: c.credit_amounts == rec.recurring_amount)[:1]
                     if not credit:
                         credit = self.credit_rec_ids.filtered(lambda c:c.credit_amounts <= rec.recurring_amount)[:1]
 
@@ -74,7 +80,7 @@ class BillingSchedule(models.Model):
                     'move_type': 'out_invoice',
                     'partner_id': rec.partner_id.id,
                     'invoice_date': fields.Date.today(),
-                    'invoice_line_ids': [(0, 0, {
+                    'invoice_line_ids': [fields.Command.create({
                         'product_id': rec.product_id.id,
                         'quantity': 1,
                         'price_unit': final_amount,
@@ -82,6 +88,7 @@ class BillingSchedule(models.Model):
                 })
 
         self.write({'active':False})
+
 
     def auto_invoice(self):
         auto_create = self.subscription_ids.search([('status','=','confirm'),('due_dates','<',fields.Date.today())])
@@ -106,13 +113,13 @@ class BillingSchedule(models.Model):
                 })],
             })
 
-
-    # def action_view_invoice(self):
-    #     '''button action for invoice'''
+    # def action_view_subscription(self):
+    #     '''button action for recurring subscription smart tab'''
     #     for rec in self:
+    #         if rec.subscription_ids:
     #             return {
     #                 'type': 'ir.actions.act_window',
-    #                 'name': 'Invoice',
+    #                 'name': 'Invoices',
     #                 'res_model': 'account.move',
     #                 'view_mode': 'list,form',
-    #                 'domain': [('invoice', 'in', rec.id)], }
+    #                 'domain': [('id', 'in', self.subscription_ids.ids)], }

@@ -20,6 +20,7 @@
         "data/account_id.xml",
         "data/product_data.xml",
         "data/ir_cron_data.xml",
+        "data/email_template.xml",
         "views/res_partner_views.xml",
         "views/crm_views.xml",
         "views/recurring_subscription_views.xml",
