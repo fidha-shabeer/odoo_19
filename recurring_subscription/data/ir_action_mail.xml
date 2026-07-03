@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="sent_mail_done" model="ir.actions.server">
-        <field name="name">Sent Mail Done</field>
-        <field name="model_id" ref="base.model_res_partner"/>
-        <field name="binding_model_id" ref="base.model_res_partner"/>
-        <field name="binding_view_types">list</field>
-        <field name="state">code</field>
-        <field name="code">
-            action = records.action_mail_done()
-        </field>
-    </record>
+    <data>
+        <record id="sent_mail_done" model="ir.actions.server">
+            <field name="name">Sent Mail Done</field>
+            <field name="model_id" ref="recurring_subscription.model_recurring_subscription"/>
+            <field name="binding_model_id" ref="recurring_subscription.model_recurring_subscription"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">model.action_send_mail()</field>
+        </record>
+<!--        &lt;!&ndash; Automated Action &ndash;&gt;-->
+<!--        <record id="automated_action_sent_mail_done" model="base.automation">-->
+<!--            <field name="name">Sent Mail When Done</field>-->
+<!--            <field name="model_id" ref="recurring_subscription.model_recurring_subscription"/>-->
+<!--            <field name="trigger">on_write</field>-->
+<!--            <field name="filter_domain">[('status', '=', 'done')]</field>-->
+<!--            <field name="action_server_ids" eval="[(4, ref('sent_mail_done'))]"/>-->
+<!--        </record>-->
+    </data>
 </odoo>

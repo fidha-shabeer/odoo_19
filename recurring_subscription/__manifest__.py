@@ -21,6 +21,7 @@
         "data/product_data.xml",
         "data/ir_cron_data.xml",
         "data/email_template.xml",
+        "data/ir_action_mail.xml",
         "views/res_partner_views.xml",
         "views/crm_views.xml",
         "views/recurring_subscription_views.xml",

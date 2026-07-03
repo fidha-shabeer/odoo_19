@@ -30,11 +30,10 @@
                                             invisible = 'subscription_count == 0 '>
                                         <field name="subscription_count" widget="statinfo" string="Subscription Count"/>
                                     </button>
-<!--                                     <button name="action_view_invoice" type="object"-->
-<!--                                            class="oe_stat_button" icon="fa-book"-->
-<!--                                            invisible = 'invoice_count == 0 '>-->
-<!--                                        <field name="invoice_count" widget="statinfo" string="Invoice Count"/>-->
-<!--                                    </button>-->
+                                     <button name="action_view_invoice" type="object"
+                                            class="oe_stat_button" icon="fa-book">
+                                        <field name="invoice_count" widget="statinfo" string="Invoice Count"/>
+                                    </button>
                                 </div>
 
                                 <group>

@@ -125,10 +125,10 @@ class RecurringSubscription(models.Model):
                 template.send_mail(self.id, force_send=True,email_values=email_values)
 
                 self.message_post(body=_("Dear customer, Your Recurring Subscription has been completed."),
-                                  subject='Subscription Completed',
-                                  message_type='email',
-                                  subtype_xmlid='mail.mt_comment',
-                                  )
+                                subject='Subscription Completed',
+                                message_type='email',
+                                subtype_xmlid='mail.mt_comment',
+                                )
 
 
 
