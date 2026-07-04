@@ -24,6 +24,7 @@
         "data/ir_action_mail.xml",
         "views/res_partner_views.xml",
         "views/crm_views.xml",
+        "views/account_move.xml",
         "views/recurring_subscription_views.xml",
         "views/subscription_credit_views.xml",
         "views/billing_schedule_views.xml",

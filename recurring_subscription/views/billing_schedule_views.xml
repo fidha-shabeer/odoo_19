@@ -32,7 +32,8 @@
                                     </button>
                                      <button name="action_view_invoice" type="object"
                                             class="oe_stat_button" icon="fa-book">
-                                        <field name="invoice_count" widget="statinfo" string="Invoice Count"/>
+                                        <field name="invoice" widget="statinfo" string="Invoices" />
+
                                     </button>
                                 </div>
 

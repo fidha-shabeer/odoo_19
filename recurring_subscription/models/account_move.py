@@ -4,4 +4,4 @@ from odoo import models, fields
 class AccountMove(models.Model):
    _inherit = 'account.move'
 
-   billing = fields.Many2one('billing.schedule',string='Subscription')
+   billing_ids = fields.Many2many('billing.schedule',string='Subscription')

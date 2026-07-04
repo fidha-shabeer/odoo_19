@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields,models,api,_
+from odoo import fields,models,api
 from datetime import timedelta
 from odoo.exceptions import ValidationError
 
@@ -39,6 +39,8 @@ class RecurringSubscription(models.Model):
 
     recurring_amount = fields.Monetary(string="Recurring Amount",tracking=True,
                                     required=True,currency_field="currency_id")
+    invoice_ids = fields.One2many('account.move', 'billing_ids', string='Invoice_ids',
+                          store=True)
 
     # credit_count = fields.Integer(string="Credit Count",compute="_compute_credit_count", store=1)
 
@@ -124,11 +126,11 @@ class RecurringSubscription(models.Model):
                 email_values = {'email_from': self.env.user.email}
                 template.send_mail(self.id, force_send=True,email_values=email_values)
 
-                self.message_post(body=_("Dear customer, Your Recurring Subscription has been completed."),
-                                subject='Subscription Completed',
-                                message_type='email',
-                                subtype_xmlid='mail.mt_comment',
-                                )
+                # self.message_post(body=_("Dear customer, Your Recurring Subscription has been completed."),
+                #                 subject='Subscription Completed',
+                #                 message_type='email',
+                #                 subtype_xmlid='mail.mt_comment',
+                #                 )
 
 
 
