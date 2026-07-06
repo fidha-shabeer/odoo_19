@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record model="ir.module.category" id="module_category_recurring_subscription">
+           <field name="name">Subscription</field>
+           <field name="sequence">1</field>
+       </record>
+       <record model="res.groups.privilege" id="res_groups_privilege_recurring_subscription">
+           <field name="name">Recurring Subscription</field>
+           <field name="category_id" ref="recurring_subscription.module_category_recurring_subscription"/>
+       </record>
+        <record id="subscription_user" model="res.groups">
+            <field name="name">Subscription User</field>
+            <field name="privilege_id" ref="res_groups_privilege_recurring_subscription" />
+        </record>
+        <record id="subscription_manager" model="res.groups">
+            <field name="name">Subscription Manager</field>
+            <field name="privilege_id" ref="res_groups_privilege_recurring_subscription" />
+        </record>
+    </data>
+</odoo>

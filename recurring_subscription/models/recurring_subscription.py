@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields,models,api
+from odoo import fields,models,api,_
 from datetime import timedelta
 from odoo.exceptions import ValidationError
 
@@ -39,10 +39,8 @@ class RecurringSubscription(models.Model):
 
     recurring_amount = fields.Monetary(string="Recurring Amount",tracking=True,
                                     required=True,currency_field="currency_id")
-    invoice_ids = fields.One2many('account.move', 'billing_ids', string='Invoice_ids',
-                          store=True)
-
-    # credit_count = fields.Integer(string="Credit Count",compute="_compute_credit_count", store=1)
+    # invoice_ids = fields.One2many('account.move', 'billing_ids', string='Invoice_ids',
+    #                       store=True)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -55,8 +53,9 @@ class RecurringSubscription(models.Model):
     @api.depends("due_dates")
     def _compute_recurring_credits(self):
         for rec in self:
+            print(rec._origin.id)
             rec.credits_ids= self.env['recurring.credit'].search([
-                ('recurring_sub_id','=',rec.id), ('period','<',rec.due_dates),('state','=','fully approved')])
+                ('recurring_sub_id','=',rec._origin.id), ('period','<',rec.due_dates),('state','=','fully approved')])
 
     @api.depends("date")
     def _compute_dates(self):
@@ -100,14 +99,13 @@ class RecurringSubscription(models.Model):
         self.write({
             'status': 'confirm'
         })
-        # self.status='confirm'
+
 
     def button_cancel(self):
         """Cancel button """
         self.write({
             'status': 'cancel'
         })
-        # self.status='cancel'
 
 
 
@@ -125,12 +123,11 @@ class RecurringSubscription(models.Model):
                 template = self.env.ref("recurring_subscription.subscription_email_template")
                 email_values = {'email_from': self.env.user.email}
                 template.send_mail(self.id, force_send=True,email_values=email_values)
-
-                # self.message_post(body=_("Dear customer, Your Recurring Subscription has been completed."),
-                #                 subject='Subscription Completed',
-                #                 message_type='email',
-                #                 subtype_xmlid='mail.mt_comment',
-                #                 )
+                self.message_post(body=_("Dear customer, Your Recurring Subscription has been completed."),
+                                subject='Subscription Completed',
+                                message_type='email',
+                                subtype_xmlid='mail.mt_comment',
+                                )
 
 
 

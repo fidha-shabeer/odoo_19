@@ -8,6 +8,7 @@ class RecurringSubscriptionCredit(models.Model):
     _name="recurring.credit"
     _description = "Recurring Subscription Credit"
     _rec_name = "recurring_sub_id"
+    _order = "create_date"
     _inherit = ['mail.thread']
 
     recurring_sub_id=fields.Many2one("recurring.subscription",string="Recurring Subscription",required=True)

@@ -16,6 +16,8 @@
     'auto_install': False,
     'data': [
         "security/ir.model.access.csv",
+        "security/security_group.xml",
+        "security/subscription_rule.xml",
         "data/recurring_subscription_data.xml",
         "data/account_id.xml",
         "data/product_data.xml",

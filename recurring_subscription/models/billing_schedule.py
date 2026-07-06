@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 class BillingSchedule(models.Model):
     _name = 'billing.schedule'
     _description = 'Billing Schedule'
-    _rec_name = ('period')
+    _rec_name = ('names')
     _inherit = ['mail.thread']
 
     is_simulation = fields.Boolean(string='Is Simulation?')
@@ -21,19 +21,17 @@ class BillingSchedule(models.Model):
     credit_rec_ids = fields.Many2many('recurring.credit',string="Recurring Credits")
     total_credits = fields.Float(string="Total Credits")
     subscription_count = fields.Integer(string="Subscription Count" , compute='_compute_subscription_count')
-    invoice_no = fields.Integer(string="Invoice No")
+    # invoice_no = fields.Integer(string="Invoice No")
+    company_id = fields.Many2one('res.company', store=True, copy=False,
+                                 string="Company",
+                                 default=lambda
+                                     self: self.env.user.company_id.id)
 
     @api.depends('subscription_ids')
     def _compute_subscription_count(self):
         '''compute subscription count'''
         for rec in self:
             rec.subscription_count = len(rec.subscription_ids)
-
-    # @api.depends('invoice_ids')
-    # def _compute_invoice_count(self):
-    #     '''compute subscription count'''
-    #     for rec in self:
-    #         rec.invoice_count = len(rec.invoice_ids)
 
     def action_view_subscription(self):
         '''button action for recurring subscription smart tab'''
@@ -48,11 +46,9 @@ class BillingSchedule(models.Model):
 
     @api.onchange('subscription_ids')
     def _onchange_subscription_ids(self):
-        if self.subscription_ids:
-            for rec in self:
-                print(rec.subscription_ids)
-                rec.update({'restrict_customers_ids': [(fields.Command.set(rec.subscription_ids.mapped('partner_id').ids))],
-                         'credit_rec_ids' : [(fields.Command.set(rec.subscription_ids.ids))],
+        for rec in self:
+            rec.update({'restrict_customers_ids': [(fields.Command.set(rec.subscription_ids.mapped('partner_id').ids))],
+                         'credit_rec_ids' : [(fields.Command.set(rec.subscription_ids.mapped('credits_ids').ids))],
                          })
     @api.onchange('credit_rec_ids')
     def _onchange_credit_rec_ids(self):
@@ -63,7 +59,7 @@ class BillingSchedule(models.Model):
                 rec.total_credits = 0
 
     def action_billing(self):
-        print(123)
+        print("hi",self.env['product.template'].browse(17))
         for r in self:
             subscriptions = r.subscription_ids.filtered(
                     lambda r: r.status == 'confirm')
@@ -75,13 +71,11 @@ class BillingSchedule(models.Model):
                     credit_max = self.credit_rec_ids.filtered(
                         lambda c: c.credit_amounts <= rec.recurring_amount)
                     if credit_max:
-                        credit= credit_max.sorted(key=lambda c: c.credit_amounts)[:1]
+                        credit= credit_max.sorted(key=lambda c: c.credit_amounts,reverse=True)[:1]
 
                 final_amount = rec.recurring_amount
-                credit_product = self.env['product.template'].search([('name','=','Credit Amount')])
+                credit_product = self.env['product.template'].search([('default_code','=','creditCode')])
 
-                print(self)
-                print(self.restrict_customers_ids)
                 invoice = self.env['account.move'].create({
                     'move_type': 'out_invoice',
                     'partner_id': rec.partner_id.id,
@@ -95,14 +89,15 @@ class BillingSchedule(models.Model):
                     (fields.Command.create({
                     'product_id': credit_product.id,
                     'quantity': 1,
-                    'price_unit': -credit.credit_amounts,})),
+                    'price_unit': -credit.credit_amounts,
+                    'name' : rec.create_date
+                    })),
                         ],
                     })
-                self.invoice_no = invoice.id
+            self.write({'active' : False})
 
 
     def action_view_invoice(self):
-        print(self.invoice_no)
         '''button action for recurring subscription smart tab'''
         return {
             'type': 'ir.actions.act_window',
@@ -120,14 +115,16 @@ class BillingSchedule(models.Model):
 
         for rec in auto_create:
             credit = self.credit_rec_ids.filtered(
-                lambda c: c.credit_amounts == rec.recurring_amount)
+                lambda c: c.credit_amounts == rec.recurring_amount)[:1]
             if not credit:
-                credit = self.credit_rec_ids.filtered(
-                    lambda c: c.credit_amounts <= rec.recurring_amount)[:1]
+                credit_max = self.credit_rec_ids.filtered(
+                    lambda c: c.credit_amounts <= rec.recurring_amount)
+                if credit_max:
+                    credit = credit_max.sorted(key=lambda c: c.credit_amounts,
+                                               reverse=True)[:1]
 
-            final_amount = rec.recurring_amount - credit.credit_amounts
-            credit_product = self.env['product.template'].search(
-                [('name', '=', 'Credit Amount')])
+            final_amount = rec.recurring_amount
+            credit_product = self.env['product.template'].search([('default_code','=','creditCode')])
 
             invoice = self.env['account.move'].create({
                 'move_type': 'out_invoice',
@@ -142,36 +139,8 @@ class BillingSchedule(models.Model):
                     (fields.Command.create({
                         'product_id': credit_product.id,
                         'quantity': 1,
-                        'price_unit': -credit.credit_amounts, })),
+                        'price_unit': -credit.credit_amounts,
+                    })),
                 ],
             })
-            # subscriptions = r.subscription_ids.filtered(
-            #     lambda r: r.status == 'confirm')
-            #
-            # for rec in subscriptions:
-            #     credit = self.credit_rec_ids.filtered(
-            #         lambda c: c.credit_amounts == rec.recurring_amount)[:1]
-            #     if not credit:
-            #         credit = self.credit_rec_ids.filtered(
-            #             lambda c: c.credit_amounts <= rec.recurring_amount)[:1]
-            #
-            #     final_amount = rec.recurring_amount
-            #     credit_product = self.env['product.template'].search(
-            #         [('name', '=', 'Credit Amount')])
-            #
-            #     invoice = self.env['account.move'].create({
-            #         'move_type': 'out_invoice',
-            #         'partner_id': rec.partner_id.id,
-            #         'invoice_date': fields.Date.today(),
-            #         'invoice_line_ids': [(fields.Command.create({
-            #             'product_id': rec.product_id.id,
-            #             'quantity': 1,
-            #             'price_unit': final_amount,
-            #         })),
-            #             (fields.Command.create({
-            #                 'product_id': credit_product.id,
-            #                 'quantity': 1,
-            #                 'price_unit': -credit.credit_amounts, })),
-            #         ],
-            #     })
 
