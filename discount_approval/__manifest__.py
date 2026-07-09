@@ -10,5 +10,6 @@
     'application': True,
     'sequence' : -1,
     'depends': ['base','sale_management'],
-    'data': ['views/res_config_settings.xml',],
+    'data': ['views/sale_order.xml',
+        'views/res_config_settings.xml',],
 }
