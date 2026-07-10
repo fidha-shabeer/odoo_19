@@ -10,6 +10,6 @@
     'application': True,
     'sequence' : -1,
     'depends': ['base','project',],
-    'data': ["views/project_project.xml",
+    'data': ["views/project_task.xml",
              ],
 }
