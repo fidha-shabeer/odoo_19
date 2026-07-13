@@ -11,5 +11,6 @@
     'sequence' : -1,
     'depends': ['base','sale_management'],
     'data': ['views/sale_order_view.xml',
-        'views/sale_order_line_views.xml',],
+        'views/sale_order_line_views.xml',
+             ],
 }

@@ -1,41 +1,46 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models
-# from odoo.exceptions import UserError
+from odoo import fields,models
+
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    project_id = fields.Many2one("project.project", string="Project")
-    project_task_id = fields.Many2one("project.task", string="Task")
+    projects = fields.Char(string="Projects")
+    projects_id = fields.Many2one('project.project',string="Project")
 
     def action_create_project_1(self):
-        print('project creation button clicked')
         for rec in self:
             if not rec.project_id:
-                project_name = rec.name
                 project = self.env['project.project'].create({
-                    'name': project_name,
-                    'partner_id': rec.partner_id.id,
-                    'task_ids': [(fields.Command.create({
-                    'name': f"Milestone {rec.order_line.milestone}",
-                        'child_ids' : [(fields.Command.create({
-                            'name': f"Milestone {rec.order_line.milestone}-{rec.order_line.product_template_id.display_name}",
+                        'name': rec.name,
+                        'partner_id': rec.partner_id.id,
+                })
+            rec.projects_id = project.id
 
-                        }))],
-                }))],
+            for l in rec.order_line:
+                task = self.env['project.task'].search([('project_id', '=', project.id),('name','=',f"Milestone {l.milestone}" )])
+                if not task:
+                    task= self.env['project.task'].create({
+                        'name': f"Milestone {l.milestone}",
+                        'project_id' : project.id,
+                         })
 
-            })
-                rec.project_id = project.id
+                child = self.env['project.task'].create({
+                        'name': f"Milestone {l.milestone}-{l.product_template_id.display_name}",
+                        'project_id':project.id,
+                        'parent_id': task.id,
+                    })
+
             return True
 
-            # task_name = self.env['project.task']
-            # project_task = self.env['sale.order.line']
-            #
-            # project_task = self.env['project.task'].create({
-            #     'name': task_name,
-            #     # 'partner_id': rec.partner_id.id,
-            #
-            # })
-            #
-            # rec.project_task_id = project_task.id
-
+    def action_project_record(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Project',
+            'view_mode': 'list',
+            'res_model': 'project.project',
+            'res_id': self.projects_id.id,
+            'target': 'current',
+            'domain': [('partner_id', 'in' ,self.id)],
+            }
