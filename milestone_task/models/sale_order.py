@@ -10,7 +10,7 @@ class SaleOrder(models.Model):
 
     def action_create_project_1(self):
         for rec in self:
-            if not rec.project_id:
+            if not rec.projects_id:
                 project = self.env['project.project'].create({
                         'name': rec.name,
                         'partner_id': rec.partner_id.id,
@@ -40,7 +40,6 @@ class SaleOrder(models.Model):
             'name': 'Project',
             'view_mode': 'list',
             'res_model': 'project.project',
-            'res_id': self.projects_id.id,
             'target': 'current',
-            'domain': [('partner_id', 'in' ,self.id)],
+            'domain': [('id', 'in' ,self.projects_id.id)],
             }
