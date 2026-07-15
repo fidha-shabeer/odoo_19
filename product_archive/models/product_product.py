@@ -8,19 +8,19 @@ class ProductProduct(models.Model):
 
     def archive_product(self):
         """ Archive Product """
-        print("dfghjk")
-        date_filter = fields.Datetime.now() - timedelta(days=5)
-        print("sdfghjkl",date_filter)
-        product = self.env["product.product"].search([('active','=',True)])
-        print("sdfghjkl",product)
-        record_filter = self.env['sale.report'].search([('date','<=',date_filter),('state','=','sale'),])
-
-        product_filter = record_filter.mapped("product_id")
-        for line in product_filter:
-            line.write({'active': False})
-        print("sdfghjkl",product_filter)
-
-
+        print("action started")
+        date_filter = fields.Datetime.now() - timedelta(days=90)
+        print("date:",date_filter)
+        products = self.env["product.product"].search([('active','=',True)])
+        print("active products",products)
+        
+        for pro in products:
+            sold_filter = self.env['sale.report'].search([('product_id','=',pro.id),('state','=','sale')],order='date desc',limit=1)
+            print("filtered sale",sold_filter)
+            if not sold_filter:
+                pro.write({'active': False})
+            elif sold_filter.date < date_filter:
+                pro.write({'active': False})
 
 
 
