@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-   <record id="auto_purchase_form_view" model="ir.ui.view">
-       <field name="name">auto.purchase.form.view</field>
-       <field name="model">product.template</field>
-       <field name="inherit_id" ref="product.product_template_only_form_view"/>
-       <field name="arch" type="xml">
-           <xpath expr="//form/sheet" position="inside">
-                <button name="action_click" string="Click" class="oe_highlight" type="object"/>
-           </xpath>
-       </field>
-   </record>
+    <record id="auto_purchase_form_view" model="ir.ui.view">
+        <field name="name">auto.purchase.form.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form/sheet/div[@name='button_box']"
+                   position="inside">
+                <button class="oe_stat_button"
+                        type="object"
+                        icon="fa-book"
+                        name="action_auto_purchase">
+                    <field string="Auto Purchase" name="purchase"
+                           widget="statinfo"/>
+                </button>
+            </xpath>
+
+            <xpath expr="//form/sheet" position="before">
+                <header>
+                    <button name="action_click" string="Purchase"
+                            class="oe_highlight" type="object"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
 </odoo>
