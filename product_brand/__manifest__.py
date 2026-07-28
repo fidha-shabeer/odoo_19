@@ -10,9 +10,11 @@
     'sequence' : -1,
     'depends': ['base','sale_management','product'],
     'data': [
+        "security/ir.model.access.csv",
         "views/product_template.xml",
         "views/sale_order_line.xml",
         "views/res_partner.xml",
         "views/sale_order.xml",
+        "views/product_brand.xml",
     ]
 }

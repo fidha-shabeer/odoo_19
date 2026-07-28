@@ -24,8 +24,6 @@ class SaleOrder(models.Model):
             for p in payment:
                 p.action_create_payments()
 
-
-
             # move_id = self.env['account.move'].create({
             #     'move_type': 'out_invoice',
             #     'partner_id': rec.partner_id.id,
