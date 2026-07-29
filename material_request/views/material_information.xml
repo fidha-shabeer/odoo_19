@@ -27,10 +27,11 @@
                             <field name="vendor_id" widget="many2many_tags"/>
                             <field name="source_id" invisible="request_type!='internal_transfer'"/>
                             <field name="destination_id" invisible="request_type!='internal_transfer'"/>
-                            <field name="operation_type"  invisible="request_type!='internal_transfer'"/>
+<!--                            <field name="operation_type"  invisible="request_type!='internal_transfer'"/>-->
                         </group>
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -40,7 +41,7 @@
         <field name="res_model">material.information</field>
         <field name="view_mode">form,list</field>
         <field name="help" type="html">
-            <p class="o_view_noncontent_smiling_face">Nothing!!</p>
+            <p class="o_view_noncontent_smiling_face">No Material Information added!!</p>
         </field>
     </record>
 
