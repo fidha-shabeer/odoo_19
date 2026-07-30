@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_recurring_subscription_manager,access.recurring.subscription.manager,recurring_subscription.model_recurring_subscription,subscription_manager,1,1,1,1
+access_recurring_subscription_user,access.recurring.subscription.user,recurring_subscription.model_recurring_subscription,subscription_user,1,0,1,0
+
+access_recurring_credit_manager,access.recurring.credit.manager,recurring_subscription.model_recurring_credit,subscription_manager,1,1,1,1
+access_recurring_credit_user,access.recurring.credit.user,recurring_subscription.model_recurring_credit,subscription_user,1,0,1,0
+
+access_billing_schedule_manager,access.billing.schedule.manager,recurring_subscription.model_billing_schedule,subscription_manager,1,1,1,1
+access_billing_schedule_user,access.billing.schedule.user,recurring_subscription.model_billing_schedule,subscription_user,1,1,0,0
+
+access_partner_account_manager,access.partner.account.manager,recurring_subscription.model_partner_account,subscription_manager,1,1,1,1
+access_partner_account_user,access.partner.account.user,recurring_subscription.model_partner_account,subscription_manager,1,0,1,0
+
+access_recurring_subscription_report_manager,access.recurring.subscription.report.manager,recurring_subscription.model_recurring_subscription_report,subscription_manager,1,1,1,1
+
+access_recurring_credit_report_manager,access_recurring_credit_report_manager,recurring_subscription.model_recurring_credit_report,subscription_manager,1,1,1,1

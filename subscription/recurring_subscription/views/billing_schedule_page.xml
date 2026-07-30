@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="page_bill_schedule"
+                  name="Billing Schedule Page">
+            <t t-call="website.layout">
+                <section class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-5">
+                            <div class="card shadow rounded-3 border-0">
+                                <div class="card-body p-4">
+                                    <h3 class="mb-4 text-center">Create New
+                                        Customer
+                                    </h3>
+                                    <form method="post" action="/bill-create">
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="bill3">Bill Name</label>
+                                        <input type="text" required=""
+                                               name="bill_name"/>
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="bill1">Recurring
+                                            Subscription
+                                        </label>
+                                        <select id="bill1" name="rec_sub_id"
+                                                required="">
+                                            <option value="">choose
+                                                subscriptions..
+                                            </option>
+                                            <option
+                                                    t-foreach="subscriptions"
+                                                    t-as="subscription"
+                                                    t-att-value="subscription.id"
+                                                    t-out="subscription.order_seq"/>
+                                        </select>
+
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="bill2">Period</label>
+                                        <input type="date" id="bill2"
+                                               name="period" required=""/>
+
+                                        <br></br>
+                                        <br></br>
+
+
+                                        <input type="submit" value="Submit"
+                                               class="btn btn-primary"
+                                               formaction="/bill-create"/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </t>
+        </template>
+
+        <template id="page_bill_success" name="Bill Success Page">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-12 text-center mt-5">
+                                <p>Bill Form Successfully Submitted!</p>
+                                <br></br>
+                                <br></br>
+                                <a href="/bill-odoo" role="button">Back to
+                                    create page
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+        <record id="bill_menu" model="website.menu">
+            <field name="name">Bill Schedule</field>
+            <field name="url">/bill-odoo</field>
+            <field name="parent_id" ref="website.main_menu"/>
+        </record>
+    </data>
+</odoo>

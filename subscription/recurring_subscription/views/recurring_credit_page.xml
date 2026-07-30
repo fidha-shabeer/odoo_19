@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="page_credit_sub"
+                  name="Subscription Credit Page">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 text-center mt-5">
+                                <h1>Welcome to Subscription Credit Page!</h1>
+                                <p class="lead">
+                                    Hello,<t t-esc="user_name"/>! create your
+                                    subscription credit here!.
+                                </p>
+
+                                <div class="container">
+                                    <form method="post" action="/credit-create">
+                                        <br></br>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="cred2">Recurring Subscription</label>
+                                        <select id="cred2" name="rec_sub_id" required="">
+                                            <option value=""></option>
+                                            <option
+                                                    t-foreach="subscriptions"
+                                                    t-as="subscription"
+                                                    t-att-value="subscription.id"
+                                                    t-out="subscription.order_seq"/>
+                                        </select>
+
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="cred3">Period</label>
+                                        <input type="date" id="cred3" name="period" required=""/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="cred4">Credit Amount $
+                                        </label>
+                                        <input type="number"
+                                               name="credit_amount"
+                                               id="cred4" required=""/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <input type="submit" value="Submit" formaction="/credit-create"
+                                               class="btn btn-primary"/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="page_credit_success" name="Credit Success Page">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-12 text-center mt-5">
+                                <p>Your Credit Form Successfully Submitted!</p>
+                                <br></br>
+                                <br></br>
+                                <a href="/credit-odoo" role="button">Back to create page</a>
+                             </div>
+
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+        <record id="credit_menu" model="website.menu">
+            <field name="name">Subscription Credit</field>
+            <field name="url">/credit-odoo</field>
+            <field name="parent_id" ref="website.main_menu"/>
+        </record>
+    </data>
+</odoo>
