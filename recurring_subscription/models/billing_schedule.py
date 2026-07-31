@@ -72,7 +72,7 @@ class BillingSchedule(models.Model):
                         credit= credit_max.sorted(key=lambda c: c.credit_amounts,reverse=True)[:1]
 
                 final_amount = rec.recurring_amount
-                credit_product = self.env['product.template'].search([('default_code','=','creditCode')])
+                credit_product = self.env['product.product'].search([('default_code','=','creditCode')])
 
                 invoice = self.env['account.move'].create({
                     'move_type': 'out_invoice',

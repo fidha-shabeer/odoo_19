@@ -43,7 +43,8 @@
         "views/recurring_subscription_menus.xml", ],
     'assets': {
         'web.assets_backend': [
-            'recurring_subscription/static/src/js/action_manager.js',
-        ],
+            'recurring_subscription/static/src/js/action_manager.js', ],
+        'web.assets_frontend': [
+            'recurring_subscription/static/src/js/multiple.js', ],
     },
 }

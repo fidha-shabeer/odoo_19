@@ -3,30 +3,86 @@
     <data>
         <template id="page_bill_schedule"
                   name="Billing Schedule Page">
+            <!--                <t t-call-asset="web.assets_frontend" t-js='False'/>-->
+
             <t t-call="website.layout">
+                <section
+                        class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24"
+                        data-vcss="001" data-snippet="s_title"
+                        data-scroll-background-ratio="1">
+                    <span class="s_parallax_bg oe_img_bg"
+                          style="background-image: url('/web/image/website.s_parallax_default_image'); background-position: 50% 0;"/>
+                    <div class="o_we_bg_filter bg-black-50"/>
+                    <div class="container">
+                        <h1>Billing Schedule</h1>
+                    </div>
+                </section>
                 <section class="container py-5">
                     <div class="row justify-content-center">
                         <div class="col-md-6 col-lg-5">
+                            <p class="lead text-center">Hello,<t
+                                    t-esc="user_name"/>! create bill here!.
+                            </p>
                             <div class="card shadow rounded-3 border-0">
                                 <div class="card-body p-4">
-                                    <h3 class="mb-4 text-center">Create New
-                                        Customer
+                                    <h3 class="text-muted text-center">Create
+                                        New Bill
                                     </h3>
-                                    <form method="post" action="/bill-create">
+                                    <form method="post" action="/bill-create"
+                                          id="bill-form">
                                         <br></br>
-                                        <br></br>
-
-                                        <label for="bill3">Bill Name</label>
+                                        <label for="bill3" class="form-label">
+                                            Bill Name
+                                        </label>
                                         <input type="text" required=""
+                                               class="form-control"
                                                name="bill_name"/>
                                         <br></br>
                                         <br></br>
+                                        <!--                                        -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+                                        <!-- Tags Dropdown and Selected Tags Inline -->
+                                        <div class="mb-3 d-flex s_website_form_field s_website_form_custom"
+                                             data-type="many2many"
+                                             data-name="Tag"
+                                             style="border: 2px solid #00000000; padding: 8px; border-radius: 8px;">
+                                            <div class="col-6">
+                                                <label class="s_website_form_label"
+                                                       for="contact_tag">
+                                                    <span class="s_website_form_label_content">
+                                                        Tags
+                                                    </span>
+                                                </label>
+                                                <!-- Tags Dropdown -->
+                                                <select id="contact_tag"
+                                                        class="js-example-basic-multiple form-control s_website_form_input"
+                                                        name="tag">
+                                                    <option value="">choose
+                                                        subscriptions..
+                                                    </option>
+                                                    <option
+                                                            t-foreach="subscriptions"
+                                                            t-as="subscription"
+                                                            t-att-value="subscription.id"
+                                                            t-out="subscription.order_seq"/>
+                                                </select>
+                                            </div>
+                                            <!-- Display Selected Tags as Pills Inline -->
+                                            <div id="tag-pills-container"
+                                                 class="tag-pill-container col-6"
+                                                 style="display: flex; flex-wrap: wrap; gap: 6px;
+                margin-top: 24px; border: 1px solid #212529; padding: 6px; border-radius: 8px; margin-left: 7px;">
+                                                <!-- Pills for selected tags will appear here -->
+                                            </div>
+                                        </div>
+                                        <!-- Include the external JavaScript file -->
 
-                                        <label for="bill1">Recurring
-                                            Subscription
+                                        <!--                                        -->
+                                        <label for="bill1" class="form-label">
+                                            Recurring Subscription
                                         </label>
-                                        <select id="bill1" name="rec_sub_id"
-                                                required="">
+                                        <select name="rec_sub_id" required=""
+                                                id="bill1" class="form-control">
+
                                             <option value="">choose
                                                 subscriptions..
                                             </option>
@@ -41,8 +97,11 @@
                                         <br></br>
                                         <br></br>
 
-                                        <label for="bill2">Period</label>
+                                        <label for="bill2" class="form-label">
+                                            Period
+                                        </label>
                                         <input type="date" id="bill2"
+                                               class="form-control"
                                                name="period" required=""/>
 
                                         <br></br>
@@ -63,6 +122,9 @@
                     </div>
                 </section>
             </t>
+            <!-- Include the external JavaScript file -->
+            <script type="text/javascript"
+                    src="recurring_subscription/static/src/js/multiple.js"></script>
         </template>
 
         <template id="page_bill_success" name="Bill Success Page">
@@ -89,6 +151,9 @@
             <field name="name">Bill Schedule</field>
             <field name="url">/bill-odoo</field>
             <field name="parent_id" ref="website.main_menu"/>
+            <field name="group_ids"
+                   eval="[(6,0,[ref('recurring_subscription.subscription_manager')])]"/>
         </record>
     </data>
+
 </odoo>
