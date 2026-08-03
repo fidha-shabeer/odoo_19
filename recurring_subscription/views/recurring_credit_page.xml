@@ -65,6 +65,43 @@
             </t>
         </template>
 
+              <template id="all_credit_list" name="All Credit List">
+            <t t-call="website.layout">
+                <div class="container mt-5"/>
+                <h1 class="text-center mb-4">Credit list</h1>
+                <table class="table mt-3" style="page-break-after:always;">
+                    <thead>
+                        <a t-attf-href="/credit-form">
+                            <button class="btn btn-primary">Create
+                                Credit
+                            </button>
+                        </a>
+
+                        <tr class="text-start">
+                            <th>Subscription</th>
+                            <th>Credit Amount</th>
+                            <th>Period</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="credits" t-as="credit">
+                            <td>
+                                <t t-esc="credit.recurring_sub_id.order_seq"/>
+                            </td>
+                            <td>
+                                <t t-out="credit.credit_amounts"/>
+                            </td>
+                            <td>
+                                <t t-esc="credit.period"/>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </t>
+        </template>
+
+
         <template id="page_credit_success" name="Credit Success Page">
             <t t-call="website.layout">
                 <div id="wrap" class="oe_structure">

@@ -41,42 +41,48 @@
                                         <br></br>
                                         <!--                                        -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
                                         <!-- Tags Dropdown and Selected Tags Inline -->
-                                        <div class="mb-3 d-flex s_website_form_field s_website_form_custom"
-                                             data-type="many2many"
-                                             data-name="Tag"
-                                             style="border: 2px solid #00000000; padding: 8px; border-radius: 8px;">
-                                            <div class="col-6">
-                                                <label class="s_website_form_label"
-                                                       for="contact_tag">
-                                                    <span class="s_website_form_label_content">
-                                                        Tags
-                                                    </span>
-                                                </label>
-                                                <!-- Tags Dropdown -->
-                                                <select id="contact_tag"
-                                                        class="js-example-basic-multiple form-control s_website_form_input"
-                                                        name="tag">
-                                                    <option value="">choose
-                                                        subscriptions..
-                                                    </option>
-                                                    <option
-                                                            t-foreach="subscriptions"
-                                                            t-as="subscription"
-                                                            t-att-value="subscription.id"
-                                                            t-out="subscription.order_seq"/>
-                                                </select>
-                                            </div>
-                                            <!-- Display Selected Tags as Pills Inline -->
-                                            <div id="tag-pills-container"
-                                                 class="tag-pill-container col-6"
-                                                 style="display: flex; flex-wrap: wrap; gap: 6px;
-                margin-top: 24px; border: 1px solid #212529; padding: 6px; border-radius: 8px; margin-left: 7px;">
-                                                <!-- Pills for selected tags will appear here -->
-                                            </div>
-                                        </div>
-                                        <!-- Include the external JavaScript file -->
+<!--                                        <div class="mb-3 d-flex s_website_form_field s_website_form_custom"-->
+<!--                                             data-type="many2many"-->
+<!--                                             data-name="Tag"-->
+<!--                                             style="border: 2px solid #00000000; padding: 8px; border-radius: 8px;">-->
+<!--                                            <div class="col-6">-->
+<!--                                                <label class="s_website_form_label"-->
+<!--                                                       for="subscription_ids"-->
+<!--                                                       id="subscription_ids"-->
+<!--                                                       multiple="multiple">-->
+<!--                                                    <span class="s_website_form_label_content">-->
+<!--                                                        Subscriptions-->
+<!--                                                    </span>-->
+<!--                                                </label>-->
+<!--                                                &lt;!&ndash; Tags Dropdown &ndash;&gt;-->
+<!--                                                <select id="subscription_ids"-->
+<!--                                                        class="js-example-basic-multiple form-control s_website_form_input"-->
+<!--                                                        name="subscription_ids">-->
+<!--                                                    <t t-foreach="subscriptions"-->
+<!--                                                       t-as="subscription">-->
+<!--                                                        <option t-att-value="subscription.id">-->
+<!--                                                            <t t-esc="subscription.order_seq"/>-->
+<!--                                                        </option>-->
+<!--                                                    </t>-->
+<!--                                                </select>-->
+<!--                                            </div>-->
 
-                                        <!--                                        -->
+<!--                                            <input type="hidden"-->
+<!--                                                   id="subscription_ids_hidden"-->
+<!--                                                   name="subscription_ids_hidden"/>-->
+<!--                                            &lt;!&ndash; Display Selected Tags as Pills Inline &ndash;&gt;-->
+<!--                                            <div id="tag-pills-container"-->
+<!--                                                 class="tag-pill-container col-6"-->
+<!--                                                 style="display: flex; flex-wrap: wrap; gap: 6px;-->
+<!--                margin-top: 24px; border: 1px solid #212529; padding: 6px; border-radius: 8px; margin-left: 7px;">-->
+<!--                                                &lt;!&ndash; Pills for selected tags will appear here &ndash;&gt;-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                         -->
+<!--                                        &lt;!&ndash; Include the external JavaScript file &ndash;&gt;-->
+<!--                                        <script type="text/javascript"-->
+<!--                                                src="recurring_subscription/static/src/js/multiple.js"></script>-->
+<!--                                        &lt;!&ndash;                                        &ndash;&gt;-->
                                         <label for="bill1" class="form-label">
                                             Recurring Subscription
                                         </label>
@@ -122,9 +128,49 @@
                     </div>
                 </section>
             </t>
-            <!-- Include the external JavaScript file -->
-            <script type="text/javascript"
-                    src="recurring_subscription/static/src/js/multiple.js"></script>
+
+        </template>
+
+         <template id="all_bill_list" name="All Credit List">
+            <t t-call="website.layout">
+                <div class="container mt-5"/>
+                <h1 class="text-center mb-4">Bill list</h1>
+                <table class="table mt-3" style="page-break-after:always;">
+                    <thead>
+                        <a href="recurring_subscription.page_credit_success">
+                            <button class="btn btn-primary">Create Bill</button>
+                        </a>
+
+                        <tr class="text-start">
+                            <th>Subscription</th>
+                            <th>Customer</th>
+                            <th>Name</th>
+                            <th>Total Credit Amount</th>
+                            <th>Period</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="bills" t-as="bill">
+                            <td>
+                                <t t-esc="bill.subscription_ids.order_seq"/>
+                            </td>
+                            <td>
+                                <t t-out="bill.restrict_customers_ids.display_name"/>
+                            </td>
+                            <td>
+                                <t t-esc="bill.names"/>
+                            </td>
+                            <td>
+                                <t t-esc="bill.period"/>
+                            </td>
+                            <td>
+                                <t t-esc="bill.total_credits"/>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </t>
         </template>
 
         <template id="page_bill_success" name="Bill Success Page">
