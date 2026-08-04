@@ -23,6 +23,7 @@
                                     <h3 class="text-muted text-center">Create New Credit</h3>
                                     <form method="post" action="/credit-create">
 
+                                        <input type="hidden" name="credit_id" />
                                         <br></br>
 
                                         <label for="cred2" class="form-label">Recurring Subscription</label>
@@ -32,6 +33,7 @@
                                                     t-foreach="subscriptions"
                                                     t-as="subscription"
                                                     t-att-value="subscription.id"
+                                                    t-att-selected="credit and credit.recurring_sub_id.order_seq"
                                                     t-out="subscription.order_seq"/>
                                         </select>
 
@@ -40,13 +42,13 @@
                                         <br></br>
 
                                         <label for="cred3" class="form-label">Period</label>
-                                        <input type="date" id="cred3" class="form-control" name="period" required=""/>
+                                        <input type="date" id="cred3" class="form-control" name="period" t-att-value="credit.period if credit else ''" required=""/>
 
                                         <br></br>
                                         <br></br>
 
                                         <label for="cred4" class="form-label">Credit Amount $</label>
-                                        <input type="number" name="credit_amount" class="form-control" id="cred4" required=""/>
+                                        <input type="number" name="credit_amount" class="form-control" id="cred4" t-att-value="credit.credit_amounts if credit else ''" required=""/>
 
                                         <br></br>
                                         <br></br>
@@ -81,6 +83,7 @@
                             <th>Subscription</th>
                             <th>Credit Amount</th>
                             <th>Period</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,6 +96,12 @@
                             </td>
                             <td>
                                 <t t-esc="credit.period"/>
+                            </td>
+                             <td>
+                                <a t-attf-href="/credit-edit/#{credit.id}">
+                                    <button class="btn btn-primary">Edit
+                                    </button>
+                                </a>
                             </td>
 
                         </tr>

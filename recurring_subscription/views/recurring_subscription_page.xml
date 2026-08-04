@@ -27,24 +27,33 @@
                                     <h3 class="mb-4 text-muted text-center">
                                         Create New Subscription
                                     </h3>
-                                    <form action="/subscription-create"
-                                          method="post">
+                                    <form action="/subscription-create" method="post">
                                         <br></br>
 
-                                        <label for="sub3" class="form-label">
-                                            Partner
+                                        <input type="hidden"
+                                               name="subscription_id"/>
+
+                                        <label for="s4" class="form-label">
+                                            User
                                         </label>
-                                        <select id="sub3" name="partner_id"
-                                                required=""
-                                                class="form-control"
-                                                data-fill-with="partner_id.name">
-                                            <option value=""></option>
-                                            <option
-                                                    t-foreach="partners"
-                                                    t-as="partner"
-                                                    t-att-value="partner.id"
-                                                    t-out="partner.name"/>
-                                        </select>
+                                        <input type="text" class="form-control" name="partner_id" t-att-value="user_name"/>
+
+                                        <br></br>
+                                        <br></br>
+<!--                                        <label for="sub3" class="form-label">-->
+<!--                                            Partner-->
+<!--                                        </label>-->
+<!--                                        <select id="sub3" name="partner_id"-->
+<!--                                                required=""-->
+<!--                                                class="form-control">-->
+<!--                                            <option value=""></option>-->
+<!--                                            <option-->
+<!--                                                    t-foreach="partners"-->
+<!--                                                    t-as="partner"-->
+<!--                                                    t-att-value="partner.id"-->
+<!--                                                    t-att-selected='subscription and subscription.partner_id.id==partner.id'-->
+<!--                                                    t-esc="partner.name"/>-->
+<!--                                        </select>-->
 
                                         <br></br>
                                         <br></br>
@@ -55,6 +64,7 @@
                                         <input type="text" id="sub2"
                                                name="establishment_id"
                                                required=""
+                                               t-att-value="subscription.id_establishment if subscription else ''"
                                                class="form-control"/>
 
                                         <br></br>
@@ -71,6 +81,7 @@
                                                     t-foreach="products"
                                                     t-as="product"
                                                     t-att-value="product.id"
+                                                    t-att-selected="subscription and subscription.product_id.id==product.id"
                                                     t-out="product.display_name"/>
                                         </select>
 
@@ -82,6 +93,7 @@
                                         </label>
                                         <input type="date" id="sub4" name="date"
                                                required=""
+                                               t-att-value="subscription.date if subscription else ''"
                                                class="form-control"/>
 
                                         <br></br>
@@ -93,6 +105,7 @@
                                         <input type="number"
                                                name="recurring_amount"
                                                class="form-control" id="sub5"
+                                               t-att-value="subscription.recurring_amount if subscription else ''"
                                                required=""/>
 
                                         <br></br>
@@ -102,7 +115,137 @@
                                             Lead
                                         </label>
                                         <input type="checkbox" checked="no"
-                                               id="sub6" name="is_lead"/>
+                                               id="sub6" name="is_lead"
+                                               t-att-value="subscription.is_leads if subscription else ''"
+                                        />
+                                        <br></br>
+                                        <br></br>
+
+                                        <input type="submit" value="Submit"
+                                               class="btn btn-primary"
+                                               formaction="/subscription-create"/>
+
+<!--                                        <input type="submit" t-att-value="'update' if subscription else 'create'" class="btn btn-primary"/>-->
+
+
+                                        <br></br>
+                                        <br></br>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </t>
+        </template>
+
+        <template id="edit_recurring_subscription"
+                  name="Edit Recurring Subscription Page">
+            <t t-call="website.layout">
+                <section
+                        class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24"
+                        data-vcss="001" data-snippet="s_title"
+                        data-scroll-background-ratio="1">
+                    <span class="s_parallax_bg oe_img_bg"
+                          style="background-image: url('/web/image/website.s_parallax_default_image'); background-position: 50% 0;"/>
+                    <div class="o_we_bg_filter bg-black-50"/>
+                    <div class="container">
+                        <h1>Edit Recurring Subscription</h1>
+                    </div>
+                </section>
+                <section class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-5">
+                            <p class="lead text-center">
+                                Hello,<t t-esc="user_name"/>! create your
+                                recurring subscription here!.
+                            </p>
+                            <div class="card shadow rounded-3 border-0">
+                                <div class="card-body p-4">
+                                    <h3 class="mb-4 text-muted text-center">
+                                        Create New Subscription
+                                    </h3>
+                                    <form action="/subscription-create"
+                                          method="post">
+                                        <br></br>
+
+                                        <input type="hidden"
+                                               name="subscription_id"
+                                               t-att-value="subscription.id"/>
+
+                                        <label for="s1" class="form-label">
+                                            Partner
+                                        </label>
+                                        <input id="sub3" name="partner_id"
+                                               required=""
+                                               t-att-value="subscription.partner_id.id"
+                                               class="form-control">
+                                        </input>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="s2" class="form-label">
+                                            Establishment ID
+                                        </label>
+                                        <input type="text" id="sub2"
+                                               name="establishment_id"
+                                               required=""
+                                               t-att-value="subscription.id_establishment if subscription else ''"
+                                               class="form-control"/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label class="form-label" for="sub3">
+                                            Product
+                                        </label>
+                                        <input id="sub3" name="product_id"
+                                               class="form-control"
+                                               t-att-value=""
+                                               required="">
+                                            <option value=""></option>
+                                            <option
+                                                    t-foreach="products"
+                                                    t-as="product"
+                                                    t-att-value="product.id"
+                                                    t-out="product.display_name"/>
+                                        </input>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="sub4" class="form-label">
+                                            Date
+                                        </label>
+                                        <input type="date" id="sub4" name="date"
+                                               required=""
+                                               t-att-value="subscription.date"
+                                               class="form-control"/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="sub5" class="form-label">
+                                            Recurring Amount $
+                                        </label>
+                                        <input type="number"
+                                               name="recurring_amount"
+                                               class="form-control" id="sub5"
+                                               t-att-value="subscription.recurring_amount"
+                                               required=""/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="sub6" class="form-label">Is
+                                            Lead
+                                        </label>
+                                        <input type="checkbox" checked="no"
+                                               id="sub6" name="is_lead"
+                                               t-att-value="subscription.is_leads"
+                                        />
                                         <br></br>
                                         <br></br>
 
@@ -162,9 +305,14 @@
                                 <t t-out="subscription.recurring_amount"/>
                             </td>
                             <td>
-                                <a t-attf-href="/recurring-form">
-                                    <button class="btn btn-primary">Edit</button>
+                                <a t-attf-href="/subscription-edit/#{subscription.id}">
+                                    <button class="btn btn-primary">Edit
+                                    </button>
                                 </a>
+                                <a t-attf-href="/subscription-delete/#{subscription.id}">
+                                    <button class="btn btn-primary">Delete</button>
+                                </a>
+                                 <button type="delete" name="delete" class="btn fa fa-trash fa-xl px-3 ms-auto" title="Delete Action" />
                             </td>
                         </tr>
                     </tbody>
@@ -208,7 +356,8 @@
                                         </label>
                                         <select id="sub3" name="partner_id"
                                                 required=""
-                                                class="form-control" data-fill-with="partner_id">
+                                                class="form-control"
+                                                data-fill-with="partner_id">
                                             <option value=""></option>
                                             <option
                                                     t-foreach="partners"
@@ -256,7 +405,8 @@
                                         </label>
                                         <input type="date" id="sub4" name="date"
                                                required=""
-                                               class="form-control" data-fill-with="date"/>
+                                               class="form-control"
+                                               data-fill-with="date"/>
 
                                         <br></br>
                                         <br></br>
@@ -268,7 +418,7 @@
                                                name="recurring_amount"
                                                class="form-control" id="sub5"
                                                required=""
-                                               data-fill-with="recurring_amount" />
+                                               data-fill-with="recurring_amount"/>
 
                                         <br></br>
                                         <br></br>
