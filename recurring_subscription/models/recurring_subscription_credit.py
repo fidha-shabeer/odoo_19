@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import fields, models,api
 from odoo.exceptions import ValidationError
+from odoo.orm.decorators import ondelete
 
 
 class RecurringSubscriptionCredit(models.Model):
@@ -11,7 +12,7 @@ class RecurringSubscriptionCredit(models.Model):
     _order = "create_date"
     _inherit = ['mail.thread']
 
-    recurring_sub_id=fields.Many2one("recurring.subscription",string="Recurring Subscription",required=True)
+    recurring_sub_id=fields.Many2one("recurring.subscription",string="Recurring Subscription",required=True,ondelete='cascade')
     id_establishment=fields.Char(string="Establishment Id" , related= "recurring_sub_id.id_establishment")
     due_date = fields.Date(string="Due Date", related= "recurring_sub_id.due_dates")
     partner_id =  fields.Many2one(string="Partner",related= "recurring_sub_id.partner_id")

@@ -27,6 +27,8 @@
                                     <h3 class="text-muted text-center">Create
                                         New Bill
                                     </h3>
+
+
                                     <form method="post" action="/bill-create"
                                           id="bill-form">
                                         <br></br>
@@ -90,6 +92,15 @@
             <t t-call="website.layout">
                 <div class="container mt-5"/>
                 <h1 class="text-center mb-4">Bill list</h1>
+<!--                <a t-attf-href="/bill-form-open">-->
+<!--                    <button class="btn btn-primary">Create-->
+<!--                        Bill-->
+<!--                    </button>-->
+<!--                </a>-->
+
+                <br>
+                </br>
+                <br></br>
                 <form action="/bill-submit" method="post">
                     <table class="table mt-3" style="page-break-after:always;">
                         <thead>
@@ -103,8 +114,9 @@
                                 <th>Subscription</th>
                                 <th>Customer</th>
                                 <th>Name</th>
-                                <th>Total Credit Amount</th>
                                 <th>Period</th>
+                                <th>Total Credit Amount</th>
+
                             </tr>
                         </thead>
                         <tbody>

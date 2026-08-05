@@ -4,13 +4,17 @@
         <template id="page_credit_sub"
                   name="Subscription Credit Page">
             <t t-call="website.layout">
-                <section class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24" data-vcss="001" data-snippet="s_title" data-scroll-background-ratio="1">
-                        <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_parallax_default_image'); background-position: 50% 0;"/>
-                        <div class="o_we_bg_filter bg-black-50"/>
-                        <div class="container">
-                            <h1>Subscription Credit</h1>
-                        </div>
-                    </section>
+                <section
+                        class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24"
+                        data-vcss="001" data-snippet="s_title"
+                        data-scroll-background-ratio="1">
+                    <span class="s_parallax_bg oe_img_bg"
+                          style="background-image: url('/web/image/website.s_parallax_default_image'); background-position: 50% 0;"/>
+                    <div class="o_we_bg_filter bg-black-50"/>
+                    <div class="container">
+                        <h1>Subscription Credit</h1>
+                    </div>
+                </section>
                 <section class="container py-5">
                     <div class="row justify-content-center">
                         <div class="col-md-6 col-lg-5">
@@ -20,14 +24,21 @@
                             </p>
                             <div class="card shadow rounded-3 border-0">
                                 <div class="card-body p-4">
-                                    <h3 class="text-muted text-center">Create New Credit</h3>
-                                    <form method="post" action="/credit-create">
-
-                                        <input type="hidden" name="credit_id" />
+                                    <h3 class="text-muted text-center">Create
+                                        New Credit
+                                    </h3>
+                                    <!--                                    <form method="post" action="/credit-create">-->
+                                    <form t-att-action="credit and ('/credit-save-changes/%s' %credit.id) or '/credit-create'"
+                                          method="post">
+                                        <input type="hidden" name="credit_id"/>
                                         <br></br>
 
-                                        <label for="cred2" class="form-label">Recurring Subscription</label>
-                                        <select id="cred2" name="rec_sub_id" class="form-control" required="">
+                                        <label for="cred2" class="form-label">
+                                            Recurring Subscription
+                                        </label>
+                                        <select id="cred2" name="rec_sub_id"
+                                                class="form-control"
+                                                required="">
                                             <option value=""></option>
                                             <option
                                                     t-foreach="subscriptions"
@@ -41,19 +52,34 @@
                                         <br></br>
                                         <br></br>
 
-                                        <label for="cred3" class="form-label">Period</label>
-                                        <input type="date" id="cred3" class="form-control" name="period" t-att-value="credit.period if credit else ''" required=""/>
+                                        <label for="cred3" class="form-label">
+                                            Period
+                                        </label>
+                                        <input type="date" id="cred3"
+                                               class="form-control"
+                                               name="period"
+                                               t-att-value="credit.period if credit else ''"
+                                               required=""/>
 
                                         <br></br>
                                         <br></br>
 
-                                        <label for="cred4" class="form-label">Credit Amount $</label>
-                                        <input type="number" name="credit_amount" class="form-control" id="cred4" t-att-value="credit.credit_amounts if credit else ''" required=""/>
+                                        <label for="cred4" class="form-label">
+                                            Credit Amount $
+                                        </label>
+                                        <input type="number"
+                                               name="credit_amount"
+                                               class="form-control" id="cred4"
+                                               t-att-value="credit.credit_amounts if credit else ''"
+                                               required=""/>
 
                                         <br></br>
                                         <br></br>
 
-                                        <input type="submit" value="Submit" formaction="/credit-create" class="btn btn-primary"/>
+                                        <!--                                        <input type="submit" value="Submit" formaction="/credit-create" class="btn btn-primary"/>-->
+                                        <input type="submit"
+                                               t-att-value="'update' if credit else 'create'"
+                                               class="btn btn-primary"/>
 
                                         <br></br>
                                         <br></br>
@@ -67,7 +93,7 @@
             </t>
         </template>
 
-              <template id="all_credit_list" name="All Credit List">
+        <template id="all_credit_list" name="All Credit List">
             <t t-call="website.layout">
                 <div class="container mt-5"/>
                 <h1 class="text-center mb-4">Credit list</h1>
@@ -83,7 +109,9 @@
                             <th>Subscription</th>
                             <th>Credit Amount</th>
                             <th>Period</th>
-                            <th>Action</th>
+                            <t t-if="request.env.user.has_group('recurring_subscription.subscription_manager')">
+                                <th>Action</th>
+                            </t>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,12 +125,14 @@
                             <td>
                                 <t t-esc="credit.period"/>
                             </td>
-                             <td>
-                                <a t-attf-href="/credit-edit/#{credit.id}">
-                                    <button class="btn btn-primary">Edit
-                                    </button>
-                                </a>
-                            </td>
+                            <t t-if="request.env.user.has_group('recurring_subscription.subscription_manager')">
+                                <td>
+                                    <a t-attf-href="/credit-edit/#{credit.id}">
+                                        <button class="btn btn-primary">Edit
+                                        </button>
+                                    </a>
+                                </td>
+                            </t>
 
                         </tr>
                     </tbody>

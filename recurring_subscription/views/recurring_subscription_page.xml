@@ -27,8 +27,9 @@
                                     <h3 class="mb-4 text-muted text-center">
                                         Create New Subscription
                                     </h3>
-                                    <form action="/subscription-create" method="post">
-                                        <br></br>
+                                    <!--                                    <form action="/subscription-create" method="post">-->
+                                    <form t-att-action="subscription and ('/subscription-save-changes/%s' %subscription.id) or '/subscription-create'"
+                                          method="post">
 
                                         <input type="hidden"
                                                name="subscription_id"/>
@@ -36,24 +37,27 @@
                                         <label for="s4" class="form-label">
                                             User
                                         </label>
-                                        <input type="text" class="form-control" name="partner_id" t-att-value="user_name"/>
+                                        <input type="text" class="form-control"
+                                               name="partner_id"
+                                                t-att-value="'%s' %user_name if not env.user.has_group('base.group_public') else '' " >
+                                        </input>
 
                                         <br></br>
                                         <br></br>
-<!--                                        <label for="sub3" class="form-label">-->
-<!--                                            Partner-->
-<!--                                        </label>-->
-<!--                                        <select id="sub3" name="partner_id"-->
-<!--                                                required=""-->
-<!--                                                class="form-control">-->
-<!--                                            <option value=""></option>-->
-<!--                                            <option-->
-<!--                                                    t-foreach="partners"-->
-<!--                                                    t-as="partner"-->
-<!--                                                    t-att-value="partner.id"-->
-<!--                                                    t-att-selected='subscription and subscription.partner_id.id==partner.id'-->
-<!--                                                    t-esc="partner.name"/>-->
-<!--                                        </select>-->
+                                        <!--                                        <label for="sub3" class="form-label">-->
+                                        <!--                                            Partner-->
+                                        <!--                                        </label>-->
+                                        <!--                                        <select id="sub3" name="partner_id"-->
+                                        <!--                                                required=""-->
+                                        <!--                                                class="form-control">-->
+                                        <!--                                            <option value=""></option>-->
+                                        <!--                                            <option-->
+                                        <!--                                                    t-foreach="partners"-->
+                                        <!--                                                    t-as="partner"-->
+                                        <!--                                                    t-att-value="partner.id"-->
+                                        <!--                                                    t-att-selected='subscription and subscription.partner_id.id==partner.id'-->
+                                        <!--                                                    t-esc="partner.name"/>-->
+                                        <!--                                        </select>-->
 
                                         <br></br>
                                         <br></br>
@@ -121,11 +125,14 @@
                                         <br></br>
                                         <br></br>
 
-                                        <input type="submit" value="Submit"
-                                               class="btn btn-primary"
-                                               formaction="/subscription-create"/>
+                                        <!--                                        <input type="submit" value="Submit"-->
+                                        <!--                                               class="btn btn-primary"-->
+                                        <!--                                               formaction="/subscription-create"/>-->
 
-<!--                                        <input type="submit" t-att-value="'update' if subscription else 'create'" class="btn btn-primary"/>-->
+
+                                        <input type="submit"
+                                               t-att-value="'update' if subscription else 'create'"
+                                               class="btn btn-primary"/>
 
 
                                         <br></br>
@@ -179,12 +186,13 @@
                                         </label>
                                         <input id="sub3" name="partner_id"
                                                required=""
-                                               t-att-value="subscription.partner_id.id"
+                                               t-att-value="subscription.partner_id.name"
                                                class="form-control">
                                         </input>
 
                                         <br></br>
                                         <br></br>
+
 
                                         <label for="s2" class="form-label">
                                             Establishment ID
@@ -271,11 +279,13 @@
                 <h1 class="text-center mb-4">Recurring Subscription list</h1>
                 <table class="table mt-3" style="page-break-after:always;">
                     <thead>
+<!--                        <t t-if="not env.user.has_group('base.group_public')">-->
                         <a t-attf-href="/recurring-form">
                             <button class="btn btn-primary">Create
                                 Subscription
                             </button>
                         </a>
+<!--                        </t>-->
 
 
                         <tr class="text-start">
@@ -284,7 +294,10 @@
                             <th>Product</th>
                             <th>Date</th>
                             <th>Recurring Amount</th>
+                            <th>State</th>
+                            <t t-if="request.env.user.has_group('recurring_subscription.subscription_manager')">
                             <th>Action</th>
+                            </t>
                         </tr>
                     </thead>
                     <tbody>
@@ -296,7 +309,7 @@
                                 <t t-out="subscription.id_establishment"/>
                             </td>
                             <td>
-                                <t t-esc="subscription.product_id.display_name"/>
+                                <t t-esc="subscription.product_id.name"/>
                             </td>
                             <td>
                                 <t t-out="subscription.date"/>
@@ -305,15 +318,21 @@
                                 <t t-out="subscription.recurring_amount"/>
                             </td>
                             <td>
-                                <a t-attf-href="/subscription-edit/#{subscription.id}">
-                                    <button class="btn btn-primary">Edit
-                                    </button>
-                                </a>
-                                <a t-attf-href="/subscription-delete/#{subscription.id}">
-                                    <button class="btn btn-primary">Delete</button>
-                                </a>
-                                 <button type="delete" name="delete" class="btn fa fa-trash fa-xl px-3 ms-auto" title="Delete Action" />
+                                <t t-out="subscription.status"/>
                             </td>
+                            <t t-if="request.env.user.has_group('recurring_subscription.subscription_manager')">
+                                <td>
+                                    <a t-attf-href="/subscription-edit/#{subscription.id}">
+                                        <button class="btn btn-primary">Edit
+                                        </button>
+                                    </a>
+                                    <a t-attf-href="/subscription-delete/#{subscription.id}">
+                                        <button class="btn btn-primary">Delete
+                                        </button>
+                                    </a>
+
+                                </td>
+                            </t>
                         </tr>
                     </tbody>
                 </table>
@@ -478,175 +497,3 @@
         </record>
     </data>
 </odoo>
-
-        <!--        <record id="page_recurring_subscription" model="website.page">-->
-        <!--            <field name="name">Recurring Subscription</field>-->
-        <!--            <field name="is_published" eval="True"/>-->
-        <!--            <field name="key">-->
-        <!--                recurring_subscription.page_recurring_subscription-->
-        <!--            </field>-->
-        <!--            <field name="url">/recurring-odoo</field>-->
-        <!--            <field name="website_id" eval="1"/>-->
-        <!--            <field name="type">qweb</field>-->
-        <!--            <field name="arch" type="xml">-->
-        <!--                <t t-name="recurring_subscription.page_recurring_subscription">-->
-        <!--                    <t t-call="website.layout">-->
-        <!--                        <div id="wrap" class="oe_structure">-->
-        <!--                            <div class="container">-->
-        <!--                                <div class="row">-->
-        <!--                                    <div class="col-12 text-center mt-5">-->
-        <!--                                        <h1>Welcome to Recurring Subscription-->
-        <!--                                            Page!-->
-        <!--                                        </h1>-->
-        <!--                                        <p class="lead">-->
-        <!--                                            Hello,-->
-        <!--                                            <t t-esc="user_name"/>-->
-        <!--                                            Create your recurring subscription.-->
-        <!--                                        </p>-->
-        <!--                                        <section class="s_website_form"-->
-        <!--                                                 data-vcss="001"-->
-        <!--                                                 data-snippet="s_website_form">-->
-        <!--                                            <div class="container">-->
-        <!--                                                <form id="subscription_form"-->
-        <!--                                                      action="/website/form/"-->
-        <!--                                                      method="post">-->
-
-        <!--                                                    <div class="s_website_form_rows row s_col_no_bgcolor">-->
-        <!--                                                        <div class="mb-3 col-lg-6 s_website_form_field s_website_form_custom s_website_form_required"-->
-        <!--                                                             data-type="char"-->
-        <!--                                                             data-name="Field">-->
-        <!--                                                            <label class="s_website_form_label"-->
-        <!--                                                                   style="width: 200px"-->
-        <!--                                                                   for="sub1">-->
-        <!--                                                                <span class="s_website_form_label_content">-->
-        <!--                                                                    Customer-->
-        <!--                                                                </span>-->
-        <!--                                                                <span class="s_website_form_mark">-->
-        <!--                                                                    *-->
-        <!--                                                                </span>-->
-        <!--                                                            </label>-->
-        <!--                                                            <input id="sub1"-->
-        <!--                                                                   type="text"-->
-        <!--                                                                   class="form-control s_website_form_input"-->
-        <!--                                                                   name="name"-->
-        <!--                                                                   required=""-->
-        <!--                                                                   data-fill-with="name"/>-->
-        <!--                                                        </div>-->
-
-        <!--                                                        <div class="mb-3 col-lg-6 s_website_form_field s_website_form_custom"-->
-        <!--                                                             data-type="int"-->
-        <!--                                                             data-name="Field">-->
-        <!--                                                            <label class="s_website_form_label"-->
-        <!--                                                                   style="width: 200px"-->
-        <!--                                                                   for="sub2">-->
-        <!--                                                                <span class="s_website_form_label_content">-->
-        <!--                                                                    Establishment-->
-        <!--                                                                    ID-->
-        <!--                                                                </span>-->
-        <!--                                                            </label>-->
-        <!--                                                            <input id="sub2"-->
-        <!--                                                                   type="int"-->
-        <!--                                                                   class="form-control s_website_form_input"-->
-        <!--                                                                   name="establishment_id"-->
-        <!--                                                                   data-fill-with="establishment_id"/>-->
-        <!--                                                        </div>-->
-
-        <!--                                                        <div class="mb-3">-->
-        <!--                                                            <label for="sub3">-->
-        <!--                                                                <span class="s_website_form_mark">-->
-        <!--                                                                    *-->
-        <!--                                                                </span>-->
-        <!--                                                            </label>-->
-        <!--                                                            <input id="sub3"-->
-        <!--                                                                   type="text"-->
-        <!--                                                                   class="form-control s_website_form_input"-->
-        <!--                                                                   name="product_id"/>-->
-        <!--                                                        </div>-->
-
-        <!--                                                        <div class="mb-3 col-lg-6 s_website_form_field s_website_form_custom"-->
-        <!--                                                             data-type="char"-->
-        <!--                                                             data-name="Field">-->
-        <!--                                                            <label class="s_website_form_label"-->
-        <!--                                                                   style="width: 200px"-->
-        <!--                                                                   for="sub4">-->
-        <!--                                                                <span class="s_website_form_label_content">-->
-        <!--                                                                    Company-->
-        <!--                                                                </span>-->
-        <!--                                                            </label>-->
-        <!--                                                            <input id="sub4"-->
-        <!--                                                                   type="char"-->
-        <!--                                                                   class="form-control s_website_form_input"-->
-        <!--                                                                   name="company"/>-->
-        <!--                                                        </div>-->
-
-        <!--                                                        <div class="mb-3 col-12 s_website_form_field s_website_form_required s_website_form_model_required"-->
-        <!--                                                             data-type="date_time"-->
-        <!--                                                             data-name="Field">-->
-        <!--                                                            <label class="s_website_form_label"-->
-        <!--                                                                   style="width: 200px"-->
-        <!--                                                                   for="sub5">-->
-        <!--                                                                <span class="s_website_form_label_content">-->
-        <!--                                                                    Date-->
-        <!--                                                                </span>-->
-        <!--                                                                <span class="s_website_form_mark">-->
-        <!--                                                                    *-->
-        <!--                                                                </span>-->
-        <!--                                                            </label>-->
-        <!--                                                            <input id="sub5"-->
-        <!--                                                                   type="text"-->
-        <!--                                                                   class="form-control s_website_form_input"-->
-        <!--                                                                   name="date"-->
-        <!--                                                                   data-widget="datetime-picker"-->
-        <!--                                                                   data-widget-type="date"-->
-        <!--                                                                   required=""/>-->
-        <!--                                                        </div>-->
-
-        <!--                                                        <div class="s_website_form_rows row s_col_no_bgcolor">-->
-        <!--                                                            <div class="col-12 mb-0 py-2 s_website_form_field s_website_form_required s_website_form_model_required"-->
-        <!--                                                                 data-type="float"-->
-        <!--                                                                 data-name="Field">-->
-        <!--                                                                <div class="row s_col_no_resize s_col_no_bgcolor">-->
-        <!--                                                                    <label class="col-4 col-sm-auto s_website_form_label"-->
-        <!--                                                                           style="width: 200px"-->
-        <!--                                                                           for="sub6">-->
-        <!--                                                                        <span class="s_website_form_label_content">-->
-        <!--                                                                            Recurring-->
-        <!--                                                                            Amount-->
-        <!--                                                                        </span>-->
-        <!--                                                                        <span class="s_website_form_mark">-->
-        <!--                                                                            *-->
-        <!--                                                                        </span>-->
-        <!--                                                                    </label>-->
-        <!--                                                                    <div class="col-sm">-->
-        <!--                                                                        <input id="sub6"-->
-        <!--                                                                               type="float"-->
-        <!--                                                                               class="form-control s_website_form_input"-->
-        <!--                                                                               name="recurring_amount"-->
-        <!--                                                                               required=""/>-->
-        <!--                                                                    </div>-->
-        <!--                                                                </div>-->
-        <!--                                                            </div>-->
-
-        <!--                                                            <div>-->
-        <!--                                                                <a href="#"-->
-        <!--                                                                   role="button"-->
-        <!--                                                                   class="btn btn-primary s_website_form_send">-->
-        <!--                                                                    Submit-->
-        <!--                                                                </a>-->
-        <!--                                                                <span id="s_website_form_result"></span>-->
-        <!--                                                            </div>-->
-
-        <!--                                                        </div>-->
-        <!--                                                    </div>-->
-        <!--                                                </form>-->
-        <!--                                            </div>-->
-        <!--                                        </section>-->
-        <!--                                    </div>-->
-        <!--                                </div>-->
-        <!--                            </div>-->
-        <!--                        </div>-->
-        <!--                    </t>-->
-        <!--                </t>-->
-        <!--            </field>-->
-        <!--        </record>-->
-

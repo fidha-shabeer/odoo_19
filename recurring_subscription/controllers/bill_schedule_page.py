@@ -32,7 +32,7 @@ class BillSchedulePage(http.Controller):
     def bill_create(self, **post):
         print('subscription_ids',post.get('rec_sub_id'))
 
-        sub = request.env['recurring.subscription'].sudo().search([('id','=',int(post.get('rec_sub_id')))])
+        sub = request.env['recurring.subscription'].sudo().search([('id','=',post.get('rec_sub_id'))])
         print('subs',sub.partner_id.name)
         print("amt",sum(sub.mapped('credits_ids.credit_amounts')))
         amt = sum(sub.mapped('credits_ids.credit_amounts'))
@@ -47,7 +47,7 @@ class BillSchedulePage(http.Controller):
         })
 
         print("bill",bill)
-        bill.action_billing()
+        # bill.action_billing()
 
         return request.render('recurring_subscription.page_bill_schedule')
 
@@ -72,6 +72,9 @@ class BillSchedulePage(http.Controller):
     @http.route('/bill-submit', type='http', auth='public', website=True,csrf=False)
     def bill_submit(self, **post):
         bill_ids = request.httprequest.form.getlist('bill_ids')
+        if not bill_ids:
+            raise ValidationError("No bill_ids")
+
         print("bill_ids:", bill_ids)
         bills = request.env['billing.schedule'].sudo().browse(int(i) for i in bill_ids)
         print("bills:", bills)
@@ -79,3 +82,4 @@ class BillSchedulePage(http.Controller):
             bill.action_billing()
 
         return request.render('recurring_subscription.page_bill_success')
+
