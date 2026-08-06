@@ -40,11 +40,14 @@
         "views/subscription_credit_views.xml",
         "views/billing_schedule_views.xml",
         "views/partner_account_views.xml",
-        "views/recurring_subscription_menus.xml", ],
+        "views/recurring_subscription_menus.xml",
+        'views/snippets/category_template.xml', ],
     'assets': {
         'web.assets_backend': [
             'recurring_subscription/static/src/js/action_manager.js', ],
         'web.assets_frontend': [
-            'recurring_subscription/static/src/js/multiple.js', ],
+            'recurring_subscription/static/src/js/multiple.js',
+            '/recurring_subscription/static/src/xml/category_highlight_content.xml',
+            '/recurring_subscription/static/src/js/product_category.js', ],
     },
 }

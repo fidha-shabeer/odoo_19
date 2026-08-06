@@ -28,7 +28,7 @@
                                         Create New Subscription
                                     </h3>
                                     <!--                                    <form action="/subscription-create" method="post">-->
-                                    <form t-att-action="subscription and ('/subscription-save-changes/%s' %subscription.id) or '/subscription-create'"
+                                    <form t-att-action="subscription and ('/subscription-save-changes/%s' %subscription.id) or '/subscription-create'" class="subscription-form"
                                           method="post">
 
                                         <input type="hidden"
@@ -39,7 +39,7 @@
                                         </label>
                                         <input type="text" class="form-control"
                                                name="partner_id"
-                                                t-att-value="'%s' %user_name if not env.user.has_group('base.group_public') else '' " >
+                                               t-att-value="'%s' %user_name if not env.user.has_group('base.group_public') else '' ">
                                         </input>
 
                                         <br></br>
@@ -62,14 +62,15 @@
                                         <br></br>
                                         <br></br>
 
-                                        <label for="sub2" class="form-label">
+                                        <label for="establishment_id" class="form-label">
                                             Establishment ID
                                         </label>
-                                        <input type="text" id="sub2"
+                                        <input type="text" id="establishment_id"
                                                name="establishment_id"
                                                required=""
                                                t-att-value="subscription.id_establishment if subscription else ''"
                                                class="form-control"/>
+                                        <p id="est_error" class="text-danger"></p>
 
                                         <br></br>
                                         <br></br>
@@ -103,14 +104,15 @@
                                         <br></br>
                                         <br></br>
 
-                                        <label for="sub5" class="form-label">
+                                        <label for="amount_id" class="form-label">
                                             Recurring Amount $
                                         </label>
                                         <input type="number"
                                                name="recurring_amount"
-                                               class="form-control" id="sub5"
+                                               class="form-control" id="amount_id"
                                                t-att-value="subscription.recurring_amount if subscription else ''"
                                                required=""/>
+                                        <p id="amt_error" class="text-danger"></p>
 
                                         <br></br>
                                         <br></br>
@@ -277,65 +279,86 @@
             <t t-call="website.layout">
                 <div class="container mt-5"/>
                 <h1 class="text-center mb-4">Recurring Subscription list</h1>
-                <table class="table mt-3" style="page-break-after:always;">
-                    <thead>
-<!--                        <t t-if="not env.user.has_group('base.group_public')">-->
-                        <a t-attf-href="/recurring-form">
-                            <button class="btn btn-primary">Create
+                <form action="/bill-create" method="post">
+                    <table class="table mt-3" style="page-break-after:always;">
+                        <thead>
+                            <!--                        <t t-if="not env.user.has_group('base.group_public')">-->
+                            <a t-attf-href="/recurring-form"
+                               class="btn btn-primary">Create
                                 Subscription
+                            </a>
+
+                            <button class="btn btn-primary"
+                                    formaction="/bill-create" >Bill Run
                             </button>
-                        </a>
-<!--                        </t>-->
 
 
-                        <tr class="text-start">
-                            <th>Partner</th>
-                            <th>Establishment ID</th>
-                            <th>Product</th>
-                            <th>Date</th>
-                            <th>Recurring Amount</th>
-                            <th>State</th>
-                            <t t-if="request.env.user.has_group('recurring_subscription.subscription_manager')">
-                            <th>Action</th>
-                            </t>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr t-foreach="subscriptions" t-as="subscription">
-                            <td>
-                                <t t-esc="subscription.partner_id.name"/>
-                            </td>
-                            <td>
-                                <t t-out="subscription.id_establishment"/>
-                            </td>
-                            <td>
-                                <t t-esc="subscription.product_id.name"/>
-                            </td>
-                            <td>
-                                <t t-out="subscription.date"/>
-                            </td>
-                            <td>
-                                <t t-out="subscription.recurring_amount"/>
-                            </td>
-                            <td>
-                                <t t-out="subscription.status"/>
-                            </td>
-                            <t t-if="request.env.user.has_group('recurring_subscription.subscription_manager')">
+                            <!--                            <button class="btn btn-primary">Bill</button>-->
+                            <!--                        </a>-->
+                            <!--                        </t>-->
+
+
+                            <tr class="text-start">
+                                <th>Check</th>
+                                <th>Sequence No.</th>
+                                <th>Partner</th>
+                                <th>Establishment ID</th>
+                                <th>Product</th>
+                                <th>Date</th>
+                                <th>Recurring Amount</th>
+                                <th>State</th>
+                                <t t-if="request.env.user.has_group('recurring_subscription.subscription_manager')">
+                                    <th>Action</th>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="subscriptions" t-as="subscription">
                                 <td>
-                                    <a t-attf-href="/subscription-edit/#{subscription.id}">
-                                        <button class="btn btn-primary">Edit
-                                        </button>
-                                    </a>
-                                    <a t-attf-href="/subscription-delete/#{subscription.id}">
-                                        <button class="btn btn-primary">Delete
-                                        </button>
-                                    </a>
-
+                                    <input type="checkbox" id="check1"
+                                           t-att-value="subscription.id"
+                                           name="subscription_ids"/>
                                 </td>
-                            </t>
-                        </tr>
-                    </tbody>
-                </table>
+                                <td>
+                                    <t t-esc="subscription.order_seq"/>
+                                </td>
+                                <td>
+                                    <t t-esc="subscription.partner_id.name"/>
+                                </td>
+                                <td>
+                                    <t t-out="subscription.id_establishment"/>
+                                </td>
+                                <td>
+                                    <t t-esc="subscription.product_id.name"/>
+                                </td>
+                                <td>
+                                    <t t-out="subscription.date"/>
+                                </td>
+                                <td>
+                                    <t t-out="subscription.recurring_amount"/>
+                                </td>
+                                <td>
+                                     <t t-esc="dict(subscriptions._fields['status'].selection).get(subscription.status)"/>
+<!--                                    <t t-out="subscription.status"/>-->
+                                </td>
+                                <t t-if="request.env.user.has_group('recurring_subscription.subscription_manager')">
+                                    <td>
+                                        <a t-attf-href="/subscription-edit/#{subscription.id}">
+                                            <button class="btn btn-primary">Edit
+                                            </button>
+                                        </a>
+                                        <a t-attf-href="/subscription-delete/#{subscription.id}">
+                                            <button class="btn btn-primary">
+                                                Delete
+                                            </button>
+                                        </a>
+
+                                    </td>
+                                </t>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
             </t>
         </template>
 

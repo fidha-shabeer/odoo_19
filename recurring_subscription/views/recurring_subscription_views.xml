@@ -3,39 +3,42 @@
     <data>
 
         <record id="recurring_sub_view_search" model="ir.ui.view">
-                <field name="name">recurring.sub.view.search</field>
-                <field name="model">recurring.subscription</field>
-                <field name="arch" type="xml">
-                    <search string="subscription search">
-                        <field name="order_seq"/>
-                        <field name="id_establishment"/>
-                        <field name="date"/>
-                        <field name="due_dates"/>
-                        <field name="next_billing"/>
-                        <field name="is_leads"/>
-                        <field name="partner_id"/>
-                        <field name="product_id"/>
-                        <field name="currency_id"/>
-                        <field name="recurring_amount"/>
-                        <field name="status"/>
-                        <separator/>
-                        <filter name="filter_done" string="Done" domain="[('status','=','done')]"/>
-                        <filter name="filter_cancel" string="Cancel" domain="[('status','=','cancel')]"/>
-                        <filter name="filter_confirm" string="Confirm" domain="[('status','=','confirm')]"/>
+            <field name="name">recurring.sub.view.search</field>
+            <field name="model">recurring.subscription</field>
+            <field name="arch" type="xml">
+                <search string="subscription search">
+                    <field name="order_seq"/>
+                    <field name="id_establishment"/>
+                    <field name="date"/>
+                    <field name="due_dates"/>
+                    <field name="next_billing"/>
+                    <field name="is_leads"/>
+                    <field name="partner_id"/>
+                    <field name="product_id"/>
+                    <field name="currency_id"/>
+                    <field name="recurring_amount"/>
+                    <field name="status"/>
+                    <separator/>
+                    <filter name="filter_done" string="Done"
+                            domain="[('status','=','done')]"/>
+                    <filter name="filter_cancel" string="Cancel"
+                            domain="[('status','=','cancel')]"/>
+                    <filter name="filter_confirm" string="Confirm"
+                            domain="[('status','=','confirm')]"/>
 
-                        <group name="groupby">
-                            <filter name="group_by_customer" string="Customer"
-                            context="{'group_by': 'partner_id'}"/>
-                            <filter name="group_by_product" string="Product"
-                            context="{'group_by': 'product_id'}"/>
-                            <filter name="group_by_status" string="State"
-                            context="{'group_by': 'status'}"/>
+                    <group name="groupby">
+                        <filter name="group_by_customer" string="Customer"
+                                context="{'group_by': 'partner_id'}"/>
+                        <filter name="group_by_product" string="Product"
+                                context="{'group_by': 'product_id'}"/>
+                        <filter name="group_by_status" string="State"
+                                context="{'group_by': 'status'}"/>
 
 
-                        </group>
+                    </group>
 
-                    </search>
-               </field>
+                </search>
+            </field>
         </record>
 
         <record id="recurring_sub_list_view" model="ir.ui.view">
@@ -60,72 +63,87 @@
         </record>
 
         <record id="recurring_sub_form_view" model="ir.ui.view">
-                    <field name="name">rec.sub.form</field>
-                    <field name="model">recurring.subscription</field>
-                    <field name="arch" type="xml">
-                        <form>
-                            <header>
-                                <field name="status" widget="statusbar" options="{'clickable':1}" statusbar_visible="draft,confirm,done"/>
-                                <button name="button_confirm" type="object" string="Confirm" invisible="status != 'draft'"/>
-                                <button name="button_cancel" type="object" string="Cancel" visible="status == 'confirm'and status=='done"/>
-                                <button name="button_done" type="object" string="Done" invisible="status != 'confirm'" class="oe_highlight"/>
+            <field name="name">rec.sub.form</field>
+            <field name="model">recurring.subscription</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="status" widget="statusbar"
+                               options="{'clickable':1}"
+                               statusbar_visible="draft,confirm,done"/>
+                        <button name="button_confirm" type="object"
+                                string="Confirm" invisible="status != 'draft'"/>
+                        <button name="button_cancel" type="object"
+                                string="Cancel"
+                                visible="status == 'confirm'and status=='done"/>
+                        <button name="button_done" type="object" string="Done"
+                                invisible="status != 'confirm'"
+                                class="oe_highlight"/>
 
-                            </header>
-                            <sheet>
-                                <widget name="web_ribbon" title="done" bg_color="text-bg-success" invisible = "status != 'done'"/>
-                                 <h1><field name="order_seq" readonly="1" /></h1>
-                                <group>
-                                    <group>
-                                        <field name="partner_id" context="{'show_address': True}"/>
-                                        <field name="product_id"/>
-                                        <field name="company_id"/>
-                                        <field name="billing_schedule_id"/>
-                                        <field name="currency_id" invisible="1"/>
-                                        <field name="recurring_amount"/>
-                                    </group>
-                                    <group>
-                                        <field name="id_establishment"/>
-                                        <field name="date"/>
-                                        <field name="due_dates"/>
-                                        <field name="next_billing"/>
-                                        <field name="is_leads"/>
-                                        <field name="total_credits"/>
-<!--                                        <field name="credit_count"/>-->
-                                    </group>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="done"
+                                bg_color="text-bg-success"
+                                invisible="status != 'done'"/>
+                        <field name="attachment" class="oe_avatar"
+                               widget="image"/>
+                        <h1>
+                            <field name="order_seq" readonly="1"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="partner_id"
+                                       context="{'show_address': True}"/>
+                                <field name="product_id"/>
+                                <field name="company_id"/>
+                                <field name="billing_schedule_id"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="recurring_amount"/>
+                            </group>
+                            <group>
+                                <field name="id_establishment"/>
+                                <field name="date"/>
+                                <field name="due_dates"/>
+                                <field name="next_billing"/>
+                                <field name="is_leads"/>
+                                <field name="total_credits"/>
+                                <!--                                        <field name="credit_count"/>-->
+                            </group>
 
-                                </group>
+                        </group>
 
-                                <notebook>
-                                    <page string="TERMS AND CONDITION">
-                                        <field name="terms_condition" type="html"/>
-<!--                                            <p> Subscriptions are billed on a recurring basis</p>-->
-                                    </page>
-                                    <page string="DESCRIPTION">
-                                        <field name="description" type="html"/>
-                                    </page>
-                                    <page string="RECURRING CREDITS">
-<!--                                        <field name="reccuring_credit_ids"/>-->
-                                        <field name="credits_ids"/>
-                                    </page>
-                                    <page string="all">
-<!--                                        <field name="reccuring_credit_ids"/>-->
-                                        <field name="all_credit_ids"/>
-                                    </page>
-                                </notebook>
-                            </sheet>
-                            <chatter/>
-                        </form>
-                    </field>
-                </record>
+                        <notebook>
+                            <page string="TERMS AND CONDITION">
+                                <field name="terms_condition" type="html"/>
+                                <!--                                            <p> Subscriptions are billed on a recurring basis</p>-->
+                            </page>
+                            <page string="DESCRIPTION">
+                                <field name="description" type="html"/>
+                            </page>
+                            <page string="RECURRING CREDITS">
+                                <!--                                        <field name="reccuring_credit_ids"/>-->
+                                <field name="credits_ids"/>
+                            </page>
+                            <page string="all">
+                                <!--                                        <field name="reccuring_credit_ids"/>-->
+                                <field name="all_credit_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
 
 
-       <record id="action_recurring_subscription" model="ir.actions.act_window">
-           <field name="name">Subscribe</field>
-           <field name="res_model">recurring.subscription</field>
-           <field name="view_mode">list,form</field>
-           <field name="help" type="html">
-               <p class="o_view_noncontent_smiling_face">create your plan</p>
-           </field>
-       </record>
+        <record id="action_recurring_subscription"
+                model="ir.actions.act_window">
+            <field name="name">Subscribe</field>
+            <field name="res_model">recurring.subscription</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_noncontent_smiling_face">create your plan</p>
+            </field>
+        </record>
     </data>
 </odoo>

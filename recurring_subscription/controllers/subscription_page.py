@@ -2,6 +2,8 @@
 from odoo import http
 from odoo.http import request
 from odoo.exceptions import ValidationError
+from odoo import Command,fields
+from datetime import datetime
 
 
 class SubscriptionPage(http.Controller):
@@ -184,3 +186,50 @@ class SubscriptionPage(http.Controller):
             print('subscription_id', subscription)
 
         return request.redirect('/recurring-odoo')
+
+    @http.route('/bill-create', type='http', auth='public', website=True,
+                csrf=False ,method=['post'])
+    def bill_create(self, **post):
+        print("helooooo")
+        subscription_ids = request.httprequest.form.getlist('subscription_ids')
+        print("subs", subscription_ids)
+        if not subscription_ids:
+            raise ValidationError("No bill_ids")
+
+        print("bill_ids:", subscription_ids)
+        subs = request.env['recurring.subscription'].sudo().browse(
+            int(i) for i in subscription_ids)
+        print("bills:", subs)
+        for sub in subs:
+            print("sub:", sub)
+            print("Each amt",sub.mapped('credits_ids.credit_amounts'))
+            amt = sum(sub.mapped('credits_ids.credit_amounts'))
+            print("amt:", amt)
+
+            if sub.status=='confirm':
+                bill = request.env['billing.schedule'].sudo().create({
+                    'subscription_ids': [Command.set([sub.id])],
+                    'restrict_customers_ids': [
+                        Command.set([sub.partner_id.id])],
+                    'credit_rec_ids': [Command.set(sub.credits_ids.ids)],
+                    'total_credits': amt,
+                    'period': datetime.now(),
+                    'names' : "Bill %s" %sub.id
+                })
+                print("over")
+                # bill.action_billing()
+
+        return request.render('recurring_subscription.page_subscription_success')
+
+        # bill_ids = request.httprequest.form.getlist('bill_ids')
+        # if not bill_ids:
+        #     raise ValidationError("No bill_ids")
+        #
+        # print("bill_ids:", bill_ids)
+        # bills = request.env['billing.schedule'].sudo().browse(
+        #     int(i) for i in bill_ids)
+        # print("bills:", bills)
+        # for bill in bills:
+        #     bill.action_billing()
+
+

@@ -14,6 +14,7 @@ class RecurringSubscription(models.Model):
     status = fields.Selection(selection=[('draft', 'Draft'), ('confirm', 'Confirm'),('done', 'Done'), ('cancel', 'Cancel')],
                               string="State",default='draft',tracking=True)
     order_seq=fields.Char(default="New")
+    attachment = fields.Image( attachment=True)
     id_establishment = fields.Char(string="Establishment ID",required=True, tracking=True)
     credits_ids= fields.One2many('recurring.credit','recurring_sub_id',string='Subscription Credits',compute ='_compute_recurring_credits')
     billing_schedule_id = fields.Many2one("billing.schedule",string="Billing Schedule")

@@ -81,5 +81,6 @@ class BillSchedulePage(http.Controller):
         for bill in bills:
             bill.action_billing()
 
+
         return request.render('recurring_subscription.page_bill_success')
 
