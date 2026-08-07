@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+   <t t-name="recurring_subscription.latest_credit_template">
+
+       <div style="display:flex; columns:4;">
+    <t t-foreach="credits" t-as="credit" t-key="credit.id">
+        <a t-att-href="credit.url">
+<!--            <div class="col-md-4 mb-3">-->
+            <div class="card">
+                <img class="card-img-top" t-att-src="credit.image"/>
+                <div class="card-body text-center">
+                    <h4 class="card-title">Latest Credit</h4>
+                    <h6>Credit Amount:
+                        <t t-esc="credit.credit_amount"></t></h6>
+                    <br></br>
+                    <h6>Subscription:
+                        <t t-esc="credit.subscription"></t></h6>
+                    <button type="submit"
+                            class="btn btn-primary">View Details</button>
+                </div>
+                <!--                </div>-->
+            </div>
+        </a>
+    </t>
+       </div>
+
+    </t>
+    <!--   </t>-->
+</templates>
