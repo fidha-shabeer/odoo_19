@@ -29,6 +29,19 @@
 
                     <button name="action_approve" type="object"
                             string="Approve Loan"/>
+
+                     <button name="action_pay" type="object"
+                            string="Pay Installment"/>
+
+                    <button name="action_generate" type="object"
+                            string="Generate Installment" invisible="state!='approved'"/>
+
+                    <div class="oe_button_box" name="button_box">
+                                    <button name="action_smart_tab" type="object"
+                                            class="oe_stat_button" icon="fa-book">
+                                        <field name="loan_count" widget="statinfo" string="Loan Count"/>
+                                    </button>
+                    </div>
                 </header>
                 <sheet>
                     <group>
@@ -39,6 +52,8 @@
                         <field name="start_date"/>
                         <field name="installment_amount"/>
                         <field name="total_payable"/>
+                        <field name="paid_amount"/>
+                        <field name="balance_amount"/>
                         <!--                                    <field name="credit_square"/>-->
                     </group>
                     <notebook>

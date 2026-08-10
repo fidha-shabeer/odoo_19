@@ -1,29 +1,68 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
    <t t-name="recurring_subscription.latest_credit_template">
+       <div>
+        <div t-attf-id ="latest_credits_carousel{{random}}" class="container carousel slide"
+             data-bs-ride="carousel" t-att-data-bs-interval="interval">
 
-       <div style="display:flex; columns:4;">
-    <t t-foreach="credits" t-as="credit" t-key="credit.id">
-        <a t-att-href="credit.url">
-<!--            <div class="col-md-4 mb-3">-->
-            <div class="card">
-                <img class="card-img-top" t-att-src="credit.image"/>
-                <div class="card-body text-center">
+            <div class="carousel-inner row w-100 mx-auto" role="listbox">
+           <t t-foreach="chunks" t-as="chunk" t-key="chunk.id">
+        <div t-att-class="chunk.is_active ? 'carousel-item active' : 'carousel-item'">
+
+               <div class="row">
+
+        <t t-foreach="chunk" t-as="credit" t-key="credit.id">
+
+        <div class="block span3 col-3">
+
+            <a t-att-href="credit.url">
+
+                <div class="card">
+                <img class="card-img-top" t-attf-src="data:image/png;base64,{{credit.image}}" />
+                    <div class="card-body text-center">
                     <h4 class="card-title">Latest Credit</h4>
-                    <h6>Credit Amount:
+                        <h6>Credit Amount:
                         <t t-esc="credit.credit_amount"></t></h6>
-                    <br></br>
-                    <h6>Subscription:
+                        <br></br>
+                        <h6>Subscription:
                         <t t-esc="credit.subscription"></t></h6>
-                    <button type="submit"
-                            class="btn btn-primary">View Details</button>
+                        <button type="submit"
+                                class="btn btn-primary">View Details</button>
                 </div>
-                <!--                </div>-->
+
             </div>
         </a>
+        </div>
     </t>
+               </div>
+    </div>
+    </t>
+                  </div>
+        </div>
+           <a t-attf-href="#latest_credits_carousel{{random}}"
+              class="carousel-control-prev"
+              data-bs-slide="prev" role="button" aria-label="Previous"
+              title="Previous">
+
+           <span class="fa fa-chevron-circle-left fa-2x"
+                 style="color: #000000;"/>
+               <span class="visually-hidden">Previous</span>
+           </a>
+
+           <a t-attf-href="#latest_credits_carousel{{random}}"
+              class="carousel-control-next"
+              data-bs-slide="next" role="button" aria-label="Next"
+              title="Next">
+
+
+           <span class="fa fa-chevron-circle-right fa-2x"
+                 style="color: #000000;"/>
+               <span class="visually-hidden">Previous</span>
+           </a>
+
+
        </div>
 
     </t>
-    <!--   </t>-->
 </templates>
+

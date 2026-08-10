@@ -13,5 +13,6 @@
         "views/employee_loan.xml",
         "views/employee_loan_line.xml",
         "views/employee_loan_menu.xml",
+        "views/hr_employee.xml",
     ]
 }

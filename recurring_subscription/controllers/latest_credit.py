@@ -10,7 +10,7 @@ class LatestCredit(http.Controller):
         """Get the latest credit for the snippet."""
         partner = request.env.user.partner_id
         credits = request.env[
-            'recurring.credit'].sudo().search([('partner_id', '=', partner.id)],
+            'recurring.credit'].sudo().search([('partner_id', '=', partner.id),('state','=','fully_approved')],
                                               order='create_date desc',
                                               )
         print("credits", credits)
@@ -23,8 +23,9 @@ class LatestCredit(http.Controller):
                 'subscription': credit.recurring_sub_id.order_seq,
                 'due_date': credit.recurring_sub_id.due_dates,
                 'credit_amount': credit.credit_amounts,
-                'image': 'recurring_subscription/static/src/image/image.png',
-                'url': f'http://localhost:8019/odoo/action-548/{credit.recurring_sub_id.id}?'
+                # 'image': 'recurring_subscription/static/src/image/image.png',
+                'image':credit.recurring_sub_id.attachment,
+                'url': f'http://localhost:8019/odoo/action-514/{credit.recurring_sub_id.id}?'
 
             })
         print("credits list", credit_list)
