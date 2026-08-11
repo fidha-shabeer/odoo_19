@@ -11,7 +11,7 @@
                 <t t-set="icon" t-value="'/portal/static/src/img/portal-addresses.svg'"/>
                 <t t-set="title">Manufacturing Order</t>
                 <t t-set="text">view your manufacturing order!!</t>
-<!--                <t t-set="url" t-value="'/my/addresses'"/>-->
+                <t t-set="url" t-value="'/manufacture_order'"/>
                 <t t-set="config_card" t-value="True"/>
             </t>
         </div>

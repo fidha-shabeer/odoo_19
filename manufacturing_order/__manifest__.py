@@ -8,9 +8,10 @@
     'author': "Cybrosys Technology",
     'license': "LGPL-3",
     'application': True,
-    'sequence' : -1,
-    'depends': ['base','mrp'],
-    'data': ["views/mrp_production.xml",
+    'sequence': -1,
+    'depends': ['base', 'mrp'],
+    'data': ["views/mrp_production_template.xml",
+             "views/mrp_production.xml",
              "views/portal_account.xml",
              ],
 }

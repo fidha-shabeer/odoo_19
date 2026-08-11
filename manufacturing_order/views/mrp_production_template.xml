@@ -1,0 +1,46 @@
+<odoo>
+    <template id="manufacture_order_list" name="Manufacture Order List">
+        <t t-call="portal.portal_layout">
+        <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+        <t t-call="portal.portal_searchbar">
+            <t t-set="title">Manufacture Order</t>
+        </t>
+        <t t-if="not orders">
+            <p class="alert alert-warning">There are currently no
+                manufacturing Order for your account.
+            </p>
+        </t>
+        <t t-if="orders" t-call="portal.portal_table">
+            <thead>
+                <tr class="active">
+                    <th class="text-center">Reference</th>
+                    <th class="text-center">Product</th>
+                    <th class="text-center">Component Status</th>
+                    <th class="text-center">Quantity</th>
+                    <th class="text-center">State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="orders" t-as="order">
+                     <td class="text-center"><a t-attf-href="http://localhost:8019/odoo/manufacturing/{{order.id}}">
+                         <t t-esc="order.name"/></a>
+                    </td>
+                     <td class="text-center">
+                        <t t-esc="order.product_id.display_name"/>
+                    </td>
+                     <td class="text-center">
+                        <t t-out="order.components_availability"/>
+                    </td>
+                     <td class="text-center">
+                        <t t-out="order.product_qty"/>
+                    </td>
+                     <td class="text-center">
+                        <t t-out="order.state"/>
+                    </td>
+                </tr>
+            </tbody>
+        </t>
+        </t>
+    </template>
+</odoo>

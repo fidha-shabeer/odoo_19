@@ -11,6 +11,6 @@
     'sequence' : -1,
     'depends': ['base','purchase'],
     'data': [
-        "views/product.xml",
+        "views/product_template.xml",
     ]
 }
