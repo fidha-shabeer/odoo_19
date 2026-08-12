@@ -12,7 +12,5 @@
              ],
     'assets': {
         'point_of_sale._assets_pos': [
-        'product_owner_pos/static/src/js/pos_order.js',
-        'product_owner_pos/static/src/js/pos_order_line.js',
         'product_owner_pos/static/src/xml/pos_orderline.xml',]}
 }

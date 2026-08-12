@@ -9,19 +9,10 @@ class ProductTemplate(models.Model):
     @api.model
     def _load_pos_data_fields(self, config_id):
         """
-        Adds the 'age' field to the list of fields loaded into the POS.
+        Adds the 'product_owner' field to the list of fields loaded into the POS.
         """
         data = super()._load_pos_data_fields(config_id)
         print("data before", data)
         data += ['product_owner_id']
         print("data after", data)
         return data
-
-
-    # def _loader_params_product_product(self):
-    #     print("zxcvbnm,.")
-    #     result = super()._loader_params_product_product()
-    #     print("result bfr", result)
-    #     result["search_params"]["fields"].append("product_owner_id")
-    #     # print("result aftr", result)
-    #     return result
