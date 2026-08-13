@@ -3,5 +3,5 @@ access_material_request_manager,access.material.request.manager,material_request
 access_material_request_head,access.material.request.head,material_request.model_material_request,material_request.group_requisition_head,1,1,1,1
 access_material_request_users,access.material.request.users,material_request.model_material_request,material_request.group_requisition_users,1,1,1,0
 
-
 access_material_information,access.material.information,material_request.model_material_information,base.group_user,1,1,1,1
+access_material_request_manager,access.material.request.manager,material_request.model_material_request,base.group_user,1,1,1,1

@@ -12,6 +12,7 @@
    'installable': True,
     'assets': {
         'point_of_sale._assets_pos': [
-            'session_discount_pos/static/src/js/order_payment_validation.js'],}
+            'session_discount_pos/static/src/js/pos_payment_validation.js',
+        ],}
 }
 
