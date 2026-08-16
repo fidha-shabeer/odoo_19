@@ -26,7 +26,6 @@
                                 <field name="modified_by"/>
                                 <field name="modified_on"/>
                                 <field name="change_notes"/>
-                                <field name="bom_id"/>
                             </group>
 
                         </group>
