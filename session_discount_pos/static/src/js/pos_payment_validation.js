@@ -47,7 +47,10 @@ patch(PosStore.prototype, {
         let orderlines = order.lines;
         console.log("orderlines", orderlines);
 
-        if (orderlines) {
+        let overall_discount=0;
+
+        while(max_limit>1){
+            if (orderlines) {
             let total = 0;
             orderlines.forEach(line => {
                 if (line.productProductPrice) {
@@ -67,7 +70,7 @@ patch(PosStore.prototype, {
             globalDisc_price = unitTotal * globalDisc / 100;
             console.log("global price", globalDisc_price);
 
-            let overall_discount = discount + globalDisc_price + current_total;
+            overall_discount = discount + globalDisc_price + current_total;
             console.log("Overall discount", overall_discount);
             console.log('global',globalDisc_price);
             console.log('current total',current_total);
@@ -80,6 +83,41 @@ patch(PosStore.prototype, {
                 remaining_discount = 0;
             }
             console.log("remaining discount",remaining_discount)
+
+        }
+        // if (orderlines) {
+        //     let total = 0;
+        //     orderlines.forEach(line => {
+        //         if (line.productProductPrice) {
+        //             total += line.productProductPrice;
+        //             console.log("each", line.productProductPrice);
+        //         }
+        //         ;
+        //
+        //     });
+        //
+        //     console.log("total amount", total);
+        //     let unitTotal = 0;
+        //     unitTotal = total;
+        //     console.log("unit total price:", unitTotal);
+        //
+        //     let globalDisc_price = 0;
+        //     globalDisc_price = unitTotal * globalDisc / 100;
+        //     console.log("global price", globalDisc_price);
+        //
+        //     let overall_discount = discount + globalDisc_price + current_total;
+        //     console.log("Overall discount", overall_discount);
+        //     console.log('global',globalDisc_price);
+        //     console.log('current total',current_total);
+        //     console.log('discount line',discount);
+        //
+        //     if (remaining_discount && remaining_discount > 0) {
+        //         remaining_discount = max_limit - overall_discount;
+        //     }
+        //     else {
+        //         remaining_discount = 0;
+        //     }
+        //     console.log("remaining discount",remaining_discount)
 
 
             if (max_limit && max_limit < overall_discount) {

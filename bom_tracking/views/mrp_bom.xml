@@ -12,7 +12,7 @@
                         type="object"
                         icon="fa-book"
                         name="action_history">
-                    <field string="BOM History" name="bom_history"
+                    <field  name="bom_count" string="BOM History"
                            widget="statinfo"/>
                 </button>
             </xpath>
