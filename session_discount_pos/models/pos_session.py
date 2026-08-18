@@ -5,7 +5,7 @@ class PosSession(models.Model):
     _inherit = 'pos.session'
 
     max_discount_limit = fields.Float(string="Maximum Discount Limit",compute="_compute_max_discount_limit")
-    current_total_discount = fields.Float(string="Current Total Discount",compute="_compute_current_discount")
+    current_total_discount = fields.Float(string="Current Total Discount",compute="_compute_current_discount",store=True)
 
     def get_param(self):
         params = self.env['ir.config_parameter'].sudo()
@@ -36,32 +36,40 @@ class PosSession(models.Model):
             rec.max_discount_limit = max_discount
             print(rec.max_discount_limit,"max_discount xxxxxxxxx")
 
+    @api.depends('order_ids.global_discount_amount','order_ids.discount_amount')
     def _compute_current_discount(self):
-        print("_compute_current_discount")
-        order = self.env['pos.order.line'].search([('order_id.session_id','=',self.id)])
-        print(order)
-
-        # am = order.get_total_discount
-
-        amount = 0
-        for line in self.env['pos.order.line'].search(
-                [('order_id', 'in', self._get_closed_orders().ids),
-                 ('discount', '>', 0)]):
-            amount += line._get_discount_amount()
-        print(amount,"am")
-
-        demo=self.env['pos.order.line'].search(
-            [('order_id', 'in', self._get_closed_orders().ids),
-             ('discount', '>', 0)])
-        print(demo,"demo")
-
-        # discounts = order.mapped('discount')
-        # print("discounts", discounts)
-        # sum_discounts = sum(discounts)
-        # print("sum_discounts", sum_discounts)
-
         for rec in self:
-            rec.current_total_discount = amount
+            print("_compute_current_discount")
+            order = self.env['pos.order.line'].search([('order_id.session_id','=',self.id)])
+            print(order)
+
+            # am = order.get_total_discount
+
+            amount = 0
+            for line in self.env['pos.order.line'].search(
+                    [('order_id', 'in', self._get_closed_orders().ids),
+                    ('discount', '>', 0)]):
+                amount += line._get_discount_amount()
+            print(amount,"am")
+
+            demo=self.env['pos.order.line'].search(
+                [('order_id', 'in', self._get_closed_orders().ids),
+                 ('discount', '>', 0)])
+            print(demo,"demo")
+
+            orders = self._get_closed_orders()
+            print("orders",orders)
+
+            sum_global = 0
+            for order in orders:
+                print("discount amount global : ",order.global_discount_amount)
+                sum_global += order.global_discount_amount
+                print("sum_global",sum_global)
+
+            total_discount = sum_global + amount
+            print("total_discount",total_discount)
+
+            rec.current_total_discount = total_discount
 
 
 

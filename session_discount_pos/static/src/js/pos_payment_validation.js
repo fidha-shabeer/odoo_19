@@ -12,130 +12,70 @@ patch(PosStore.prototype, {
         console.log("Order", order)
 
         const quantity = order.totalQuantity
-        console.log("qty", quantity)
+        // console.log("qty", quantity)
         const amount = order.displayPrice;
-        console.log("amt", amount)
+        // console.log("amt", amount)
 
         const max_limit = order.session_id.max_discount_limit;
         console.log("Max Limit", max_limit)
 
         const discount = order.getTotalDiscount();
         console.log("disc", discount)
+        order.set_discount_amount(discount);
 
-        const total = order.session_id.current_total_discount;
-        console.log("current discount total", total);
-
-        let current_total = discount + total;
-        console.log("current sum discount", current_total)
-
-        let remaining_discount = max_limit - current_total;
-        console.log("remaining", remaining_discount)
-
-        let priceIncl = order.currencyDisplayPriceIncl;
-        console.log("price incl", priceIncl)
-
-        let priceExcl = order.currencyDisplayPriceExcl;
-        console.log("price excl", priceExcl);
+        const total_disc = order.session_id.current_total_discount;
+        console.log("current discount total", total_disc);
 
         let globalDisc = order.globalDiscountPc;
         console.log("global disc", globalDisc);
 
-        console.log("this", this)
+        // console.log("this", this)
 
-        console.log("next", order.lines);
+        // console.log("next", order.lines);
 
         let orderlines = order.lines;
-        console.log("orderlines", orderlines);
+        // console.log("orderlines", orderlines);
 
-        let overall_discount=0;
-
-        while(max_limit>1){
-            if (orderlines) {
-            let total = 0;
+        let total = 0;
+        let unitTotal = 0;
+        if (orderlines) {
             orderlines.forEach(line => {
                 if (line.productProductPrice) {
                     total += line.productProductPrice;
-                    console.log("each", line.productProductPrice);
+                    // console.log("each", line.productProductPrice);
                 }
                 ;
 
             });
-
-            console.log("total amount", total);
-            let unitTotal = 0;
+            // console.log("total amount", total);
             unitTotal = total;
             console.log("unit total price:", unitTotal);
-
-            let globalDisc_price = 0;
-            globalDisc_price = unitTotal * globalDisc / 100;
-            console.log("global price", globalDisc_price);
-
-            overall_discount = discount + globalDisc_price + current_total;
-            console.log("Overall discount", overall_discount);
-            console.log('global',globalDisc_price);
-            console.log('current total',current_total);
-            console.log('discount line',discount);
-
-            if (remaining_discount && remaining_discount > 0) {
-                remaining_discount = max_limit - overall_discount;
-            }
-            else {
-                remaining_discount = 0;
-            }
-            console.log("remaining discount",remaining_discount)
-
-        }
-        // if (orderlines) {
-        //     let total = 0;
-        //     orderlines.forEach(line => {
-        //         if (line.productProductPrice) {
-        //             total += line.productProductPrice;
-        //             console.log("each", line.productProductPrice);
-        //         }
-        //         ;
-        //
-        //     });
-        //
-        //     console.log("total amount", total);
-        //     let unitTotal = 0;
-        //     unitTotal = total;
-        //     console.log("unit total price:", unitTotal);
-        //
-        //     let globalDisc_price = 0;
-        //     globalDisc_price = unitTotal * globalDisc / 100;
-        //     console.log("global price", globalDisc_price);
-        //
-        //     let overall_discount = discount + globalDisc_price + current_total;
-        //     console.log("Overall discount", overall_discount);
-        //     console.log('global',globalDisc_price);
-        //     console.log('current total',current_total);
-        //     console.log('discount line',discount);
-        //
-        //     if (remaining_discount && remaining_discount > 0) {
-        //         remaining_discount = max_limit - overall_discount;
-        //     }
-        //     else {
-        //         remaining_discount = 0;
-        //     }
-        //     console.log("remaining discount",remaining_discount)
-
-
-            if (max_limit && max_limit < overall_discount) {
-                this.dialog.add(AlertDialog, {
-                    title: _t("Warning"),
-                    body: _t("the order discount exceeded the session discount limit, only %s discount left",remaining_discount),
-                });
-                return;
-            }
-
 
         }
         ;
 
+        let globalDisc_price = 0;
+        globalDisc_price = unitTotal * globalDisc / 100;
+        console.log("global price", globalDisc_price);
 
-        let DiscGlobal = order.globalDiscountPc;
-        console.log("global disc", DiscGlobal);
+        order.set_global_discount_amount(globalDisc_price);
 
+        let current_total = globalDisc_price + discount + total_disc;
+        console.log("current total discount till now: ", current_total);
+
+
+        // let remaining_balance = max_limit - current_total;
+        // console.log("balance",remaining_balance);
+
+        if (current_total > max_limit) {
+            let remaining_discount = current_total - total_disc;
+            console.log("current balance", remaining_discount)
+            this.dialog.add(AlertDialog, {
+                title: _t("Warning"),
+                body: _t("the order discount exceeded the session discount limit, only %s discount left", remaining_discount),
+            });
+            return;
+        }
 
         return super.pay();
 
