@@ -24,23 +24,24 @@ class PosSession(models.Model):
         print(max_discount, "max_discount xxxxxxxxx")
         return res
 
-
+    @api.depends('current_total_discount')
     def _compute_max_discount_limit(self):
         print("_compute_max_discount_limit")
         params = self.env['ir.config_parameter'].sudo()
         print("params", params)
-        max_discount = params.get_param(
-            'session_discount_pos.max_discount_limit')
+        max_discount = float(params.get_param(
+            'session_discount_pos.max_discount_limit'))
         print(max_discount, "max_discount xxxxxxxxx")
         for rec in self:
-            rec.max_discount_limit = max_discount
+            rec.max_discount_limit = max_discount - rec.current_total_discount
             print(rec.max_discount_limit,"max_discount xxxxxxxxx")
 
     @api.depends('order_ids.global_discount_amount','order_ids.discount_amount')
     def _compute_current_discount(self):
         for rec in self:
             print("_compute_current_discount")
-            order = self.env['pos.order.line'].search([('order_id.session_id','=',self.id)])
+
+            order = self.env['pos.order.line'].search([('order_id.session_id','in',self.ids)])
             print(order)
 
             # am = order.get_total_discount
@@ -72,6 +73,11 @@ class PosSession(models.Model):
             rec.current_total_discount = total_discount
 
 
+    def max_limit_balance(self):
+        return {
+            'max_balance' : self.max_discount_limit,
+        }
+
 
     @api.model
     def _load_pos_data_fields(self, config_id):
@@ -83,4 +89,9 @@ class PosSession(models.Model):
         data += ['max_discount_limit','current_total_discount']
         print("data after", data)
         return data
+
+    def loader_params_pos_payment_method(self):
+        result = super().loader_params_pos_payment_method()
+        result['search_params']['fields'].append('max_discount_limit')
+        return result
 

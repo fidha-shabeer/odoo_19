@@ -1,9 +1,12 @@
-import {
-    PaymentScreen
-} from "@point_of_sale/app/screens/payment_screen/payment_screen";
+import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import {patch} from "@web/core/utils/patch";
 
 patch(PaymentScreen.prototype, {
+
+    setup() {
+        super.setup(...arguments);
+        this.orm = this.env.services.orm;
+    },
 
     async validateOrder(isForceValidate) {
         const order = this.currentOrder;
@@ -18,16 +21,6 @@ patch(PaymentScreen.prototype, {
         const total_disc = order.session_id.current_total_discount;
         console.log("current discount total", total_disc);
 
-        let globalDisc = order.globalDiscountPc;
-        console.log("global disc", globalDisc);
-
-        // console.log("this", this)
-
-        // console.log("next", order.lines);
-
-        let orderlines = order.lines;
-        // console.log("orderlines", orderlines);
-
         let total = 0;
         let globalDisc_price = 0;
         let unitTotal = 0;
@@ -35,12 +28,11 @@ patch(PaymentScreen.prototype, {
             orderlines.forEach(line => {
                 if (line.productProductPrice) {
                     total += line.productProductPrice;
-                    // console.log("each", line.productProductPrice);
                 }
                 ;
 
             });
-            // console.log("total amount", total);
+
             unitTotal = total;
             console.log("unit total price:", unitTotal);
 
@@ -55,14 +47,26 @@ patch(PaymentScreen.prototype, {
         let overall_discount = globalDisc_price + discount + total_disc;
         console.log("current total discount till now: ", overall_discount);
 
-
         globalDisc_price = unitTotal * globalDisc / 100;
         console.log("global price", globalDisc_price);
 
         let remaining_balance = max_limit - overall_discount;
         console.log("balance", remaining_balance);
 
-        // Continue normal validation
+        const result = await this.orm.call("pos.session", "max_limit_balance", [order.session_id.id]);
+        console.log("result", result)
+
+        let max_balance = 0;
+        max_balance = result.max_balance;
+        console.log("max balance", max_balance)
+
+        let current = globalDisc_price + discount;
+        console.log("current discount",current)
+
+        let balance = 0;
+        balance = max_balance - current;
+        console.log("current balance",balance)
+
         await super.validateOrder(isForceValidate);
     },
 });

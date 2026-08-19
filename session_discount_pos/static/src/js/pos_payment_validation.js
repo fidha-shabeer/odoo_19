@@ -6,15 +6,17 @@ import {
 } from "@web/core/confirmation_dialog/confirmation_dialog";
 import {_t} from "@web/core/l10n/translation";
 
+
 patch(PosStore.prototype, {
+    setup() {
+        super.setup(...arguments);
+        this.orm = this.env.services.orm;
+    },
     async pay() {
+
+
         const order = this.getOrder();
         console.log("Order", order)
-
-        const quantity = order.totalQuantity
-        // console.log("qty", quantity)
-        const amount = order.displayPrice;
-        // console.log("amt", amount)
 
         const max_limit = order.session_id.max_discount_limit;
         console.log("Max Limit", max_limit)
@@ -29,12 +31,8 @@ patch(PosStore.prototype, {
         let globalDisc = order.globalDiscountPc;
         console.log("global disc", globalDisc);
 
-        // console.log("this", this)
-
-        // console.log("next", order.lines);
-
         let orderlines = order.lines;
-        // console.log("orderlines", orderlines);
+        console.log("orderlines", orderlines);
 
         let total = 0;
         let unitTotal = 0;
@@ -42,12 +40,12 @@ patch(PosStore.prototype, {
             orderlines.forEach(line => {
                 if (line.productProductPrice) {
                     total += line.productProductPrice;
-                    // console.log("each", line.productProductPrice);
+                    console.log("each", line.productProductPrice);
                 }
                 ;
 
             });
-            // console.log("total amount", total);
+
             unitTotal = total;
             console.log("unit total price:", unitTotal);
 
@@ -63,22 +61,30 @@ patch(PosStore.prototype, {
         let current_total = globalDisc_price + discount + total_disc;
         console.log("current total discount till now: ", current_total);
 
+        let current_discount = globalDisc_price + discount
+        current_discount = globalDisc_price + discount
+        console.log("current discount",current_total)
 
-        // let remaining_balance = max_limit - current_total;
-        // console.log("balance",remaining_balance);
 
-        if (current_total > max_limit) {
-            let remaining_discount = current_total - total_disc;
-            console.log("current balance", remaining_discount)
+        const result = await this.orm.call("pos.session", "max_limit_balance", [order.session_id.id]);
+        console.log("result", result)
+
+        let max_balance = 0;
+        max_balance = result.max_balance;
+        console.log("max balance", max_balance)
+
+
+        if (current_discount > max_balance) {
             this.dialog.add(AlertDialog, {
                 title: _t("Warning"),
-                body: _t("the order discount exceeded the session discount limit, only %s discount left", remaining_discount),
+                body: _t("the order discount exceeded the session discount limit, only %s discount left", max_balance),
             });
             return;
         }
 
-        return super.pay();
 
-    }
+        return super.pay();
+    },
 
 })
+
