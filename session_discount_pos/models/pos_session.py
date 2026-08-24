@@ -90,8 +90,5 @@ class PosSession(models.Model):
         print("data after", data)
         return data
 
-    def loader_params_pos_payment_method(self):
-        result = super().loader_params_pos_payment_method()
-        result['search_params']['fields'].append('max_discount_limit')
-        return result
+
 

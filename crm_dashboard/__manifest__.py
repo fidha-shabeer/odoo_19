@@ -3,7 +3,7 @@
     'name': 'CRM Dashboard',
     'summary': 'CRM Dashboard summary',
     'version': '1.0',
-    'depends': ['base', 'crm'],
+    'depends': ['base', 'crm','sale_management'],
     'application': True,
     'sequence': -1,
     'installable': True,

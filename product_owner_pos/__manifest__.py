@@ -8,9 +8,9 @@
     'application': True,
     'sequence': -1,
     'depends': ['base','pos_restaurant'],
-    'data': ["views/product_template.xml",
-             ],
-    'assets': {
-        'point_of_sale._assets_pos': [
-        'product_owner_pos/static/src/xml/pos_orderline.xml',]}
+    # 'data': ["views/product_template.xml",
+    #          ],
+    # 'assets': {
+    #     'point_of_sale._assets_pos': [
+    #     'product_owner_pos/static/src/xml/pos_orderline.xml',]}
 }

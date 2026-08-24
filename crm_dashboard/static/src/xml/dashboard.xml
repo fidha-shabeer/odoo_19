@@ -20,7 +20,7 @@
                     <div id="leads" class="col-md-4 col-sm-6 tot_tasks oh-payslip"
                          style=" overflow: hidden; padding-top: 30px;">
                         <div class="oh-card" style="box-shadow:2px 4px 8px 2px rgba(0,0,0.3,0.2);
-       display: flex; justify-content: center;" role="button">
+       display: flex; justify-content: center;" role="button" t-on-click="OpenLead">
                             <div class="oh-card-body"
                                  style="padding: 5px 5px; float: left; width: 100%;
                  height: auto; box-sizing: border-box; margin: 0;">
@@ -166,7 +166,7 @@
                                             <div class="stat_count_ex_rev"
                                                  style="font-size: 17px;">
                                                 <span id="templates">
-                                                    <div id="my_win_ratio"/>
+                                                    <div id="my_ratio"/>
                                                 </span>
                                             </div>
                                             <div class="stat-head"
@@ -179,6 +179,53 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-6 m-0 p-0">
+                    <div class="shadow-sm border m-2 p-4 bg-white">
+                        <h3 class="text-primary fw-bold">Lost Opportunity/Lead Graph</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                </div>
+                <canvas t-ref="chart"/>
+
+                <div class="col-lg-6 m-0 p-0">
+                    <div class="shadow-sm border m-2 p-4 bg-white">
+                        <h3 class="text-primary fw-bold">Activity</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 m-0 p-0">
+                    <div class="shadow-sm border m-2 p-4 bg-white">
+                        <h3 class="text-primary fw-bold">Leads By Month</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 m-0 p-0">
+                    <div class="shadow-sm border m-2 p-4 bg-white">
+                        <h3 class="text-primary fw-bold">Leads By Medium</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 m-0 p-0">
+                    <div class="shadow-sm border m-2 p-4 bg-white">
+                        <h3 class="text-primary fw-bold">Leads By Campaign</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </t>
