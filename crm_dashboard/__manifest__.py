@@ -15,6 +15,7 @@
         'web.assets_backend': [
             'crm_dashboard/static/src/js/dashboard.js',
             'crm_dashboard/static/src/xml/dashboard.xml',
+            'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.js',
         ],
     },
 }
