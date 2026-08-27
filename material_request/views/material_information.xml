@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="material_info_list_view" model="ir.ui.view">
+        <field name="name">material.info.list.view</field>
+        <field name="model">material.information</field>
+        <field name="arch" type="xml">
+            <list string="Material Information list">
+                <field name="product_id"/>
+                <field name="requested_qty"/>
+                <field name="request_type"/>
+                <field name="vendor_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="material_info_form_view" model="ir.ui.view">
+        <field name="name">material.info.form.view</field>
+        <field name="model">material.information</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="product_id"/>
+                            <field name="requested_qty"/>
+                            <field name="request_type"/>
+                            <field name="vendor_id" widget="many2many_tags"/>
+                            <field name="source_id" invisible="request_type!='internal_transfer'"/>
+                            <field name="destination_id" invisible="request_type!='internal_transfer'"/>
+<!--                            <field name="operation_type"  invisible="request_type!='internal_transfer'"/>-->
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="material_information_action" model="ir.actions.act_window">
+        <field name="name">Material Information</field>
+        <field name="res_model">material.information</field>
+        <field name="view_mode">form,list</field>
+        <field name="help" type="html">
+            <p class="o_view_noncontent_smiling_face">No Material Information added!!</p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="brand_list_view" model="ir.ui.view">
+        <field name="name">brand.list.view</field>
+        <field name="model">product.brand</field>
+        <field name="arch" type="xml">
+            <list string="Product Brand list">
+                <field name="product_brand"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="brand_form_view" model="ir.ui.view">
+        <field name="name">brand.form.view</field>
+        <field name="model">product.brand</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="product_brand"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="create_brand_action" model="ir.actions.act_window">
+        <field name="name">Brand Menu</field>
+        <field name="res_model">product.brand</field>
+        <field name="view_mode">form,list</field>
+        <field name="help" type="html">
+           <p class="o_view_noncontent_smiling_face">No!!</p>
+       </field>
+    </record>
+
+    <menuitem id="brand_menu" name="Product Brand"
+              parent="sale.sale_menu_root" sequence="11"
+              action="product_brand.create_brand_action"/>
+</odoo>

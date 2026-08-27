@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="page_recurring_subscription"
+                  name="Recurring Subscription Page">
+            <t t-call="website.layout">
+                <section
+                        class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24"
+                        data-vcss="001" data-snippet="s_title"
+                        data-scroll-background-ratio="1">
+                    <span class="s_parallax_bg oe_img_bg"
+                          style="background-image: url('/web/image/website.s_parallax_default_image'); background-position: 50% 0;"/>
+                    <div class="o_we_bg_filter bg-black-50"/>
+                    <div class="container">
+                        <h1>Recurring Subscription</h1>
+                    </div>
+                </section>
+                <section class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-5">
+                            <p class="lead text-center">
+                                Hello,<t t-esc="user_name"/>! create your
+                                recurring subscription here!.
+                            </p>
+                            <div class="card shadow rounded-3 border-0">
+                                <div class="card-body p-4">
+                                    <h3 class="mb-4 text-muted text-center">
+                                        Create New Subscription
+                                    </h3>
+                                    <!--                                    <form action="/subscription-create" method="post">-->
+                                    <form t-att-action="subscription and ('/subscription-save-changes/%s' %subscription.id) or '/subscription-create'" class="subscription-form"
+                                          method="post">
+
+                                        <input type="hidden"
+                                               name="subscription_id"/>
+
+                                        <label for="s4" class="form-label">
+                                            User
+                                        </label>
+                                        <input type="text" class="form-control"
+                                               name="partner_id"
+                                               t-att-value="'%s' %user_name if not env.user.has_group('base.group_public') else '' ">
+                                        </input>
+
+                                        <br></br>
+                                        <br></br>
+                                        <!--                                        <label for="sub3" class="form-label">-->
+                                        <!--                                            Partner-->
+                                        <!--                                        </label>-->
+                                        <!--                                        <select id="sub3" name="partner_id"-->
+                                        <!--                                                required=""-->
+                                        <!--                                                class="form-control">-->
+                                        <!--                                            <option value=""></option>-->
+                                        <!--                                            <option-->
+                                        <!--                                                    t-foreach="partners"-->
+                                        <!--                                                    t-as="partner"-->
+                                        <!--                                                    t-att-value="partner.id"-->
+                                        <!--                                                    t-att-selected='subscription and subscription.partner_id.id==partner.id'-->
+                                        <!--                                                    t-esc="partner.name"/>-->
+                                        <!--                                        </select>-->
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="establishment_id" class="form-label">
+                                            Establishment ID
+                                        </label>
+                                        <input type="text" id="establishment_id"
+                                               name="establishment_id"
+                                               required=""
+                                               t-att-value="subscription.id_establishment if subscription else ''"
+                                               class="form-control"/>
+                                        <p id="est_error" class="text-danger"></p>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label class="form-label" for="sub3">
+                                            Product
+                                        </label>
+                                        <select id="sub3" name="product_id"
+                                                class="form-control"
+                                                required="">
+                                            <option value=""></option>
+                                            <option
+                                                    t-foreach="products"
+                                                    t-as="product"
+                                                    t-att-value="product.id"
+                                                    t-att-selected="subscription and subscription.product_id.id==product.id"
+                                                    t-out="product.display_name"/>
+                                        </select>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="sub4" class="form-label">
+                                            Date
+                                        </label>
+                                        <input type="date" id="sub4" name="date"
+                                               required=""
+                                               t-att-value="subscription.date if subscription else ''"
+                                               class="form-control"/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="amount_id" class="form-label">
+                                            Recurring Amount $
+                                        </label>
+                                        <input type="number"
+                                               name="recurring_amount"
+                                               class="form-control" id="amount_id"
+                                               t-att-value="subscription.recurring_amount if subscription else ''"
+                                               required=""/>
+                                        <p id="amt_error" class="text-danger"></p>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="sub6" class="form-label">Is
+                                            Lead
+                                        </label>
+                                        <input type="checkbox" checked="no"
+                                               id="sub6" name="is_lead"
+                                               t-att-value="subscription.is_leads if subscription else ''"
+                                        />
+                                        <br></br>
+                                        <br></br>
+
+                                        <!--                                        <input type="submit" value="Submit"-->
+                                        <!--                                               class="btn btn-primary"-->
+                                        <!--                                               formaction="/subscription-create"/>-->
+
+
+                                        <input type="submit"
+                                               t-att-value="'update' if subscription else 'create'"
+                                               class="btn btn-primary"/>
+
+
+                                        <br></br>
+                                        <br></br>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </t>
+        </template>
+
+        <template id="edit_recurring_subscription"
+                  name="Edit Recurring Subscription Page">
+            <t t-call="website.layout">
+                <section
+                        class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24"
+                        data-vcss="001" data-snippet="s_title"
+                        data-scroll-background-ratio="1">
+                    <span class="s_parallax_bg oe_img_bg"
+                          style="background-image: url('/web/image/website.s_parallax_default_image'); background-position: 50% 0;"/>
+                    <div class="o_we_bg_filter bg-black-50"/>
+                    <div class="container">
+                        <h1>Edit Recurring Subscription</h1>
+                    </div>
+                </section>
+                <section class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-5">
+                            <p class="lead text-center">
+                                Hello,<t t-esc="user_name"/>! create your
+                                recurring subscription here!.
+                            </p>
+                            <div class="card shadow rounded-3 border-0">
+                                <div class="card-body p-4">
+                                    <h3 class="mb-4 text-muted text-center">
+                                        Create New Subscription
+                                    </h3>
+                                    <form action="/subscription-create"
+                                          method="post">
+                                        <br></br>
+
+                                        <input type="hidden"
+                                               name="subscription_id"
+                                               t-att-value="subscription.id"/>
+
+                                        <label for="s1" class="form-label">
+                                            Partner
+                                        </label>
+                                        <input id="sub3" name="partner_id"
+                                               required=""
+                                               t-att-value="subscription.partner_id.name"
+                                               class="form-control">
+                                        </input>
+
+                                        <br></br>
+                                        <br></br>
+
+
+                                        <label for="s2" class="form-label">
+                                            Establishment ID
+                                        </label>
+                                        <input type="text" id="sub2"
+                                               name="establishment_id"
+                                               required=""
+                                               t-att-value="subscription.id_establishment if subscription else ''"
+                                               class="form-control"/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label class="form-label" for="sub3">
+                                            Product
+                                        </label>
+                                        <input id="sub3" name="product_id"
+                                               class="form-control"
+                                               t-att-value=""
+                                               required="">
+                                            <option value=""></option>
+                                            <option
+                                                    t-foreach="products"
+                                                    t-as="product"
+                                                    t-att-value="product.id"
+                                                    t-out="product.display_name"/>
+                                        </input>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="sub4" class="form-label">
+                                            Date
+                                        </label>
+                                        <input type="date" id="sub4" name="date"
+                                               required=""
+                                               t-att-value="subscription.date"
+                                               class="form-control"/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="sub5" class="form-label">
+                                            Recurring Amount $
+                                        </label>
+                                        <input type="number"
+                                               name="recurring_amount"
+                                               class="form-control" id="sub5"
+                                               t-att-value="subscription.recurring_amount"
+                                               required=""/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="sub6" class="form-label">Is
+                                            Lead
+                                        </label>
+                                        <input type="checkbox" checked="no"
+                                               id="sub6" name="is_lead"
+                                               t-att-value="subscription.is_leads"
+                                        />
+                                        <br></br>
+                                        <br></br>
+
+                                        <input type="submit" value="Submit"
+                                               class="btn btn-primary"
+                                               formaction="/subscription-create"/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </t>
+        </template>
+
+        <template id="all_subscription_list" name="All Subscription List">
+            <t t-call="website.layout">
+                <div class="container mt-5"/>
+                <h1 class="text-center mb-4">Recurring Subscription list</h1>
+                <form action="/bill-create" method="post">
+                    <table class="table mt-3" style="page-break-after:always;">
+                        <thead>
+                            <!--                        <t t-if="not env.user.has_group('base.group_public')">-->
+                            <a t-attf-href="/recurring-form"
+                               class="btn btn-primary">Create
+                                Subscription
+                            </a>
+
+                            <button class="btn btn-primary"
+                                    formaction="/bill-create" >Bill Run
+                            </button>
+
+
+                            <!--                            <button class="btn btn-primary">Bill</button>-->
+                            <!--                        </a>-->
+                            <!--                        </t>-->
+
+
+                            <tr class="text-start">
+                                <th>Check</th>
+                                <th>Sequence No.</th>
+                                <th>Partner</th>
+                                <th>Establishment ID</th>
+                                <th>Product</th>
+                                <th>Date</th>
+                                <th>Recurring Amount</th>
+                                <th>State</th>
+                                <t t-if="request.env.user.has_group('recurring_subscription.subscription_manager')">
+                                    <th>Action</th>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="subscriptions" t-as="subscription">
+                                <td>
+                                    <input type="checkbox" id="check1"
+                                           t-att-value="subscription.id"
+                                           name="subscription_ids"/>
+                                </td>
+                                <td>
+                                    <t t-esc="subscription.order_seq"/>
+                                </td>
+                                <td>
+                                    <t t-esc="subscription.partner_id.name"/>
+                                </td>
+                                <td>
+                                    <t t-out="subscription.id_establishment"/>
+                                </td>
+                                <td>
+                                    <t t-esc="subscription.product_id.name"/>
+                                </td>
+                                <td>
+                                    <t t-out="subscription.date"/>
+                                </td>
+                                <td>
+                                    <t t-out="subscription.recurring_amount"/>
+                                </td>
+                                <td>
+                                     <t t-esc="dict(subscriptions._fields['status'].selection).get(subscription.status)"/>
+<!--                                    <t t-out="subscription.status"/>-->
+                                </td>
+                                <t t-if="request.env.user.has_group('recurring_subscription.subscription_manager')">
+                                    <td>
+                                        <a t-attf-href="/subscription-edit/#{subscription.id}">
+                                            <button class="btn btn-primary">Edit
+                                            </button>
+                                        </a>
+                                        <a t-attf-href="/subscription-delete/#{subscription.id}">
+                                            <button class="btn btn-primary">
+                                                Delete
+                                            </button>
+                                        </a>
+
+                                    </td>
+                                </t>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </t>
+        </template>
+
+
+        <template id="edit_recurring_subscription"
+                  name="Recurring Subscription Edit">
+            <t t-call="website.layout">
+                <section
+                        class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24"
+                        data-vcss="001" data-snippet="s_title"
+                        data-scroll-background-ratio="1">
+                    <span class="s_parallax_bg oe_img_bg"
+                          style="background-image: url('/web/image/website.s_parallax_default_image'); background-position: 50% 0;"/>
+                    <div class="o_we_bg_filter bg-black-50"/>
+                    <div class="container">
+                        <h1>Recurring Subscription Edit</h1>
+                    </div>
+                </section>
+                <section class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-5">
+                            <p class="lead text-center">
+                                Hello,<t t-esc="user_name"/>! Edit your
+                                recurring subscription here!.
+                            </p>
+                            <div class="card shadow rounded-3 border-0">
+                                <div class="card-body p-4">
+                                    <h3 class="mb-4 text-muted text-center">
+                                        Edit Subscription
+                                    </h3>
+                                    <form action="/subscription-create"
+                                          method="post">
+                                        <br></br>
+
+                                        <label for="sub3" class="form-label">
+                                            Partner
+                                        </label>
+                                        <select id="sub3" name="partner_id"
+                                                required=""
+                                                class="form-control"
+                                                data-fill-with="partner_id">
+                                            <option value=""></option>
+                                            <option
+                                                    t-foreach="partners"
+                                                    t-as="partner"
+                                                    t-att-value="partner.id"
+                                                    t-out="partner.name"/>
+                                        </select>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="sub2" class="form-label">
+                                            Establishment ID
+                                        </label>
+                                        <input type="text" id="sub2"
+                                               name="establishment_id"
+                                               required=""
+                                               class="form-control"
+                                               data-fill-with="id_establishment"
+                                        />
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label class="form-label" for="sub3">
+                                            Product
+                                        </label>
+                                        <select id="sub3" name="product_id"
+                                                class="form-control"
+                                                required=""
+                                                data-fill-with="product_id">
+                                            <option value=""></option>
+                                            <option
+                                                    t-foreach="products"
+                                                    t-as="product"
+                                                    t-att-value="product.id"
+                                                    t-out="product.display_name"/>
+                                        </select>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="sub4" class="form-label">
+                                            Date
+                                        </label>
+                                        <input type="date" id="sub4" name="date"
+                                               required=""
+                                               class="form-control"
+                                               data-fill-with="date"/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="sub5" class="form-label">
+                                            Recurring Amount $
+                                        </label>
+                                        <input type="number"
+                                               name="recurring_amount"
+                                               class="form-control" id="sub5"
+                                               required=""
+                                               data-fill-with="recurring_amount"/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="sub6" class="form-label">Is
+                                            Lead
+                                        </label>
+                                        <input type="checkbox" checked="no"
+                                               id="sub6" name="is_lead"/>
+                                        <br></br>
+                                        <br></br>
+
+                                        <input type="submit" value="Submit"
+                                               class="btn btn-primary"
+                                               formaction="/subscription-create"/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </t>
+        </template>
+
+
+        <template id="page_subscription_success"
+                  name="Recurring Subscription Page">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-12 text-center mt-5">
+                                <p>Your Form Successfully Submitted!</p>
+                                <br></br>
+                                <br></br>
+                                <a href="/recurring-odoo" role="button">Back to
+                                    create page
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+
+        <record id="recurring_menu" model="website.menu">
+            <field name="name">Recurring Subscription</field>
+            <field name="url">/recurring-odoo</field>
+            <field name="parent_id" ref="website.main_menu"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,23 @@
+<odoo>
+    <record id="click_purchase_form_view" model="ir.ui.view">
+        <field name="name">click.purchase.form.view</field>
+        <field name="model">product.template.click</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Order">
+                <group>
+                    <field name="quantity"/>
+                    <field name="price"/>
+                </group>
+                <footer>
+                    <button name="action_confirm_btn"
+                            string="Confirm"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

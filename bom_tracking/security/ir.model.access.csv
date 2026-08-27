@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+bom_tracking.access_bom_tracker,access_bom_tracker,bom_tracking.model_bom_tracker,base.group_user,1,1,1,1

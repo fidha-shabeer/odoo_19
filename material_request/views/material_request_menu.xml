@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- main menu -->
+    <menuitem id = "menu_material_request_root" name="Material Request" action="material_request_action"/>
+    <menuitem id="menu_material_info" name="Material Information"
+              parent="menu_material_request_root" action="material_information_action"/>
+</odoo>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="latest_credit_register" inherit_id="website.snippets" name="Latest Credit">
+        <xpath expr="//snippets[@id='snippet_groups']/*[1]" position="before">
+            <t snippet-group="basic_snippet" t-snippet="website.s_snippet_group" string="Latest Credits"/>
+        </xpath>
+        <xpath expr="//snippets[@id='snippet_structure']/*[1]" position="before">
+            <t t-snippet="recurring_subscription.latest_credit_template" string="Latest CRedit" group="basic_snippet"/>
+        </xpath>
+    </template>
+</odoo>

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data noupdate="1">
-    <record id="demo_product_id" model="product.template">
-        <field name="name">DEMO PRO</field>
-        <field name="default_code">DemoCode</field>
-        <field name="type">service</field>
-    </record>
+         <record id="demo_product_id" model="product.template">
+            <field name="name">DEMO PRO</field>
+            <field name="default_code">DemoCode</field>
+            <field name="type">service</field>
+        </record>
+        <record id="credit_produt_id" model="product.template">
+            <field name="name">Credit Amount</field>
+            <field name="default_code">creditCode</field>
+            <field name="type">service</field>
+        </record>
     </data>
 </odoo>
 
