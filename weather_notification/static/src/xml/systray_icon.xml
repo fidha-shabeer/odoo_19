@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+   <t t-name="systray_icon" owl="1">
+       <t t-set-slot="toggler">
+               <div class="new_icon">
+           <div class="icon_div">
+               <div class="toggle-icon" role="button">
+                   <i id='create_order'
+                      class="fa fa-cloud fa-1.5x"
+                      style="color: white; margin-bottom:10px; padding:13px;"
+                      role="img" aria-label="Sale/Purchase Order"/>
+               </div>
+           </div>
+       </div>
+          
+       </t>
+   </t>
+</templates>
