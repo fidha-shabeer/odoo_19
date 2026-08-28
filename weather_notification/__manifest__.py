@@ -2,10 +2,10 @@
 {
     'name': 'Weather Notification',
     'version': '1.0',
-    'depends': ['base','sale_management','purchase'],
-    # 'data': [
-    #
-    # ],
+    'depends': ['base'],
+    'data': [
+        'views/res_users.xml',
+    ],
     'application': True,
     'sequence': -1,
     'installable': True,

@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-   <t t-name="systray_icon" owl="1">
+   <t t-name="qr_icon" owl="1">
        <Dropdown>
               <div class="new_icon">
                   <div class="icon_div">
                       <div class="toggle-icon" role="button">
                             <i id='weather'
-                               class="fa fa-cloud"
-                               style="color: white; margin-bottom:10px; padding:13px; cursor: pointer;"
-                               role="img" aria-label="weather" t-on-click="showNotification"/>
+                               class="fa fa-qrcode"
+                               style="color: white; margin-bottom:10px; padding:13px;"
+                               role="img" aria-label="weather" t-on-click="GenerateQr"/>
                       </div>
                   </div>
               </div>
            <t t-set-slot="content">
                <DropdownItem>
-                   <div class="card text-dark bg-info mb-3" style="max-width: 18rem;">
-                      <div class="card-body">
-                          <h5 class="card-title">Weather Notification</h5>
-                          <p>Temperature : <t t-esc="state.temp"/></p>
-                          <p>Time : <t t-esc="state.time"/> </p>
-                          <p>Weather : <t t-esc="this.state.weather"/> </p>
-                          <p>Location : <t t-esc="this.state.location"/> </p>
-                          <p>Country : <t t-esc="this.state.country"/> </p>
-
+                   <div class="card text-light bg-info mb-3" style="max-width: 50rem;" data-bs-auto-close="outside">
+                      <div class="card-body" data-bs-auto-close="outside">
+                          <h5 class="card-title">QR CODE Generator</h5>
+                          <label for="qr_text">Enter Text to Generate QR:</label>
+                          <input type="text" id="qr_text" name="qr_text"/>
+                          <button type="submit" class="btn btn-primary">Generate QR</button>
                       </div>
                     </div>
                </DropdownItem>
