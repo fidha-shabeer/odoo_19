@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
    <t t-name="qr_icon" owl="1">
-       <Dropdown>
+<!--       <Dropdown>-->
               <div class="new_icon">
                   <div class="icon_div">
                       <div class="toggle-icon" role="button">
@@ -12,19 +12,19 @@
                       </div>
                   </div>
               </div>
-           <t t-set-slot="content">
-               <DropdownItem>
-                   <div class="card text-light bg-info mb-3" style="max-width: 50rem;" data-bs-auto-close="outside">
-                      <div class="card-body" data-bs-auto-close="outside">
-                          <h5 class="card-title">QR CODE Generator</h5>
-                          <label for="qr_text">Enter Text to Generate QR:</label>
-                          <input type="text" id="qr_text" name="qr_text"/>
-                          <button type="submit" class="btn btn-primary">Generate QR</button>
-                      </div>
-                    </div>
-               </DropdownItem>
-           </t>
-       </Dropdown>
+<!--           <t t-set-slot="content">-->
+<!--               <DropdownItem>-->
+<!--                   <div class="card text-light bg-info mb-3" style="max-width: 50rem;" data-bs-auto-close="outside">-->
+<!--                      <div class="card-body" data-bs-auto-close="outside">-->
+<!--                          <h5 class="card-title">QR CODE Generator</h5>-->
+<!--                          <label for="qr_text">Enter Text to Generate QR:</label>-->
+<!--                          <input type="text" id="qr_text" name="qr_text"/>-->
+<!--                          <button type="submit" class="btn btn-primary" t-on-click ="GenerateQrCode">Generate QR</button>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--               </DropdownItem>-->
+<!--           </t>-->
+<!--       </Dropdown>-->
    </t>
 </templates>
 

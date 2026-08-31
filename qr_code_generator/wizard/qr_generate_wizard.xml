@@ -1,0 +1,20 @@
+<odoo>
+   <record id="view_qrcode_wizard_form" model="ir.ui.view">
+       <field name="name">qrcode.wizard.form</field>
+       <field name="model">qr.generate.wizard</field>
+       <field name="arch" type="xml">
+           <form string="Generate QR Code">
+               <group>
+                   <field name="text"/>
+                   <field name="qr_code" widget="image" class="oe_avatar" readonly="1"/>
+               </group>
+               <footer>
+                   <button string="Download QR Code" type="object" name="action_download" class="btn-primary"/>
+                   <button string="Generate PDF" type="object" name="action_pdf" class="btn-primary"/>
+                   <button string="Reset" type="object" name="action_reset" class="btn-primary"/>
+                   <button string="Cancel" special="cancel"/>
+               </footer>
+           </form>
+       </field>
+   </record>
+</odoo>

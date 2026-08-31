@@ -9,20 +9,27 @@ import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 class QrGenerator extends Component {
     setup() {
         super.setup();
-        this.orm = useService('orm')
-        // this.state = useState({
-            // temp: 0,
-            // weather:0,
-            // latitude:0,
-            // longitude:0,
-            // country : null,
-            // location:null,
-            // time : 0.00,
-        // })
+        this.data;
+        this.orm = useService('orm');
+        this.action = useService("action");
+        this.state = useState({
+            qrcode : null,
+            text : '',
+        })
     }
 
     async GenerateQr() {
-        console.log("running QR");
+        console.log("hellooo");
+
+        this.action.doAction({
+           type: "ir.actions.act_window",
+           name: "Generate QR Code",
+           res_model: "qr.generate.wizard",
+           view_mode: "form",
+           views: [[false, "form"]],
+           target: "new",
+           });
+
 
     }
 

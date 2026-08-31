@@ -3,9 +3,12 @@
     'name': 'QR Code Generator',
     'version': '1.0',
     'depends': ['base'],
-    # 'data': [
-    #     'views/res_users.xml',
-    # ],
+    'data': [
+        'security/ir.model.access.csv',
+        'report/pdf_report.xml',
+        'report/ir_actions_report.xml',
+        'wizard/qr_generate_wizard.xml',
+    ],
     'application': True,
     'sequence': -1,
     'installable': True,
