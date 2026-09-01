@@ -7,13 +7,12 @@
                <group>
                    <field name="text"/>
                    <field name="qr_code" widget="image" class="oe_avatar" readonly="1"/>
-               </group>
-               <footer>
-                   <button string="Download QR Code" type="object" name="action_download" class="btn-primary"/>
+                   <field name="filename" invisible="1"/>
+                   <field name="image" filename="filename"/>
+                   <button string="Click To Save" type="object" name="action_download" class="btn-primary"/>
                    <button string="Generate PDF" type="object" name="action_pdf" class="btn-primary"/>
                    <button string="Reset" type="object" name="action_reset" class="btn-primary"/>
-                   <button string="Cancel" special="cancel"/>
-               </footer>
+               </group>
            </form>
        </field>
    </record>

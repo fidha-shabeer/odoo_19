@@ -6,11 +6,16 @@ class QrCodeGenerator(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        qr_code = data.get('qr_code',
-                                     []) if data else []
-        print("qr_code", qr_code)
+
+        docs = self.env['qr.generate.wizard'].browse(
+            docids)
+        print(docs,"docss")
+
 
         return {
+            'doc_ids': docids,
             'doc_model': 'qr.generate.wizard',
-            'docs': qr_code,
+            'docs': docs,
+            'qr_code': data.get('qr_code',[]) if data else [],
+            'text' : data.get('text','') if data else '',
         }
