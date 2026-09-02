@@ -7,7 +7,12 @@
     'license': "LGPL-3",
     'application': True,
     'sequence': -1,
-    'depends': ['base'],
-    'data': ['views/project_menu.xml',
+    'depends': ['base', 'project'],
+    'data': ['security/ir.model.access.csv',
+             'views/project_project.xml',
+             'views/project_task.xml',
+             'views/project_template.xml',
+             'views/project_task_template.xml',
+             'views/project_template_menu.xml',
              ]
 }

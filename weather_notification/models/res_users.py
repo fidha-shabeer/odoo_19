@@ -9,3 +9,26 @@ class ResUsers(models.Model):
     longitude = fields.Float(string="Longitude")
     latitude = fields.Float(string="Latitude")
     location = fields.Char(string="Location")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

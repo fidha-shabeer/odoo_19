@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- main menu -->
+    <menuitem id = "menu_mrp_root" name="Mrp Production" action="mrp_action"/>
+    <menuitem id="menu_material" name="Material Line"
+              parent="menu_mrp_root" action="material_action"/>
+</odoo>
