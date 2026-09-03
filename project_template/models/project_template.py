@@ -9,6 +9,7 @@ class ProjectTemplate(models.Model):
     name = fields.Char(required=True)
     partner_id = fields.Many2one('res.partner')
     task_ids = fields.One2many('project.task.template', 'project_id',string='Tasks')
+    project_temp_id = fields.One2many('project.project',inverse_name='template_id',ondelete='cascade')
 
     def action_create_project(self):
         print("creating project")
@@ -16,28 +17,22 @@ class ProjectTemplate(models.Model):
             project=self.env['project.project'].create({
                 'name': rec.name,
                 'partner_id': rec.partner_id.id,
+                'template_id': rec.id,
+
             })
             for task in rec.task_ids:
-                task= self.env['project.task'].create({
-                    'name': task.name,
-                    'project_id': project.id,
-                    'partner_id': task.partner_id.id,})
+                if not task.parent_id:
+                    parent_task= self.env['project.task'].create({
+                        'name': task.name,
+                        'project_id': project.id,
+                        'partner_id': task.partner_id.id,})
 
-                sub = self.env['project.task'].create({
-                    'name': task.child_ids.name,
-                    'partner_id': task.child_ids.partner_id.id,
-                    'parent_id': task.id,
-
-                })
-
-
-                # for sub in task.child_ids:
-                #     subtask = self.env['project.task'].create({
-                #                 'name' : sub.name,
-                #                 'partner_id' : sub.partner_id.id,
-                #                 'project_id' : project.id,
-                #                 'parent_id' : task.id,
-                #             })
+                    for sub in task.child_ids:
+                        subtask = self.env['project.task'].create({
+                                    'name' : sub.name,
+                                    'partner_id' : sub.partner_id.id,
+                                    'parent_id' : parent_task.id,
+                                })
 
 
         return{
@@ -47,3 +42,12 @@ class ProjectTemplate(models.Model):
                 'view_mode': 'form',
             }
 
+    def action_view_project(self):
+        print("viewing project")
+        for rec in self:
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'project.project',
+                'view_mode': 'list,form',
+                'domain': [('template_id','=',rec.id)],
+            }

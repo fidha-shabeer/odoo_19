@@ -9,6 +9,7 @@
     'sequence': -1,
     'depends': ['base', 'project'],
     'data': ['security/ir.model.access.csv',
+             'security/security_group.xml',
              'views/project_project.xml',
              'views/project_task.xml',
              'views/project_template.xml',

@@ -5,7 +5,7 @@
 
     <!-- submenu-->
     <menuitem id="menu_project_template" name="Project Template"
-              parent="menu_templates" action="project_template_action"/>
+              parent="menu_templates" action="project_template_action" groups="project_template.project_manager"/>
     <menuitem id="menu_task_template" name="Task Template"
-              parent="menu_templates" action="task_template_action"/>
+              parent="menu_templates" action="task_template_action" groups="project_template.project_manager"/>
 </odoo>
