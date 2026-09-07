@@ -11,28 +11,56 @@ class ProjectTemplate(models.Model):
     task_ids = fields.One2many('project.task.template', 'project_id',string='Tasks')
     project_temp_id = fields.One2many('project.project',inverse_name='template_id',ondelete='cascade')
 
+    def _create_project_task(self, task, project, parent=False):
+
+        new_task = self.env['project.task'].create({
+            'name': task.name,
+            'project_id': project.id,
+            'partner_id': task.partner_id.id,
+            'parent_id': parent.id if parent else False,
+        })
+
+        for child in task.child_ids:
+            self._create_project_task(child,project,new_task)
+
+        return new_task
+
     def action_create_project(self):
-        print("creating project")
+
         for rec in self:
-            project=self.env['project.project'].create({
+
+            project = self.env['project.project'].create({
                 'name': rec.name,
                 'partner_id': rec.partner_id.id,
                 'template_id': rec.id,
-
             })
+
             for task in rec.task_ids:
                 if not task.parent_id:
-                    parent_task= self.env['project.task'].create({
-                        'name': task.name,
-                        'project_id': project.id,
-                        'partner_id': task.partner_id.id,})
+                    self._create_project_task(task,project)
 
-                    for sub in task.child_ids:
-                        subtask = self.env['project.task'].create({
-                                    'name' : sub.name,
-                                    'partner_id' : sub.partner_id.id,
-                                    'parent_id' : parent_task.id,
-                                })
+    # def action_create_project(self):
+    #     print("creating project")
+    #     for rec in self:
+    #         project=self.env['project.project'].create({
+    #             'name': rec.name,
+    #             'partner_id': rec.partner_id.id,
+    #             'template_id': rec.id,
+    #
+    #         })
+    #         for task in rec.task_ids:
+    #             if not task.parent_id:
+    #                 parent_task= self.env['project.task'].create({
+    #                     'name': task.name,
+    #                     'project_id': project.id,
+    #                     'partner_id': task.partner_id.id,})
+    #
+    #                 for sub in task.child_ids:
+    #                     subtask = self.env['project.task'].create({
+    #                                 'name' : sub.name,
+    #                                 'partner_id' : sub.partner_id.id,
+    #                                 'parent_id' : parent_task.id,
+    #                             })
 
 
         return{

@@ -1,0 +1,23 @@
+<odoo>
+    <record id="click_merge_form_view" model="ir.ui.view">
+        <field name="name">click.merge</field>
+        <field name="model">assignment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Merge">
+                <group>
+                    <field name="dominating_ids" invisible="1"/>
+                    <field name="dominating_quotation" domain="[('dominating_ids','=',dominating_ids)]"/>
+                </group>
+                <footer>
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"/>
+                    <button name="action_consolidate"
+                            string="Consolidate"
+                            type="object"
+                            class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

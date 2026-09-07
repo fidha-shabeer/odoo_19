@@ -7,37 +7,64 @@ class ProjectProject(models.Model):
 
     template_id = fields.Many2one(comodel_name='project.template')
 
-    def action_project_template(self):
-        print("creating project template")
-        for rec in self:
-            template = self.env['project.template'].create({
-                'name': rec.name,
-                'partner_id': rec.partner_id.id,
+
+    def _create_template_task(self, task, template, parent=False):
+            new_task = self.env['project.task.template'].create({
+                'name': task.name,
+                'project_id': template.id,
+                'partner_id': task.partner_id.id,
+                'parent_id': parent.id if parent else False,
             })
-            for task in rec.task_ids:
-                if not task.parent_id:
-                    p_task = self.env['project.task.template'].create({
-                        'name': task.name,
-                        'project_id': template.id,
-                        'partner_id': task.partner_id.id,
-                    })
-                    for child in task.child_ids:
-                        child=self.env['project.task.template'].create({
-                            'name': child.name,
-                            'parent_id': p_task.id,
-                        })
-                    for c in child.child_ids:
-                        subs1=self.env['project.task.template'].create({
-                            'name': c.name,
-                            'parent_id': child.id,
-                        })
-                    for n in c.child_ids:
-                        print(n,'nothinggg')
+            for child in task.child_ids:
+                self._create_template_task(child,template,new_task)
+
+            return new_task
+
+    def action_project_template(self):
+            for rec in self:
+                template = self.env['project.template'].create({
+                    'name': rec.name,
+                    'partner_id': rec.partner_id.id,
+                })
+
+                for task in rec.task_ids:
+                    if not task.parent_id:
+                        self._create_template_task(task,template)
+
+                rec.template_id = template.id
 
 
+    # def action_project_template(self):
+    #     print("creating project template")
+    #     for rec in self:
+    #         template = self.env['project.template'].create({
+    #             'name': rec.name,
+    #             'partner_id': rec.partner_id.id,
+    #         })
+    #         for task in rec.task_ids:
+    #             if not task.parent_id:
+    #                 p_task = self.env['project.task.template'].create({
+    #                     'name': task.name,
+    #                     'project_id': template.id,
+    #                     'partner_id': task.partner_id.id,
+    #                 })
+    #                 for child in task.child_ids:
+    #                     child=self.env['project.task.template'].create({
+    #                         'name': child.name,
+    #                         'parent_id': p_task.id,
+    #                     })
+                    # for c in child.child_ids:
+                    #     subs1=self.env['project.task.template'].create({
+                    #         'name': c.name,
+                    #         'parent_id': child.id,
+                    #     })
+                    # for n in c.child_ids:
+                    #     print(n,'nothinggg')
 
-            self.template_id = template.id
-            print("template", rec.template_id)
+
+            #
+            # self.template_id = template.id
+            # print("template", rec.template_id)
 
     def action_view_project_template(self):
         print("creating project template")

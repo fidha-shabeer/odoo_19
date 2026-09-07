@@ -5,14 +5,13 @@
         <field name="arch" type="xml">
             <form string="Purchase Order">
                 <group>
-                    <field name="quantity"/>
-                    <field name="price"/>
+                    <field name="dominating_quotation"/>
                 </group>
                 <footer>
-                    <button name="action_confirm_btn"
-                            string="Confirm"
-                            type="object"
-                            class="btn-primary"/>
+                <button name="action_confirm_btn"
+                        string="Confirm"
+                        type="object"
+                        class="btn-primary"/>
                     <button string="Cancel"
                             class="btn-secondary"
                             special="cancel"/>
