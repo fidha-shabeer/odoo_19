@@ -1,0 +1,25 @@
+<odoo>
+    <record id="alternate_form_view" model="ir.ui.view">
+        <field name="name">alternate.product.form</field>
+        <field name="model">alternate.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Alternate Product Suggestion">
+                <group>
+                    <field name="mo_id"/>
+                    <field name="component_id"/>
+                    <field name="alternate_ids" invisible="1"/>
+                    <field name="alternate_product_id" domain="[('id','in',alternate_ids)]"/>
+                </group>
+                <footer>
+                    <button name="action_replace"
+                            string="Replace Component"
+                            type="object"
+                            class="btn-primary"/>
+                <button string="Cancel"
+                        class="btn-secondary"
+                        special="cancel"/>
+            </footer>
+        </form>
+    </field>
+</record>
+        </odoo>

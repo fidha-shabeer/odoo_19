@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+manufacturing_component_substitution.access_alternate_wizard,access_alternate_wizard,manufacturing_component_substitution.model_alternate_wizard,base.group_user,1,1,1,1

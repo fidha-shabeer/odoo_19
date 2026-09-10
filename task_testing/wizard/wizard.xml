@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="alternate_wizard_form" model="ir.ui.view">
+        <field name="name">alternate.wizard.form</field>
+        <field name="model">alternate.wizard</field>
+
+        <field name="arch" type="xml">
+
+            <form string="Suggest Alternate">
+
+                <group>
+                    <field name="component_id"/>
+
+                    <field name="alternate_ids"
+                           widget="many2many_tags"/>
+
+                    <field name="alternate_id"
+                           domain="[('id', 'in', alternate_ids)]"/>
+                </group>
+
+                <footer>
+
+                    <button
+                        name="action_replace"
+                        type="object"
+                        string="Replace"
+                        class="btn-primary"/>
+
+                    <button
+                        string="Cancel"
+                        special="cancel"/>
+
+                </footer>
+
+            </form>
+
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,28 @@
+<record id="substitute_wizard_form" model="ir.ui.view">
+    <field name="name">substitute.wizard.form</field>
+    <field name="model">substitute.wizard</field>
+
+    <field name="arch" type="xml">
+        <form>
+            <group>
+
+                <field name="production_id"/>
+                <field name="component_id"/>
+
+                <field name="alternate_id"
+                    domain="[('id', 'in', component_id.alternate_product_ids.ids), ('qty_available', '>', 0)]"/>
+
+            </group>
+
+            <footer>
+                <button name="action_replace"
+                        type="object"
+                        string="Replace"
+                        class="btn-primary"/>
+
+                <button string="Cancel"
+                        special="cancel"/>
+            </footer>
+        </form>
+    </field>
+</record>

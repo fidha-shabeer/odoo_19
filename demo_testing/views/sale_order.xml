@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_form_view" model="ir.ui.view">
+        <field name="name">sale.order.form.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="order_type"/>
+<!--                <field name="ref"/>-->
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_list_view" model="ir.ui.view">
+        <field name="name">sale.list.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list/header" position="inside">
+                <button name="action_validate_selected"
+                        type="object"
+                        string="Validate Selected"/>
+                <button name="action_state"
+                        type="object"
+                        string="Check State"/>
+                <button name="action_discount"
+                        type="object"
+                        string="Apply Discount"/>
+
+                <button name="action_customer"
+                        type="object"
+                        string="Check Customer"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

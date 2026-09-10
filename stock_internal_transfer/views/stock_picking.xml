@@ -6,18 +6,22 @@
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='state']" position="inside">
-                <field name="state" widget="statusbar" statusbar_visible="draft,ready,approve_pending,done"/>
+                <field name="state" widget="statusbar" statusbar_visible="draft,approve_pending,ready,done"/>
             </xpath>
             <xpath expr="//header" position="inside">
                 <button name="action_second_approve" type="object"
-                        string="Second Approval" class="btn btn-primary" invisible="state =='done'"
-                        groups="stock.group_stock_manager"/>
+                        string="Second Approval" class="btn btn-primary" invisible="not is_approver or state =='done'"/>
             </xpath>
             <xpath expr="//form/header/button[@name='button_validate']" position="attributes">
-                <attribute name="invisible">state != 'draft' or state!='waiting' or state=='approve_pending'</attribute>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_validate" type="object"
+                        string="Validate Button" class="btn btn-primary" invisible="state =='done' or state =='approve_pending'"/>
             </xpath>
             <xpath expr="//field[@name='move_type']" position="after">
                 <field name="approver_id" domain="[('user_id','!=',user_id)]" readonly="not user_id"/>
+                <field name="is_approver"/>
             </xpath>
 
         </field>

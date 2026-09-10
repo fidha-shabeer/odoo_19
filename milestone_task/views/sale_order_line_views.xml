@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+4<?xml version="1.0" encoding="utf-8"?>
 <odoo>
    <record model="ir.ui.view" id="sale_order_view_inherit">
     <field name="name">sale.order.view.inherit1</field>

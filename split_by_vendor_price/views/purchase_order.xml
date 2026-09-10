@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_vendor_split" model="ir.ui.view">
+        <field name="name">purchase.vendoe.split</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/div[@name='button_box']"
+                   position="inside">
+                <button class="oe_stat_button"
+                        type="object"
+                        icon="fa-book"
+                        name="action_view_order" string="Vendor Split Orders">
+                </button>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_split_vendor" type="object"
+                        string="Split by Lowest Price Vendor" class="btn btn-primary"/>
+            </xpath>
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <field name="sub_order_ids" widget="many2many_tags" invisible="not is_sub_order"/>
+                <field name="parent_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

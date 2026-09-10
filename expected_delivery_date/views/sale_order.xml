@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="sale_update_list_view" model="ir.ui.view">
+        <field name="name">sale.update.list.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+<!--            <xpath expr="//list/header" position="inside">-->
+<!--                <button name="action_update_date"-->
+<!--                        type="object"-->
+<!--                        string="Update Delivery Date"/>-->
+<!--            </xpath>-->
+
+        </field>
+    </record>
+</odoo>

@@ -56,8 +56,6 @@ class MrpProductionExt(models.Model):
 
 
 
-
-
     # @api.onchange('product_id')
     # def onchange_product_id(self):
     #     if not self.product_id.bom_ids:
