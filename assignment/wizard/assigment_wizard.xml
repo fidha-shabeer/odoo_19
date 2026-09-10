@@ -6,7 +6,7 @@
             <form string="Merge">
                 <group>
                     <field name="dominating_ids" invisible="1"/>
-                    <field name="dominating_quotation" domain="[('dominating_ids','=',dominating_ids)]"/>
+                    <field name="dominating_quotation" domain="[('id','in',dominating_ids)]"/>
                 </group>
                 <footer>
                     <button string="Cancel"

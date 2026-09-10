@@ -8,13 +8,19 @@ class SaleOrder(models.Model):
 
     def action_merge_quotation(self):
         print("merging quotation", self)
-        draft = self.filtered(lambda l: l.state == 'draft')
-        quotation = self.env.context.get('default_dominating_quotation')
-        print("quotation:", quotation)
-        len_partner = len(self.mapped('partner_id'))
-        print("partners", len_partner)
-        if len_partner > 1:
-            raise ValidationError("Can't merge quotation with more than one partner")
+        for rec in self:
+            if rec.state !='draft':
+                raise ValidationError("Select only draft state!!")
+            if len(self) <= 1:
+                raise ValidationError("Select more than one orders!!")
+            if len(self.mapped('partner_id')) > 1:
+                raise ValidationError("choose only one customers order to merge!")
+
+
+        # len_partner = len(self.mapped('partner_id'))
+        # print("partners", len_partner)
+        # if len_partner > 1:
+        #     raise ValidationError("Can't merge quotation with more than one partner")
         # for rec in self:
         #     if rec.order_line:
         #         for line in rec.order_line:
@@ -27,7 +33,6 @@ class SaleOrder(models.Model):
             'view_mode': 'form',
             'target': 'new',
             'context': {
-                'default_dominating_quotation': draft.ids,
                 "default_dominating_ids": self.ids,
             }
         }

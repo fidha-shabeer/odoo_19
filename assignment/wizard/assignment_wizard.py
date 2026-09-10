@@ -11,28 +11,56 @@ class AssignnmentWizard(models.TransientModel):
 
     def action_consolidate(self):
         print("consolidate")
-        quotation = self.dominating_quotation
-        customer = quotation.partner_id
-        print("quotation:", quotation)
-        selected = self.env.context.get("list")
-        records = self.env['sale.order'].browse(selected)
-        print("records:", records)
-        # order = records.search([('partner_id', '=', customer.id)])
-        order = records.filtered(lambda r: r.partner_id.id == customer.id)
-        print("order:", order)
-        for line in order.order_line:
-            print("line:", line)
-            print("dsf", self.env['sale.order'].browse(self.dominating_quotation.id))
-            self.dominating_quotation.write({
-                'order_line': [
-                    fields.Command.create({
-                        "product_template_id": line.product_template_id,
-                        "product_uom_qty": line.product_uom_qty,
-                        "price_unit": line.price_unit,
-                        "name": "demo",
-                    }
-                    )
-                ]
-            })
-        # self.env['sale.order'].with_context(dominating_quotation=self.dominating_quotation).action_merge_quotation()
-        return True
+
+        dominating = self.dominating_quotation
+        print("dominating",dominating)
+
+        all_selected = self.dominating_ids
+        print("all selected",all_selected)
+
+        others = all_selected - dominating
+        print("others",others)
+
+        for other in others:
+            for line in other.order_line:
+                self.dominating_quotation.write({
+                    'order_line': [
+                        fields.Command.create({
+                            "product_template_id": line.product_template_id,
+                            "product_uom_qty": line.product_uom_qty,
+                            "price_unit": line.price_unit,
+                            "name": line.name,
+                        }
+                        )
+                    ]
+                })
+
+                other.write({
+                    "state" : "cancel"
+                })
+
+        # quotation = self.dominating_quotation
+        # customer = quotation.partner_id
+        # print("quotation:", quotation)
+        # selected = self.env.context.get("list")
+        # records = self.env['sale.order'].browse(selected)
+        # print("records:", records)
+        # # order = records.search([('partner_id', '=', customer.id)])
+        # order = records.filtered(lambda r: r.partner_id.id == customer.id)
+        # print("order:", order)
+        # for line in order.order_line:
+        #     print("line:", line)
+        #     print("dsf", self.env['sale.order'].browse(self.dominating_quotation.id))
+        #     self.dominating_quotation.write({
+        #         'order_line': [
+        #             fields.Command.create({
+        #                 "product_template_id": line.product_template_id,
+        #                 "product_uom_qty": line.product_uom_qty,
+        #                 "price_unit": line.price_unit,
+        #                 "name": "demo",
+        #             }
+        #             )
+        #         ]
+        #     })
+        # # self.env['sale.order'].with_context(dominating_quotation=self.dominating_quotation).action_merge_quotation()
+        # return True
