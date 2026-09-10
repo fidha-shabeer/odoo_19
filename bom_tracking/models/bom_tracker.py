@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+
+from odoo import fields, models
+
+
+class BomTracker(models.Model):
+    _name = 'bom.tracker'
+    _description = 'BOM Tracker'
+
+    bom_id = fields.Many2one('mrp.bom', string='BOM')
+    revision_number = fields.Integer('Revision Number')
+    modified_by = fields.Many2one('res.users',string='Modified By')
+    modified_on = fields.Datetime(string='Modified On',default=fields.Datetime.now)
+    change_notes = fields.Text(string='Change Notes')
+
+
+
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="latest_credit_template" name=" Latest Credit Snippet">
+        <section class="latest_credit_snippet">
+            <div class="credit_container">
+                <div class="alert alert-info">
+                    <h2>Latest Credits</h2>
+                    <p>
+                        The Latest credits will display here!
+                    </p>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

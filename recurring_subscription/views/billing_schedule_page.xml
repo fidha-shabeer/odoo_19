@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="page_bill_schedule"
+                  name="Billing Schedule Page">
+
+            <t t-call="website.layout">
+                <section
+                        class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24"
+                        data-vcss="001" data-snippet="s_title"
+                        data-scroll-background-ratio="1">
+                    <span class="s_parallax_bg oe_img_bg"
+                          style="background-image: url('/web/image/website.s_parallax_default_image'); background-position: 50% 0;"/>
+                    <div class="o_we_bg_filter bg-black-50"/>
+                    <div class="container">
+                        <h1>Billing Schedule</h1>
+                    </div>
+                </section>
+                <section class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-5">
+                            <p class="lead text-center">Hello,<t
+                                    t-esc="user_name"/>! create bill here!.
+                            </p>
+                            <div class="card shadow rounded-3 border-0">
+                                <div class="card-body p-4">
+                                    <h3 class="text-muted text-center">Create
+                                        New Bill
+                                    </h3>
+
+
+                                    <form method="post" action="/bill-create"
+                                          id="bill-form">
+                                        <br></br>
+                                        <label for="bill3" class="form-label">
+                                            Bill Name
+                                        </label>
+                                        <input type="text" required=""
+                                               class="form-control"
+                                               name="bill_name"/>
+                                        <br></br>
+                                        <br></br>
+                                        <label for="bill1" class="form-label">
+                                            Recurring Subscription
+                                        </label>
+                                        <select name="rec_sub_id" required=""
+                                                id="bill1" class="form-control">
+
+                                            <option value="">choose
+                                                subscriptions..
+                                            </option>
+                                            <option
+                                                    t-foreach="subscriptions"
+                                                    t-as="subscription"
+                                                    t-att-value="subscription.id"
+                                                    t-out="subscription.order_seq"/>
+                                        </select>
+
+
+                                        <br></br>
+                                        <br></br>
+
+                                        <label for="bill2" class="form-label">
+                                            Period
+                                        </label>
+                                        <input type="date" id="bill2"
+                                               class="form-control"
+                                               name="period" required=""/>
+
+                                        <br></br>
+                                        <br></br>
+
+
+                                        <input type="submit" value="Submit"
+                                               class="btn btn-primary"
+                                               formaction="/bill-create"/>
+
+                                        <br></br>
+                                        <br></br>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </t>
+
+        </template>
+
+        <template id="all_bill_list" name="All Credit List">
+            <t t-call="website.layout">
+                <div class="container mt-5"/>
+                <h1 class="text-center mb-4">Bill list</h1>
+<!--                <a t-attf-href="/bill-form-open">-->
+<!--                    <button class="btn btn-primary">Create-->
+<!--                        Bill-->
+<!--                    </button>-->
+<!--                </a>-->
+
+                <br>
+                </br>
+                <br></br>
+                <form action="/bill-submit" method="post">
+                    <table class="table mt-3" style="page-break-after:always;">
+                        <thead>
+                            <button class="btn btn-primary"
+                                    formaction="/bill-submit">Bill Run
+                            </button>
+
+
+                            <tr class="text-start">
+                                <th>Check</th>
+                                <th>Subscription</th>
+                                <th>Customer</th>
+                                <th>Name</th>
+                                <th>Period</th>
+                                <th>Total Credit Amount</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="bills" t-as="bill">
+                                <td>
+                                    <input type="checkbox" id="check1"
+                                           t-att-value="bill.id"
+                                           name="bill_ids"/>
+                                </td>
+                                <td>
+                                    <t t-esc="bill.subscription_ids.order_seq"/>
+                                </td>
+                                <td>
+                                    <t t-out="bill.restrict_customers_ids.display_name"/>
+                                </td>
+                                <td>
+                                    <t t-esc="bill.names"/>
+                                </td>
+                                <td>
+                                    <t t-esc="bill.period"/>
+                                </td>
+                                <td>
+                                    <t t-esc="bill.total_credits"/>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </t>
+        </template>
+
+        <template id="page_bill_success" name="Bill Success Page">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-12 text-center mt-5">
+                                <p>Bill Form Successfully Submitted!</p>
+                                <br></br>
+                                <br></br>
+                                <a href="/bill-odoo" role="button">Back to
+                                    create page
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+        <record id="bill_menu" model="website.menu">
+            <field name="name">Bill Schedule</field>
+            <field name="url">/bill-odoo</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="group_ids"
+                   eval="[(6,0,[ref('recurring_subscription.subscription_manager')])]"/>
+        </record>
+    </data>
+
+</odoo>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="subscription_report_details">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <h2 class="text-center">Subscription Report</h2>
+                    <hr/>
+                    <div class="row mb-4">
+                        <div class="col-3">
+                            <strong>Subscription:</strong>
+                            <span t-esc="subscription_id"/>
+                        </div>
+                        <div class="col-3">
+                            <t t-if='same_customer'>
+                                <strong>Customer:</strong>
+                                <span t-esc="docs.partner_id.name"/>
+                            </t>
+                        </div>
+
+                        <div class="col-3">
+                            <t t-if='same_product'>
+                                <strong>Product:</strong>
+                                <span t-esc="docs.product_id.display_name"/>
+                            </t>
+                        </div>
+
+                        <div class="col-3">
+                            <strong>Type:</strong>
+                            <span t-esc="report_type"/>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-sm">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>SL NO</th>
+                                <th>Name</th>
+                                <t t-if="not same_customer">
+                                    <th>Customer</th>
+                                </t>
+                                <t t-if="not same_product">
+                                <th>Product</th>
+                                </t>
+                                <th>Amount</th>
+                                <th>Total Credit Applied</th>
+                                <th>State</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="sub">
+                                <tr>
+                                    <td>
+                                        <span t-esc="sub_index + 1"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="sub.order_seq"/>
+                                    </td>
+                                    <td t-if="not same_customer">
+                                        <span t-field="sub.partner_id.name"/>
+                                    </td>
+                                    <td t-if="not same_product">
+                                        <span t-field="sub.product_id"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="sub.recurring_amount"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="sum(sub.credits_ids.mapped('credit_amounts'))"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="sub.status"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <div class="mt-3">
+                        <strong>Total Subscriptions:</strong>
+                        <span t-esc="len(docs)"/>
+                    </div>
+                    <div>
+                        <center>
+                            <br>
+                                <br>
+                                    <div>
+                                        <span t-esc="latest_terms.terms_condition"/>
+                                    </div>
+                                </br>
+                            </br>
+
+                        </center>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

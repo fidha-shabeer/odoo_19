@@ -13,6 +13,10 @@ class Partner(models.Model):
     _unique_account_no = models.Constraint('UNIQUE(account_no)','account no already registered')
 
     account_no = fields.Char(string="Account ID")
+    company_id = fields.Many2one('res.company', store=True, copy=False,
+                                 string="Company",
+                                 default=lambda
+                                     self: self.env.user.company_id.id)
 
     @api.model_create_multi
     def create(self, vals_list):

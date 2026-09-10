@@ -1,0 +1,32 @@
+<odoo>
+    <record id="view_report_form" model="ir.ui.view">
+        <field name="name">view.credit.report.form</field>
+        <field name="model">recurring.credit.report</field>
+        <field name="arch" type="xml">
+            <form string="report">
+                <group>
+                    <field name="sub_id"/>
+                    <field name="state"/>
+                </group>
+                <footer>
+                    <button name="action_credit_report"
+                            string="Print PDF"
+                            type="object"
+                            class="btn-primary"/>
+                    <button name="action_credit_xlsx" string="Print XLSX"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_credit_pdf" model="ir.actions.act_window">
+        <field name="name">Credit Report</field>
+        <field name="res_model">recurring.credit.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

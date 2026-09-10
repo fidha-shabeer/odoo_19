@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record model="ir.module.category" id="module_category_template">
+           <field name="name">Project Template</field>
+           <field name="sequence">1</field>
+       </record>
+       <record model="res.groups.privilege" id="res_groups_privilege_project_template">
+           <field name="name">Project Template</field>
+           <field name="category_id" ref="project_template.module_category_template"/>
+       </record>
+        <record id="project_manager" model="res.groups">
+            <field name="name">Project Manager</field>
+            <field name="privilege_id" ref="res_groups_privilege_project_template" />
+        </record>
+    </data>
+</odoo>

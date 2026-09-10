@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+   <t t-name="systray_icon" owl="1">
+       <Dropdown>
+              <div class="new_icon">
+                  <div class="icon_div">
+                      <div class="toggle-icon" role="button">
+                            <i id='weather'
+                               class="fa fa-cloud"
+                               style="color: white; margin-bottom:10px; padding:13px; cursor: pointer;"
+                               role="img" aria-label="weather" t-on-click="showNotification"/>
+                      </div>
+                  </div>
+              </div>
+           <t t-set-slot="content">
+               <DropdownItem>
+                   <div class="card text-dark bg-info mb-3" style="max-width: 18rem;">
+                      <div class="card-body">
+                          <h5 class="card-title">Weather Notification</h5>
+                          <p>Temperature : <t t-esc="state.temp"/></p>
+                          <p>Time : <t t-esc="state.time"/> </p>
+                          <p>Weather : <t t-esc="this.state.weather"/> </p>
+                          <p>Location : <t t-esc="this.state.location"/> </p>
+                          <p>Country : <t t-esc="this.state.country"/> </p>
+
+                      </div>
+                    </div>
+               </DropdownItem>
+           </t>
+       </Dropdown>
+   </t>
+</templates>
+
+
+        <!--<?xml version="1.0" encoding="UTF-8"?>-->
+        <!--<templates xml:space="preserve">-->
+        <!--   <t t-name="systray_icon" owl="1">-->
+        <!--       <t t-set-slot="toggler">-->
+        <!--               <div class="new_icon">-->
+        <!--           <div class="icon_div">-->
+        <!--               <div class="toggle-icon" role="button">-->
+        <!--                   <i id='weather'-->
+        <!--                      class="fa fa-cloud fa-1.5x"-->
+        <!--                      style="color: white; margin-bottom:10px; padding:13px; cursor: pointer;"-->
+        <!--                      role="img" aria-label="weather" t-on-click="showNotification"/>-->
+        <!--               </div>-->
+        <!--           </div>-->
+        <!--       </div>-->
+        <!--       </t>-->
+        <!--   </t>-->
+        <!--</templates>-->

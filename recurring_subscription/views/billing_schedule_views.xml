@@ -6,7 +6,6 @@
             <field name="model">billing.schedule</field>
             <field name="arch" type="xml">
                 <list string="Billing Schedule List" >
-                    <field name="is_simulation"/>
                     <field name="names"/>
                     <field name="period"/>
                     <field name="restrict_customers_ids" widget="many2many_tags"/>
@@ -30,6 +29,11 @@
                                             invisible = 'subscription_count == 0 '>
                                         <field name="subscription_count" widget="statinfo" string="Subscription Count"/>
                                     </button>
+                                     <button name="action_view_invoice" type="object"
+                                            class="oe_stat_button" icon="fa-book">
+                                        <field name="invoice" widget="statinfo" string="Invoices" />
+
+                                    </button>
                                 </div>
 
                                 <group>
@@ -37,7 +41,6 @@
                                         <field name="names"/>
                                         <field name="period"/>
                                         <field name="is_simulation"/>
-                                        <field name="active"/>
                                     </group>
                                         <group>
                                             <field name="subscription_ids" widget="many2many_tags"/>

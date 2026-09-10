@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- main menu -->
+    <menuitem id = "menu_loan_root" name="Employee Loan"
+              action="action_loan_menu"/>
+    <menuitem id ="menu_loan_line" name="Employee Loan Line" parent="menu_loan_root" action="action_loan_line_menu"
+              />
+</odoo>
