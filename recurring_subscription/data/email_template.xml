@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="subscription_email_template" model="mail.template">
+            <field name="name">SUBSCRIPTION DONE</field>
+            <field name="model_id" ref="recurring_subscription.model_recurring_subscription"/>
+            <field name="subject">SUBSCRIPTION IN DONE STATE</field>
+            <field name="partner_to">{{ object.partner_id.email }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    <p>
+                        Dear Customer,
+                        Your Subscription has been completed.
+
+                        Admin
+                    </p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

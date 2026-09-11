@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.rule" id="material_request_rule">
+            <field name="name">Material Request Rules</field>
+            <field name="model_id" ref="model_material_request"/>
+            <field name="domain_force">[('requested_by','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('material_request.group_requisition_users'))]"/>
+    </record>
+</odoo>

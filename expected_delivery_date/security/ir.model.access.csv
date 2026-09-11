@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+expected_delivery_date.access_expected_date_wizard,access_expected_date_wizard,expected_delivery_date.model_expected_date_wizard,base.group_user,1,1,1,1

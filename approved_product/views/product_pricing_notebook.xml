@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="note_form_view" model="ir.ui.view">
+            <field name="name">note.form.view</field>
+            <field name="model">product.pricing.notebook</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="product_id"/>
+                                <field name="unit_price"/>
+                                <field name="min_qty"/>
+                                <field name="partner_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

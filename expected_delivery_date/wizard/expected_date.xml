@@ -1,0 +1,23 @@
+<odoo>
+    <record id="date_form_view" model="ir.ui.view">
+        <field name="name">date.form.view</field>
+        <field name="model">expected.date.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Update Delivery Date">
+                <group>
+                    <field name="new_delivery_date"/>
+                    <field name="reason"/>
+                </group>
+                <footer>
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"/>
+                    <button name="action_update"
+                            string="Update Date"
+                            type="object"
+                            class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

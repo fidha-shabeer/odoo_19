@@ -1,0 +1,27 @@
+<odoo>
+    <record id="view_credit_limit_report_form" model="ir.ui.view">
+        <field name="name">view.credit.limit.report.form</field>
+        <field name="model">credit.limit.report</field>
+        <field name="arch" type="xml">
+            <form string="Credit Limit Analysis">
+                <group>
+                    <field name="partner_id"/>
+                </group>
+                <footer>
+                     <button name="action_credit_limit_xlsx" string="Print XLSX"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_credit_limit_report" model="ir.actions.act_window">
+        <field name="name">Customer Credit LImit</field>
+        <field name="res_model">credit.limit.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

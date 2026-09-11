@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <!-- Sale Config Settings Inherit -->
+   <record id="res_config_settings_credit_limit" model="ir.ui.view">
+       <field name="name">res.config.settings.credit.limit</field>
+       <field name="model">res.config.settings</field>
+       <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+       <field name="arch" type="xml">
+                <xpath expr="//setting[@id='discount_sale_order_lines']" position="after">
+                   <setting string="Sales Credit Limit" help="Trigger alerts when creating invoices and Sale Order with
+                   a Total Receivable Amount exceeding a limit.Set a value greater than 0.0 to activate the credit limit check. ">
+                       <field name="is_sales_credit"/>
+                       <field name="credit_limit" string="Credit Limit" invisible="not is_sales_credit"/>
+                   </setting>
+           </xpath>
+       </field>
+   </record>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <record id="view_invoice_stock_inherit" model="ir.ui.view">
+       <field name="name">view.invoice.stock.inherit</field>
+       <field name="model">account.move</field>
+       <field name="inherit_id" ref="account.view_move_form"/>
+       <field name="arch" type="xml">
+           <xpath expr="//field[@name='delivery_date']" position="after">
+               <field name="source_id"/>
+               <field name="destination_id"/>
+               <field name="is_transfer" invisible="1"/>
+               <field name="is_reverse" invisible="1"/>
+           </xpath>
+           <xpath expr="//div[@name='button_box']" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_transfer" type="object"
+                            class="oe_stat_button" icon="fa-book" string="Internal Transfer" invisible="not is_transfer">
+                    </button>
+                </div>
+            </xpath>
+           <xpath expr="//div[@name='button_box']" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_reverse_transfer" type="object"
+                            class="oe_stat_button" icon="fa-book" string="Reversed Internal Transfer" invisible="not is_reverse">
+                    </button>
+                </div>
+            </xpath>
+       </field>
+   </record>
+</odoo>

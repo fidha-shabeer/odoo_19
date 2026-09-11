@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ref_seq" model="ir.sequence">
+        <field name="name">Reference SO</field>
+        <field name="code">refsequence</field>
+        <field name="prefix">REF</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+    </record>
+
+</odoo>

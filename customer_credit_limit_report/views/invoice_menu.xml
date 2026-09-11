@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- main menu -->
+    <menuitem id="menu_credit_limit" name="Credit Limit Analysis"
+              parent="account.menu_finance_reports" action="action_credit_limit_report"/>
+</odoo>
