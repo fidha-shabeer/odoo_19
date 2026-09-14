@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="group_full_features" model="res.groups">
+    <record id="account.group_account_user" model="res.groups">
         <field name="name">Show Full Accounting Features</field>
         <field name="sequence">20</field>
         <field name="privilege_id" ref="account.res_groups_privilege_accounting"/>

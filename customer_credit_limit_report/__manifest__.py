@@ -10,8 +10,12 @@
         "security/ir.model.access.csv",
         "security/security_group.xml",
         "wizard/credit_limit_report_view.xml",
-        "views/res_partner.xml",
-        "views/res_config_settings.xml",
+        # "views/res_partner.xml",
+        # "views/res_config_settings.xml",
         "views/invoice_menu.xml",
-    ]
+    ],
+    'assets': {
+        'web.assets_backend': [
+            'customer_credit_limit_report/static/src/js/action_manager.js', ],
+    }
 }
