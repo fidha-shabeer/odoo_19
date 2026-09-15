@@ -1,0 +1,1 @@
+from . import updated_price

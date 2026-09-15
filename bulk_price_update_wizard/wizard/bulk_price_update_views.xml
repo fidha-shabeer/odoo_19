@@ -1,0 +1,31 @@
+<odoo>
+    <record id="view_bulk_price_update_form" model="ir.ui.view">
+        <field name="name">view.bulk.price.update.form</field>
+        <field name="model">bulk.price.update</field>
+        <field name="arch" type="xml">
+            <form string="Bulk Price Update">
+                <group>
+                    <field name="product_ids" widget="many2many_tags"/>
+                    <field name="select_id"/>
+                    <field name="percentage" invisible="select_id=='fixed_price'"/>
+                    <field name="percent_type" invisible="select_id=='fixed_price'"/>
+                    <field name="fixed_price" invisible="select_id=='percentage'"/>
+                </group>
+                <footer>
+                     <button name="action_update_price" string="Update Bulk Price"
+                            type="object" class="btn-primary" groups="sales_team.group_sale_manager"/>
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_bulk_price_update" model="ir.actions.act_window">
+        <field name="name">Bulk Price Update</field>
+        <field name="res_model">bulk.price.update</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

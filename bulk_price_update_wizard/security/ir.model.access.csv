@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+bulk_price_update_wizard.access_bulk_price_update,access_bulk_price_update,bulk_price_update_wizard.model_bulk_price_update,base.group_user,1,1,1,1
+
+bulk_price_update_wizard.access_view_update_wizard,access_view_update_wizard,bulk_price_update_wizard.model_view_update_wizard,base.group_user,1,1,1,1
+
+bulk_price_update_wizard.access_updated_price,access_updated_price,bulk_price_update_wizard.model_updated_price,base.group_user,1,1,1,1

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- main menu -->
+    <menuitem id="menu_bulk_price_update" name="Bulk Price Update"
+              parent="sale.product_menu_catalog" action="action_bulk_price_update"/>
+</odoo>
