@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="sale_order_revision_list_view" model="ir.ui.view">
+        <field name="name">sale.order.revision.list.view</field>
+        <field name="model">sale.order.revision</field>
+        <field name="arch" type="xml">
+            <list string="Sale Order Revision">
+                <field name="revision_number"/>
+                <field name="modified_by"/>
+                <field name="modified_on"/>
+                <field name="change_notes"/>
+            </list>
+        </field>
+    </record>
+<!--    <record id="po_tracker_form_view" model="ir.ui.view">-->
+<!--        <field name="name">po.tracker.form.view</field>-->
+<!--        <field name="model">po.tracker</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form>-->
+<!--                <sheet>-->
+<!--                    <group>-->
+<!--                        <group>-->
+<!--                            <field name="revision_number"/>-->
+<!--                            <field name="modified_by"/>-->
+<!--                            <field name="modified_on"/>-->
+<!--                            <field name="change_notes"/>-->
+<!--                        </group>-->
+
+<!--                    </group>-->
+<!--                </sheet>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+</odoo>

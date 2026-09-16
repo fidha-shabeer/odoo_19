@@ -4,3 +4,5 @@ bulk_price_update_wizard.access_bulk_price_update,access_bulk_price_update,bulk_
 bulk_price_update_wizard.access_view_update_wizard,access_view_update_wizard,bulk_price_update_wizard.model_view_update_wizard,base.group_user,1,1,1,1
 
 bulk_price_update_wizard.access_updated_price,access_updated_price,bulk_price_update_wizard.model_updated_price,base.group_user,1,1,1,1
+
+bulk_price_update_wizard.access_bulk_price_update_line,access_bulk_price_update_line,bulk_price_update_wizard.model_bulk_price_update_line,base.group_user,1,1,1,1
