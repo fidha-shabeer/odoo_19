@@ -1,0 +1,22 @@
+<odoo>
+    <template id="delivery_slip_weight_update_report"
+              inherit_id="stock.report_delivery_document">
+        <!-- XPath to target a specific node -->
+        <xpath expr="//table[@name='stock_move_table']/thead//tr"
+               position="inside">
+            <th>
+                <strong>Weight</strong>
+            </th>
+            <th>
+                <strong>Total</strong>
+            </th>
+        </xpath>
+        <xpath expr="//table[@name='stock_move_table']/tbody//tr">
+            <td><span t-out="move.product_id.weight"/></td>
+            <td>
+                 <span t-out="move.product_id.weight * move.quantity"/>
+            </td>
+        </xpath>
+
+    </template>
+</odoo>

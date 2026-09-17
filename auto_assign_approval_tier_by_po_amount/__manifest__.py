@@ -8,6 +8,6 @@
     'application': True,
     'sequence': -1,
     'depends': ['base', 'purchase'],
-    'data': ['security/ir.model.access.csv',
-             'security/security_group.xml', ]
+    'data': ['security/security_group.xml',
+             'views/purchase_order.xml',]
 }
