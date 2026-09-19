@@ -8,8 +8,7 @@
     'sequence': -1,
     'depends': ['base', 'account'],
     'data': [
-        # "security/record_rule.xml",
+        "security/record_rule.xml",
         "views/res_users.xml",
-        "views/account_journal.xml",
     ]
 }
